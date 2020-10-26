@@ -1,5 +1,6 @@
 import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Scanner;
 import java.util.ArrayList; 
 
@@ -12,7 +13,7 @@ public class App
 
         // -- Inputting CSV to the scanner -- 
         //Get scanner instance
-        Scanner scanner = new Scanner(new File("COVID-19_Copy.csv"));
+        Scanner scanner = new Scanner(new File("COVID-19_SaveFile.txt"));
          
         //Set the delimiter used in file
         scanner.useDelimiter(",|\n");
@@ -20,32 +21,31 @@ public class App
         //Get all tokens and store them in some data structure 
         if (scanner.hasNext()) 
         {
-            // skip header line
-            scanner.nextLine();
+            scanner.nextLine(); // skip header
         }
         
         while (scanner.hasNext()) 
-        {
             list.add(scanner.next());
-        }
        
-        //Do not forget to close the scanner  
         scanner.close();
-        
-        // -- Scanner Ending -- 
 
         // Parsing all the data into accessable objects
         dataList = parse(list);
+
+        // ------ END PARSING -------
+        // All objects are stored in dataList
+        
 
         // New Scanner for user search
         Scanner s = new Scanner(System.in);
 
       //  ****** Basic Search ********
-      
+        
+      /*
         System.out.println("Enter Country to Search");
         String input = s.nextLine();
         search(input, dataList);
-        
+      */  
 
         // ****** Update *************
         /*
@@ -58,16 +58,30 @@ public class App
         System.out.println("Enter the new Data?");
         String newData = s.nextLine();
         update(country, date, choice, newData, dataList);
+        saveToFile(dataList);
+        
+       
+
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter Country to Search");
+        String input = sc.nextLine();
+        search(input, dataList);
         */
+        
 
         // ****** Delete Entire Row **********
-        /*
+        
         System.out.println("Enter Country to Delete");
         String country = s.nextLine();
         System.out.println("From which date? YYYY-MM-DD");
         String date = s.nextLine();
         delete(country, date, dataList);
-        */
+        saveToFile(dataList);
+
+        System.out.println("Enter Country to Search");
+        String input = s.nextLine();
+        search(input, dataList);
+        
 
         // ********* Insert **********
         // Only inserting a few inputs
@@ -82,17 +96,52 @@ public class App
         System.out.println("Enter Deaths?");
         String deaths = s.nextLine();
         insert(country, date, cases, deaths, dataList);
+        saveToFile(dataList);
+
+        System.out.println("Enter Country to Search");
+        String input = s.nextLine();
+        search(input, dataList);
         */
+
+        s.close();
+    }
+
+    public static void saveToFile(ArrayList<Data> dataList)
+    {
+        ArrayList<String> strings = new ArrayList<String>();
+
+        for(int i = 0; i < dataList.size(); i++)
+        {
+            String temp = dataList.get(i).toCSV();
+            strings.add(temp);
+        }
+        
+        try 
+        {
+            FileWriter myWriter = new FileWriter("COVID-19_SaveFile.txt");
+
+            for(int i = 0; i < strings.size(); i++)
+            {
+                myWriter.write(strings.get(i));
+            }
+            myWriter.close();
+            System.out.println("Successfully wrote to the file.");
+        } catch (IOException e) 
+        {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
 
     }
 
     public static void insert(String country, String date, String cases, String deaths, ArrayList<Data> dataList)
     {
+        // Setting only 3 fields just for now
         Data data = new Data();
-        data.country = country;
-        data.date = date;
-        data.cases = cases;
-        data.deaths = deaths;
+        data.setCountry(country);
+        data.setDate(date);
+        data.setCases(cases);
+        data.setDeaths(deaths);
         dataList.add(data);
     }
 
@@ -100,27 +149,30 @@ public class App
     {
         for(int i = 0; i < dataList.size(); i++)
         {
-            if(country.equals(dataList.get(i).country) && date.equals(dataList.get(i).date))
+            if(country.equals(dataList.get(i).getCountry()) && date.equals(dataList.get(i).getDate()))
             {
                 dataList.remove(i);
                 dataList.remove(new Data());
             }
         } 
+
+        System.out.println("Row Deleted");
     }
 
     public static void update(String country, String date, String choice, String newData, ArrayList<Data> dataList)
     {
+        // Only updating cases or deaths for simplicity. Can change later
         for(int i = 0; i < dataList.size(); i++)
         {
-            if(country.equals(dataList.get(i).country) && date.equals(dataList.get(i).date))
+            if(country.equals(dataList.get(i).getCountry()) && date.equals(dataList.get(i).getDate()))
             {
                 if(choice.equals("Cases"))
                 {
-                    dataList.get(i).cases = newData;
+                    dataList.get(i).setCases(newData);
                 }
                 else if(choice.equals("Deaths"))
                 {
-                    dataList.get(i).deaths = newData;
+                    dataList.get(i).setDeaths(newData);
                 }
                
             }
@@ -131,7 +183,7 @@ public class App
     {
         for(int i = 0; i < dataList.size(); i++)
         {
-            if(input.equals(dataList.get(i).country))
+            if(input.equals(dataList.get(i).getCountry()))
             {
                 dataList.get(i).print();
             }
@@ -146,43 +198,43 @@ public class App
         while(counter < list.size())
         {
             Data data = new Data();
-            data.iso = list.get(counter);
+            data.setIso(list.get(counter));
             counter++;
-            data.country = list.get(counter);
+            data.setCountry(list.get(counter));
             counter++;
-            data.date = list.get(counter);
+            data.setDate(list.get(counter));
             counter++;
-            data.grocery = list.get(counter);
+            data.setGrocery(list.get(counter));
             counter++;
-            data.parks = list.get(counter);
+            data.setParks(list.get(counter));
             counter++;
-            data.residential = list.get(counter);
+            data.setResidential(list.get(counter));
             counter++;
-            data.retail = list.get(counter);
+            data.setRetail(list.get(counter));
             counter++;
-            data.transit = list.get(counter);
+            data.setTransit(list.get(counter));
             counter++;
-            data.workplace = list.get(counter);
+            data.setWorkplace(list.get(counter));
             counter++;
-            data.cases = list.get(counter);
+            data.setCases(list.get(counter));
             counter++;
-            data.deaths = list.get(counter);
+            data.setDeaths(list.get(counter));
             counter++;
-            data.govResponses = list.get(counter);
+            data.setGovResponses(list.get(counter));
             counter++;
-            data.totalTest = list.get(counter);
+            data.setTotalTest(list.get(counter));
             counter++;
-            data.gdp = list.get(counter);
+            data.setGdp(list.get(counter));
             counter++;
-            data.population = list.get(counter);
+            data.setPopulation(list.get(counter));
             counter++;
-            data.populationDensity = list.get(counter);
+            data.setPopulationDensity(list.get(counter));
             counter++;
-            data.humanDev = list.get(counter);
+            data.setHumanDev(list.get(counter));
             counter++;
-            data.popAge = list.get(counter);
+            data.setPopAge(list.get(counter));
             counter++;
-            data.healthIndex = list.get(counter);
+            data.setHealthIndex(list.get(counter));
             counter++;
             dataList.add(data);
             
