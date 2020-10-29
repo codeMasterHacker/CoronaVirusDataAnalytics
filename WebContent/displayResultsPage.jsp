@@ -14,9 +14,10 @@
 		<button>Return to Search Operations Page</button>
 	</form>
 	
-</body>
-</html>
-
+	<form action="editFilesPage.jsp">
+		<button>Go to Edit(Insert, Update, Delete) Files Page</button>
+	</form>
+	
 	<c:set var="colNames" value="${sessionScope.columnNames}"/> 
 	<c:set var="table" value="${sessionScope.table}"/> 
 	
@@ -52,3 +53,6 @@
 		<c:if test="${table == null}">
 			<b>Table is empty</b>
 		</c:if>
+	
+</body>
+</html>

@@ -15,9 +15,13 @@ public class SearchOperationsPage extends HttpServlet
 	{
 		HttpSession session = request.getSession(true);
 		
-		CSVparser parser = new CSVparser("/Users/Enrique/Desktop/codeFolders/Java/cs180project-022-it-s-corona-time/WebContent/COVID-19.csv", 31965, 19);
+		CovidFileManager fileManager = (CovidFileManager)session.getAttribute("fileManager");
 		
-		session.setAttribute("parser", parser);
+		if (fileManager == null)
+		{
+			fileManager = new CovidFileManager("/Users/Enrique/Desktop/codeFolders/Java/cs180project-022-it-s-corona-time/WebContent/covidFiles");
+			session.setAttribute("fileManager", fileManager);
+		}
 		
 		response.sendRedirect("searchOperationsPage.jsp");
 	}

@@ -130,5 +130,14 @@
 		
 		
 		
+		
+		<p>Click here if you would like to import the previous version of the data</p>
+		
+		<form action="SearchOperations" method="get">
+			<input type="submit" name="importData" value="Import Data"/>
+		</form>
+		
+		
+		
 	</body>
 </html>

@@ -29,4 +29,14 @@
     <servlet-name>SearchOperationsPage</servlet-name>
     <url-pattern>/SearchOperationsPage</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>EditFiles</display-name>
+    <servlet-name>EditFiles</servlet-name>
+    <servlet-class>EditFiles</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>EditFiles</servlet-name>
+    <url-pattern>/EditFiles</url-pattern>
+  </servlet-mapping>
 </web-app>
