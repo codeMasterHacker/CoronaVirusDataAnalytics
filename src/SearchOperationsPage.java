@@ -19,7 +19,8 @@ public class SearchOperationsPage extends HttpServlet
 		
 		if (fileManager == null)
 		{
-			fileManager = new CovidFileManager("/Users/Enrique/Desktop/codeFolders/Java/cs180project-022-it-s-corona-time/WebContent/covidFiles");
+			//fileManager = new CovidFileManager("/Users/Enrique/Desktop/codeFolders/Java/cs180project-022-it-s-corona-time/WebContent/covidFiles");
+			fileManager = new CovidFileManager("/Users/jesword/git/cs180project-022-it-s-corona-time/WebContent/covidFiles");
 			session.setAttribute("fileManager", fileManager);
 		}
 		
