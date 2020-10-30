@@ -1,4 +1,5 @@
 import java.io.*;
+import java.util.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
 
@@ -18,7 +19,10 @@ public class SearchOperations extends HttpServlet
 		CovidFileManager fileManager = (CovidFileManager)session.getAttribute("fileManager");
 		
 		if (fileManager == null)
-			fileManager = new CovidFileManager("/Users/Enrique/Desktop/codeFolders/Java/cs180project-022-it-s-corona-time/WebContent/covidFiles");
+		{
+			fileManager = new CovidFileManager("/Users/jesword/git/cs180project-022-it-s-corona-time/WebContent/covidFiles");
+			//fileManager = new CovidFileManager("/Users/Enrique/Desktop/codeFolders/Java/cs180project-022-it-s-corona-time/WebContent/covidFiles");
+		}
 		
 		String searchOp1 = request.getParameter("submit1");
 		String searchOp2 = request.getParameter("submit2");
@@ -27,7 +31,11 @@ public class SearchOperations extends HttpServlet
 		String searchOp5 = request.getParameter("submit5");
 		String searchOp6 = request.getParameter("submit6");
 		String importData = request.getParameter("importData");
+		String casesVsDeaths = request.getParameter("casesVsDeaths");
 		
+		
+		boolean isCasesVsDeaths = false;
+		boolean search = false;
 		String country = null;
 		String startDate = null;
 		String endDate = null;
@@ -40,6 +48,7 @@ public class SearchOperations extends HttpServlet
 			startDate = request.getParameter("startDate");
 			endDate = request.getParameter("endDate");
 			
+			search = true;
 			table = fileManager.getCurrent_covidFile().read_allColumns(country, startDate, endDate);
 		}
 		else if (searchOp2 != null)
@@ -48,23 +57,52 @@ public class SearchOperations extends HttpServlet
 			startDate = request.getParameter("startDate");
 			endDate = request.getParameter("endDate");
 			
+			search = true;
 			table = fileManager.getCurrent_covidFile().read_casesDeaths(country, startDate, endDate);
 		}
 		else if (searchOp3 != null)
+		{
+			search = true;
 			table = fileManager.getCurrent_covidFile().read_testsPop(request.getParameter("countries"));
+		}
 		else if (searchOp4 != null)
+		{
+			search = true;
 			table = fileManager.getCurrent_covidFile().readCountries_lessHealth(Double.parseDouble(request.getParameter("healthIndices")));
+		}
 		else if (searchOp5 != null)
+		{
+			search = true;
 			table = fileManager.getCurrent_covidFile().read_baseLines(request.getParameter("countries"));
+		}
 		else if (searchOp6 != null)
+		{
+			search = true;
 			table = fileManager.getCurrent_covidFile().readCountries_greater65pop(Double.parseDouble(request.getParameter("percents")));
+		}
 		else if (importData != null)
 		{
+			search = true;
 			if(fileManager.goto_previousFile())
 				response.sendRedirect("searchOperationsPage.jsp");
 			else
 				response.sendError(404, "This is the only file left, there are no more previous versions of the data");
 			return;
+		}
+		else if(casesVsDeaths != null)
+		{
+			isCasesVsDeaths = true;
+			double cases = 0;
+			double deaths = 0;
+			double casesVsDeathPercent = 0.0;
+			
+			cases = fileManager.getCurrent_covidFile().getCases();
+			deaths = fileManager.getCurrent_covidFile().getDeaths();
+			casesVsDeathPercent = (deaths / cases) * 100;
+			session.setAttribute("Cases", cases);
+			session.setAttribute("Deaths", deaths);
+			session.setAttribute("CasesVsDeathPercent", casesVsDeathPercent);
+			
 		}
 		else
 		{
@@ -72,9 +110,16 @@ public class SearchOperations extends HttpServlet
 			return;
 		}
 		
-		session.setAttribute("columnNames", fileManager.getCurrent_covidFile().getColumnNames());
-		session.setAttribute("table", table);
-		
-		response.sendRedirect("displayResultsPage.jsp");
+		if(search)
+		{
+			session.setAttribute("columnNames", fileManager.getCurrent_covidFile().getColumnNames());
+			session.setAttribute("table", table);
+			
+			response.sendRedirect("displayResultsPage.jsp");
+		}
+		else if(isCasesVsDeaths)
+		{
+			request.getRequestDispatcher("casesVsDeathsPage.jsp").forward(request,response);
+		}
 	}
 }

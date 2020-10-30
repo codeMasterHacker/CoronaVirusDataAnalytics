@@ -128,7 +128,11 @@
 			<input type="submit" name="submit6" value="Submit"/>
 		</form>
 		
+		<p>Click here to see the cases vs deaths analytic</p>
 		
+		<form action="SearchOperations" method="get">
+			<input type="submit" name="casesVsDeaths" value="Submit"/>
+		</form>
 		
 		
 		<p>Click here if you would like to import the previous version of the data</p>
