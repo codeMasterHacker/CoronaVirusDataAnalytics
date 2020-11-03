@@ -128,10 +128,24 @@
 			<input type="submit" name="submit6" value="Submit"/>
 		</form>
 		
-		<p>Click here to see the cases vs deaths analytic</p>
+		<p>Click here to see the worldwide cases vs deaths analytic</p>
 		
 		<form action="SearchOperations" method="get">
 			<input type="submit" name="casesVsDeaths" value="Submit"/>
+		</form>
+		
+		<p>Click here to see the country case vs death analytic</p>
+		
+		<form action="SearchOperations" method="get">
+			<select name="countries">
+				<option value="United States">United States of America</option> 
+				<option value="Mexico">Mexico</option> 
+				<option value="Canada">Canada</option>
+				<option value="United Kingdom">United Kingdom</option>
+				<option value="Japan">Japan</option>
+				<option value="United Arab Emirates">United Arab Emirates</option>
+  			</select>
+  			<input type="submit" name="countryCasesVSDeaths" value="Submit"/>
 		</form>
 		
 		
