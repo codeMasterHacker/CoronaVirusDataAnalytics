@@ -295,6 +295,55 @@ public class CovidFile implements Serializable //will handle only reads
 	}
 	
 	
+	public double getCountryCases(String country)
+	{
+		final int countryIndex = 1, casesIndex = 9;
+		String[] tokens = null;
+		Scanner inputFile = null;
+		int i = 0, j = 0;
+		boolean flag = true;
+		double cases = 0;
+		
+		try 
+		{
+			inputFile = new Scanner(covidFile);
+			
+			columnNames = inputFile.nextLine().split(",");
+			
+			while (inputFile.hasNext())
+			{
+				tokens = inputFile.nextLine().split(",");
+				
+				flag = false;
+				
+				if (!tokens[countryIndex].equals(country))
+					continue;
+				
+				for (j = 0; j < tokens.length; j++)
+				{
+					if (j == casesIndex)
+					{
+						cases = cases + Double.parseDouble(tokens[j]);
+					}
+				}
+				
+				i++;
+				
+			}
+			
+			inputFile.close();
+			
+			System.out.println(i);
+		} 
+		catch (FileNotFoundException e) 
+		{ 
+			e.printStackTrace(); 
+		}
+		
+		return cases;
+	}
+	
+	
 	public double getDeaths()
 	{
 		final int deathsIndex = 10;
@@ -316,6 +365,56 @@ public class CovidFile implements Serializable //will handle only reads
 				tokens = inputFile.nextLine().split(",");
 				
 				flag = false;
+				
+				for (j = 0; j < tokens.length; j++)
+				{
+					if (j == deathsIndex)
+					{
+						deaths = deaths + Double.parseDouble(tokens[j]);
+					}
+				}
+				
+				i++;
+				
+			}
+			
+			inputFile.close();
+			
+			System.out.println(i);
+		} 
+		catch (FileNotFoundException e) 
+		{ 
+			e.printStackTrace(); 
+		}
+		
+		return deaths;
+	}
+	
+	public double getCountryDeaths(String country)
+	{
+		
+		final int countryIndex = 1, deathsIndex = 10;
+		String[] tokens = null;
+		Scanner inputFile = null;
+		int i = 0, j = 0;
+		boolean flag = true;
+		double cases = 0;
+		double deaths = 0;
+		
+		try 
+		{
+			inputFile = new Scanner(covidFile);
+			
+			columnNames = inputFile.nextLine().split(",");
+			
+			while (inputFile.hasNext())
+			{
+				tokens = inputFile.nextLine().split(",");
+				
+				flag = false;
+				
+				if (!tokens[countryIndex].equals(country))
+					continue;
 				
 				for (j = 0; j < tokens.length; j++)
 				{

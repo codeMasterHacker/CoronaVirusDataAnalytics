@@ -20,7 +20,8 @@ public class SearchOperations extends HttpServlet
 		
 		if (fileManager == null)
 		{
-			fileManager = new CovidFileManager("/Users/jesword/git/cs180project-022-it-s-corona-time/WebContent/covidFiles");
+			fileManager = new CovidFileManager("/Users/cristinalawson/eclipse-workspace/cs180_project/WebContent/covidFiles");
+			//fileManager = new CovidFileManager("/Users/jesword/git/cs180project-022-it-s-corona-time/WebContent/covidFiles");
 			//fileManager = new CovidFileManager("/Users/Enrique/Desktop/codeFolders/Java/cs180project-022-it-s-corona-time/WebContent/covidFiles");
 		}
 		
@@ -32,9 +33,11 @@ public class SearchOperations extends HttpServlet
 		String searchOp6 = request.getParameter("submit6");
 		String importData = request.getParameter("importData");
 		String casesVsDeaths = request.getParameter("casesVsDeaths");
+		String countryCasesVSDeaths = request.getParameter("countryCasesVSDeaths");
 		
 		
 		boolean isCasesVsDeaths = false;
+		boolean isCountryCasesVSDeaths = false;
 		boolean search = false;
 		String country = null;
 		String startDate = null;
@@ -103,6 +106,19 @@ public class SearchOperations extends HttpServlet
 			session.setAttribute("Deaths", deaths);
 			session.setAttribute("CasesVsDeathPercent", casesVsDeathPercent);
 			
+		} else if (countryCasesVSDeaths != null) {
+			isCountryCasesVSDeaths = true;
+			double cases = 0;
+			double deaths = 0;
+			double countryCasesVSDeathPercent = 0.0;
+			
+			cases = fileManager.getCurrent_covidFile().getCountryCases(request.getParameter("countries"));
+			deaths = fileManager.getCurrent_covidFile().getCountryDeaths(request.getParameter("countries"));
+			countryCasesVSDeathPercent = (deaths / cases) * 100;
+			session.setAttribute("Cases", cases);
+			session.setAttribute("Deaths", deaths);
+			session.setAttribute("CountryCasesVsDeathPercent", countryCasesVSDeathPercent);
+			
 		}
 		else
 		{
@@ -120,6 +136,9 @@ public class SearchOperations extends HttpServlet
 		else if(isCasesVsDeaths)
 		{
 			request.getRequestDispatcher("casesVsDeathsPage.jsp").forward(request,response);
+		}
+		else if(isCountryCasesVSDeaths) {
+			request.getRequestDispatcher("countryCasesVSDeathsPage.jsp").forward(request,response);
 		}
 	}
 }
