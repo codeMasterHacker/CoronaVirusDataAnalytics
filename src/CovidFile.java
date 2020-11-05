@@ -10,6 +10,8 @@ public class CovidFile implements Serializable //will handle only reads
 	private String[][] table; //no getters and setters for this field
 	private String[] columnNames; //no setters for this field
 	
+	private double[][] table1; //table for graphs
+	
 	private File covidFile; //no setters for this field
 	
 	public CovidFile(File file)
@@ -440,6 +442,108 @@ public class CovidFile implements Serializable //will handle only reads
 		return deaths;
 	}
 	
+	public double[][] getCountryWorkplaceTrends(String country)
+	{
+		
+		table1 = new double[rows][cols]; //clear values in case a previous read function set values to something else
+		final int countryIndex = 1, workplaceIndex = 8;
+		String[] tokens = null;
+		Scanner inputFile = null;
+		int i = 0, j = 0;
+		boolean flag = true;
+		
+		try 
+		{
+			inputFile = new Scanner(covidFile);
+			
+			columnNames = inputFile.nextLine().split(",");
+			
+			while (inputFile.hasNext())
+			{
+				tokens = inputFile.nextLine().split(",");
+				
+				if (!tokens[countryIndex].equals(country))
+					continue;
+				
+				
+				//check if token has right date range?
+				/*if (!tokens[dateIndex].equals(startDate) && flag)
+					continue;
+				*/
+				
+				flag = false;
+				
+				for (j = 0; j < tokens.length; j++)
+					table1[i][j] = Double.parseDouble(tokens[j]);
+				
+				i++;
+			}
+			
+			inputFile.close();
+			
+			System.out.println(i);
+		} 
+		catch (FileNotFoundException e) 
+		{ 
+			e.printStackTrace(); 
+			return null;
+		}
+		
+		printTable();
+		
+		return table1;
+	}
+	
+	public double[][] getCountryPublicTransportTrends(String country)
+	{
+		table1 = new double[rows][cols]; //clear values in case a previous read function set values to something else
+		final int countryIndex = 1, workplaceIndex = 7;
+		String[] tokens = null;
+		Scanner inputFile = null;
+		int i = 0, j = 0;
+		boolean flag = true;
+		
+		try 
+		{
+			inputFile = new Scanner(covidFile);
+			
+			columnNames = inputFile.nextLine().split(",");
+			
+			while (inputFile.hasNext())
+			{
+				tokens = inputFile.nextLine().split(",");
+				
+				if (!tokens[countryIndex].equals(country))
+					continue;
+				
+				
+				//check if token has right date range?
+				/*if (!tokens[dateIndex].equals(startDate) && flag)
+					continue;
+				*/
+				
+				flag = false;
+				
+				for (j = 0; j < tokens.length; j++)
+					table1[i][j] = Double.parseDouble(tokens[j]);
+				
+				i++;
+			}
+			
+			inputFile.close();
+			
+			System.out.println(i);
+		} 
+		catch (FileNotFoundException e) 
+		{ 
+			e.printStackTrace(); 
+			return null;
+		}
+		
+		printTable();
+		
+		return table1;
+	}
 	
 	public String[][] read_casesDeaths(String country, String startDate, String endDate)
 	{

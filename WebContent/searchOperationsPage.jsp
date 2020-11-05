@@ -148,6 +148,18 @@
   			<input type="submit" name="countryCasesVSDeaths" value="Submit"/>
 		</form>
 		
+		<p>Click here to see the differences between mobility trends for workplaces and public transportation in the listed countries. </p>
+		<form action="SearchOperations" method="get">
+			<select name="countries">
+				<option value="United States">United States of America</option> 
+				<option value="Mexico">Mexico</option> 
+				<option value="Canada">Canada</option>
+				<option value="United Kingdom">United Kingdom</option>
+				<option value="Japan">Japan</option>
+				<option value="United Arab Emirates">United Arab Emirates</option>
+  			</select>
+			<input type="submit" name="multiGraph" value="Submit"/>
+		</form>
 		
 		<p>Click here if you would like to import the previous version of the data</p>
 		

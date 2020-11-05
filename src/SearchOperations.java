@@ -20,7 +20,9 @@ public class SearchOperations extends HttpServlet
 		
 		if (fileManager == null)
 		{
-			fileManager = new CovidFileManager("/Users/cristinalawson/eclipse-workspace/cs180_project/WebContent/covidFiles");
+			//fileManager = new CovidFileManager("/Users/cristinalawson/eclipse-workspace/cs180_project/WebContent/covidFiles");
+			fileManager = new CovidFileManager("E:\\Luccas\\Documents\\docs_2\\UCR Docs\\Fall_2020\\cs180\\cs180_project\\cs180project-022-it-s-corona-time\\WebContent\\covidFiles");
+
 			//fileManager = new CovidFileManager("/Users/jesword/git/cs180project-022-it-s-corona-time/WebContent/covidFiles");
 			//fileManager = new CovidFileManager("/Users/Enrique/Desktop/codeFolders/Java/cs180project-022-it-s-corona-time/WebContent/covidFiles");
 		}
@@ -34,8 +36,9 @@ public class SearchOperations extends HttpServlet
 		String importData = request.getParameter("importData");
 		String casesVsDeaths = request.getParameter("casesVsDeaths");
 		String countryCasesVSDeaths = request.getParameter("countryCasesVSDeaths");
+		String multiGraph = request.getParameter("multiGraph");
 		
-		
+		boolean isMultiGraph = false;
 		boolean isCasesVsDeaths = false;
 		boolean isCountryCasesVSDeaths = false;
 		boolean search = false;
@@ -44,6 +47,8 @@ public class SearchOperations extends HttpServlet
 		String endDate = null;
 		
 		String[][] table = null;
+		//String[][] table1 = null;
+		//String[][] table2 = null;
 		
 		if (searchOp1 != null)
 		{
@@ -119,6 +124,29 @@ public class SearchOperations extends HttpServlet
 			session.setAttribute("Deaths", deaths);
 			session.setAttribute("CountryCasesVsDeathPercent", countryCasesVSDeathPercent);
 			
+		} else if (multiGraph != null) {
+			//double workPlaces = 0;
+			//double transportation = 0;
+			//double countryCasesVSDeathPercent = 0.0;
+			//transport on col 7, public on 8
+			
+			//workPlaces = fileManager.getCurrent_covidFile().getCountryWorkplaceTrends(request.getParameter("countries"));
+			//transportation = fileManager.getCurrent_covidFile().getCountryPublicTransportTrends(request.getParameter("countries"));
+			/*countryCasesVSDeathPercent = (deaths / cases) * 100;
+			session.setAttribute("Cases", cases);
+			session.setAttribute("Deaths", deaths);
+			session.setAttribute("CountryCasesVsDeathPercent", countryCasesVSDeathPercent);
+			*/
+			//search = true;
+			double[][] table1;
+			double[][] table2;
+			
+			isMultiGraph = true;
+			table1 = fileManager.getCurrent_covidFile().getCountryWorkplaceTrends(request.getParameter("countries"));
+			table2 = fileManager.getCurrent_covidFile().getCountryPublicTransportTrends(request.getParameter("countries"));
+			
+			session.setAttribute("Workplace Mobility Trends", table1);
+			session.setAttribute("Public Transit Mobility Trends", table2);
 		}
 		else
 		{
@@ -139,6 +167,9 @@ public class SearchOperations extends HttpServlet
 		}
 		else if(isCountryCasesVSDeaths) {
 			request.getRequestDispatcher("countryCasesVSDeathsPage.jsp").forward(request,response);
+		}
+		else if (isMultiGraph) {
+			request.getRequestDispatcher("workPlacesVSTransportation.jsp").forward(request, response);
 		}
 	}
 }
