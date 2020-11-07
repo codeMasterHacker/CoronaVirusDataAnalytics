@@ -1,9 +1,9 @@
     <%@ page language="java" contentType="text/html; charset=UTF-8"	pageEncoding="UTF-8"%>
     <%@ page import="java.util.*" %>
-    <%@ page import="com.google.gson.Gson"%>
-    <%@ page import="com.google.gson.JsonObject"%>
+    <%-- page import="com.google.gson.Gson"--%>
+    <%-- page import="com.google.gson.JsonObject"--%>
      
-    <%
+    <%--
     Gson gsonObj = new Gson();
     Map<Object,Object> map = null;
     List<Map<Object,Object>> list = new ArrayList<Map<Object,Object>>();
@@ -46,7 +46,7 @@
     map = new HashMap<Object,Object>(); map.put("x", 1420050600000L); map.put("y", 65.6); list.add(map);
      
     String dataPoints2 = gsonObj.toJson(list);
-    %>
+    --%>
      
     <!DOCTYPE HTML>
     <html>
@@ -55,39 +55,77 @@
     <script type="text/javascript">
     window.onload = function() { 
      
-    var chart = new CanvasJS.Chart("chartContainer", {  
-    	theme: "light2",
-    	title: {
-    		text: "Energy-Related CO2 Emission - 2000 to 2015"
-    	},
-    	subtitles: [{
-    		text: "in Million Metric Tons of Carbon Dioxide"
-    	}],
-    	toolTip: {
-    		shared: true
-    	},
-    	legend:{
-    		cursor: "pointer",
-    		itemclick: toggleDataSeries
-    	},
-    	data: [{
-    		type: "area",
-    		name: "Arizona",
-    		showInLegend: true,
-    		xValueType: "dateTime",
-    		xValueFormatString: "YYYY",
-    		dataPoints: <%out.print(dataPoints1);%>
-    	},
-    	{
-    		type: "area",
-    		name: "Massachusetts",
-    		showInLegend: true,
-    		xValueType: "dateTime",
-    		xValueFormatString: "YYYY",
-    		dataPoints: <%out.print(dataPoints2);%>
-    	}]
-    });
-     
+   	var chart = new CanvasJS.Chart("chartContainer", {
+   		title:{
+   			text: "Workplace Mobility Trends in ${country} on ${month}"
+   		},
+   		axisX:[{
+   			title: "Day"
+   		},
+   		axisY:[{
+   			lineColor: "#C24642",
+   			tickColor: "#C24642",
+   			labelFontColor: "#C24642",
+   			titleFontColor: "#C24642",
+   			includeZero: true,
+   		},
+   		{
+   			title: "Mobility Trends for Workplaces In Percentage",
+   			lineColor: "#369EAD",
+   			tickColor: "#369EAD",
+   			labelFontColor: "#369EAD",
+   			titleFontColor: "#369EAD",
+   			includeZero: true,
+   		}],
+   		toolTip: {
+   			shared: true
+   		},
+   		legend: {
+   			cursor: "pointer",
+   			itemclick: toggleDataSeries
+   		},
+   		data: [{
+   			type: "line",
+   			name: "Workplace Mobility Trend",
+   			color: "#369EAD",
+   			showInLegend: true,
+   			axisYIndex: 1,
+   			dataPoints: [
+   				{ x: new Date(2020, 2, 1), y: ${1} },
+   				{ x: new Date(2020, 2, 2), y: ${2} },
+   				{ x: new Date(2020, 2, 3), y: ${3} },
+   				{ x: new Date(2020, 2, 4), y: ${4} },
+   				{ x: new Date(2020, 2, 5), y: ${5} },
+   				<%--{ x: new Date(2020, ${month}, 6), y: ${6} },
+   				{ x: new Date(2020, ${month}, 7), y: ${7} },
+   				{ x: new Date(2020, ${month}, 8), y: ${8} },
+   				{ x: new Date(2020, ${month}, 9), y: ${9} },
+   				{ x: new Date(2020, ${month}, 10), y: ${10} },
+   				{ x: new Date(2020, ${month}, 11), y: ${11} },
+   				{ x: new Date(2020, ${month}, 12), y: ${12} },
+   				{ x: new Date(2020, ${month}, 13), y: ${13} },
+   				{ x: new Date(2020, ${month}, 14), y: ${14} },
+   				{ x: new Date(2020, ${month}, 15), y: ${15} },
+   				{ x: new Date(2020, ${month}, 16), y: ${16} },
+   				{ x: new Date(2020, ${month}, 17), y: ${17} },
+   				{ x: new Date(2020, ${month}, 18), y: ${18} },
+   				{ x: new Date(2020, ${month}, 19), y: ${19} },
+   				{ x: new Date(2020, ${month}, 20), y: ${20} },
+   				{ x: new Date(2020, ${month}, 21), y: ${21} },
+   				{ x: new Date(2020, ${month}, 22), y: ${22} },
+   				{ x: new Date(2020, ${month}, 23), y: ${23} },
+   				{ x: new Date(2020, ${month}, 24), y: ${24} },
+   				{ x: new Date(2020, ${month}, 25), y: ${25} },
+   				{ x: new Date(2020, ${month}, 26), y: ${26} },
+   				{ x: new Date(2020, ${month}, 27), y: ${27} },
+   				{ x: new Date(2020, ${month}, 28), y: ${28} },
+   				{ x: new Date(2020, ${month}, 29), y: ${29} },
+   				{ x: new Date(2020, ${month}, 30), y: ${30} },
+   				{ x: new Date(2020, ${month}, 31), y: ${31} }, --%>
+   			]
+   		},
+   		]
+   	});
     chart.render();
      
     function toggleDataSeries(e){
@@ -104,7 +142,10 @@
     </script>
     </head>
     <body>
-    <div id="chartContainer" style="height: 370px; width: 100%;"></div>
+    <div id="chartContainer" style="height: 300px; width: 100%;"></div>
     <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+    <form action="SearchOperationsPage" method="get"> 
+    		<button>Return to Search Operations Page</button>
+    	</form>
     </body>
-    </html>                              
+    </html>                           

@@ -250,6 +250,920 @@ public class CovidFile implements Serializable //will handle only reads
 		
 		return table;
 	}
+	
+	public ArrayList<Double> getGroceryMobilityAvg(String country)
+	{
+		ArrayList<Double> groceryAvg = new ArrayList<Double>();
+		ArrayList<Double> feb = new ArrayList<Double>();
+		ArrayList<Double> march = new ArrayList<Double>();
+		ArrayList<Double> april = new ArrayList<Double>();
+		ArrayList<Double> may = new ArrayList<Double>();
+		ArrayList<Double> june = new ArrayList<Double>();
+		ArrayList<Double> july = new ArrayList<Double>();
+		ArrayList<Double> aug = new ArrayList<Double>();
+		ArrayList<Double> sep = new ArrayList<Double>();
+
+		final int countryIndex = 1, dateIndex = 2, groceryIndex = 3;
+		String startDate = null;
+		String endDate = null;
+		String[] tokens = null;
+		Scanner inputFile = null;
+		int i = 0, j = 0;
+		boolean flag = true;
+		int monthCount = 1;
+		
+		
+		while(monthCount < 9)
+		{
+			
+			if(monthCount == 1)
+			{
+				startDate = "2020-02-15";
+				endDate = "2020-02-29";
+			}
+			else if(monthCount == 2)
+			{
+				startDate = "2020-03-01";
+				endDate = "2020-03-31";
+			}
+			else if(monthCount == 3)
+			{
+				startDate = "2020-04-01";
+				endDate = "2020-04-30";
+			}
+			else if(monthCount == 4)
+			{
+				startDate = "2020-05-01";
+				endDate = "2020-05-31";
+			}
+			else if(monthCount == 5)
+			{
+				startDate = "2020-06-01";
+				endDate = "2020-06-30";
+			}
+			else if(monthCount == 6)
+			{
+				startDate = "2020-07-01";
+				endDate = "2020-07-31";
+			}
+			else if(monthCount == 7)
+			{
+				startDate = "2020-08-01";
+				endDate = "2020-08-31";
+			}
+			else if(monthCount == 8)
+			{
+				startDate = "2020-09-01";
+				endDate = "2020-09-30";
+			}
+			
+			try 
+			{
+				inputFile = new Scanner(covidFile);
+				columnNames = inputFile.nextLine().split(",");
+				while (inputFile.hasNext())
+				{
+					tokens = inputFile.nextLine().split(",");
+					
+					if (!tokens[countryIndex].equals(country))
+						continue;
+					
+					if (!tokens[dateIndex].equals(startDate) && flag)
+						continue;
+					
+					flag = false;
+					for (j = 0; j < tokens.length; j++)
+					{	
+						if(j == groceryIndex)
+						{
+							if(monthCount == 1)
+								feb.add(Double.parseDouble(tokens[j]));
+							else if(monthCount == 2)
+								march.add(Double.parseDouble(tokens[j]));
+							else if(monthCount == 3)
+								april.add(Double.parseDouble(tokens[j]));
+							else if(monthCount == 4)
+								may.add(Double.parseDouble(tokens[j]));
+							else if(monthCount == 5)
+								june.add(Double.parseDouble(tokens[j]));
+							else if(monthCount == 6)
+								july.add(Double.parseDouble(tokens[j]));
+							else if(monthCount == 7)
+								aug.add(Double.parseDouble(tokens[j]));
+							else if(monthCount == 8)
+								sep.add(Double.parseDouble(tokens[j]));
+						}
+					}
+					i++;
+					
+					if (tokens[dateIndex].equals(endDate))
+					{
+						monthCount++;
+						break;
+					}
+				}
+				
+				inputFile.close();
+				
+			} 
+			catch (FileNotFoundException e) 
+			{ 
+				e.printStackTrace(); 
+			}
+		}
+		groceryAvg.add(Math.round(calculateAvg(feb) * 100.0) / 100.0);
+		groceryAvg.add(Math.round(calculateAvg(march) * 100.0) / 100.0);
+		groceryAvg.add(Math.round(calculateAvg(april) * 100.0) / 100.0);
+		groceryAvg.add(Math.round(calculateAvg(may) * 100.0) / 100.0);
+		groceryAvg.add(Math.round(calculateAvg(june) * 100.0) / 100.0);
+		groceryAvg.add(Math.round(calculateAvg(july) * 100.0) / 100.0);
+		groceryAvg.add(Math.round(calculateAvg(aug) * 100.0) / 100.0);
+		groceryAvg.add(Math.round(calculateAvg(sep) * 100.0) / 100.0);
+
+		
+		return groceryAvg;
+	}
+	
+	public ArrayList<Double> getParksMobilityAvg(String country)
+	{
+		ArrayList<Double> parksAvg = new ArrayList<Double>();
+		ArrayList<Double> feb = new ArrayList<Double>();
+		ArrayList<Double> march = new ArrayList<Double>();
+		ArrayList<Double> april = new ArrayList<Double>();
+		ArrayList<Double> may = new ArrayList<Double>();
+		ArrayList<Double> june = new ArrayList<Double>();
+		ArrayList<Double> july = new ArrayList<Double>();
+		ArrayList<Double> aug = new ArrayList<Double>();
+		ArrayList<Double> sep = new ArrayList<Double>();
+
+		final int countryIndex = 1, dateIndex = 2, parksIndex = 4;
+		String startDate = null;
+		String endDate = null;
+		String[] tokens = null;
+		Scanner inputFile = null;
+		int i = 0, j = 0;
+		boolean flag = true;
+		int monthCount = 1;
+		
+		
+		while(monthCount < 9)
+		{
+			
+			if(monthCount == 1)
+			{
+				startDate = "2020-02-15";
+				endDate = "2020-02-29";
+			}
+			else if(monthCount == 2)
+			{
+				startDate = "2020-03-01";
+				endDate = "2020-03-31";
+			}
+			else if(monthCount == 3)
+			{
+				startDate = "2020-04-01";
+				endDate = "2020-04-30";
+			}
+			else if(monthCount == 4)
+			{
+				startDate = "2020-05-01";
+				endDate = "2020-05-31";
+			}
+			else if(monthCount == 5)
+			{
+				startDate = "2020-06-01";
+				endDate = "2020-06-30";
+			}
+			else if(monthCount == 6)
+			{
+				startDate = "2020-07-01";
+				endDate = "2020-07-31";
+			}
+			else if(monthCount == 7)
+			{
+				startDate = "2020-08-01";
+				endDate = "2020-08-31";
+			}
+			else if(monthCount == 8)
+			{
+				startDate = "2020-09-01";
+				endDate = "2020-09-30";
+			}
+			
+			try 
+			{
+				inputFile = new Scanner(covidFile);
+				columnNames = inputFile.nextLine().split(",");
+				while (inputFile.hasNext())
+				{
+					tokens = inputFile.nextLine().split(",");
+					
+					if (!tokens[countryIndex].equals(country))
+						continue;
+					
+					if (!tokens[dateIndex].equals(startDate) && flag)
+						continue;
+					
+					flag = false;
+					for (j = 0; j < tokens.length; j++)
+					{	
+						if(j == parksIndex)
+						{
+							if(monthCount == 1)
+								feb.add(Double.parseDouble(tokens[j]));
+							else if(monthCount == 2)
+								march.add(Double.parseDouble(tokens[j]));
+							else if(monthCount == 3)
+								april.add(Double.parseDouble(tokens[j]));
+							else if(monthCount == 4)
+								may.add(Double.parseDouble(tokens[j]));
+							else if(monthCount == 5)
+								june.add(Double.parseDouble(tokens[j]));
+							else if(monthCount == 6)
+								july.add(Double.parseDouble(tokens[j]));
+							else if(monthCount == 7)
+								aug.add(Double.parseDouble(tokens[j]));
+							else if(monthCount == 8)
+								sep.add(Double.parseDouble(tokens[j]));
+						}
+					}
+					i++;
+					
+					if (tokens[dateIndex].equals(endDate))
+					{
+						monthCount++;
+						break;
+					}
+				}
+				
+				inputFile.close();
+				
+			} 
+			catch (FileNotFoundException e) 
+			{ 
+				e.printStackTrace(); 
+			}
+		}
+		parksAvg.add(Math.round(calculateAvg(feb) * 100.0) / 100.0);
+		parksAvg.add(Math.round(calculateAvg(march) * 100.0) / 100.0);
+		parksAvg.add(Math.round(calculateAvg(april) * 100.0) / 100.0);
+		parksAvg.add(Math.round(calculateAvg(may) * 100.0) / 100.0);
+		parksAvg.add(Math.round(calculateAvg(june) * 100.0) / 100.0);
+		parksAvg.add(Math.round(calculateAvg(july) * 100.0) / 100.0);
+		parksAvg.add(Math.round(calculateAvg(aug) * 100.0) / 100.0);
+		parksAvg.add(Math.round(calculateAvg(sep) * 100.0) / 100.0);
+
+		
+		return parksAvg;
+	}
+	
+	public ArrayList<Double> getResidentialMobilityAvg(String country)
+	{
+		ArrayList<Double> resAvg = new ArrayList<Double>();
+		ArrayList<Double> feb = new ArrayList<Double>();
+		ArrayList<Double> march = new ArrayList<Double>();
+		ArrayList<Double> april = new ArrayList<Double>();
+		ArrayList<Double> may = new ArrayList<Double>();
+		ArrayList<Double> june = new ArrayList<Double>();
+		ArrayList<Double> july = new ArrayList<Double>();
+		ArrayList<Double> aug = new ArrayList<Double>();
+		ArrayList<Double> sep = new ArrayList<Double>();
+
+		final int countryIndex = 1, dateIndex = 2, resIndex = 5;
+		String startDate = null;
+		String endDate = null;
+		String[] tokens = null;
+		Scanner inputFile = null;
+		int i = 0, j = 0;
+		boolean flag = true;
+		int monthCount = 1;
+		
+		
+		while(monthCount < 9)
+		{
+			
+			if(monthCount == 1)
+			{
+				startDate = "2020-02-15";
+				endDate = "2020-02-29";
+			}
+			else if(monthCount == 2)
+			{
+				startDate = "2020-03-01";
+				endDate = "2020-03-31";
+			}
+			else if(monthCount == 3)
+			{
+				startDate = "2020-04-01";
+				endDate = "2020-04-30";
+			}
+			else if(monthCount == 4)
+			{
+				startDate = "2020-05-01";
+				endDate = "2020-05-31";
+			}
+			else if(monthCount == 5)
+			{
+				startDate = "2020-06-01";
+				endDate = "2020-06-30";
+			}
+			else if(monthCount == 6)
+			{
+				startDate = "2020-07-01";
+				endDate = "2020-07-31";
+			}
+			else if(monthCount == 7)
+			{
+				startDate = "2020-08-01";
+				endDate = "2020-08-31";
+			}
+			else if(monthCount == 8)
+			{
+				startDate = "2020-09-01";
+				endDate = "2020-09-30";
+			}
+			
+			try 
+			{
+				inputFile = new Scanner(covidFile);
+				columnNames = inputFile.nextLine().split(",");
+				while (inputFile.hasNext())
+				{
+					tokens = inputFile.nextLine().split(",");
+					
+					if (!tokens[countryIndex].equals(country))
+						continue;
+					
+					if (!tokens[dateIndex].equals(startDate) && flag)
+						continue;
+					
+					flag = false;
+					for (j = 0; j < tokens.length; j++)
+					{	
+						if(j == resIndex)
+						{
+							if(monthCount == 1)
+								feb.add(Double.parseDouble(tokens[j]));
+							else if(monthCount == 2)
+								march.add(Double.parseDouble(tokens[j]));
+							else if(monthCount == 3)
+								april.add(Double.parseDouble(tokens[j]));
+							else if(monthCount == 4)
+								may.add(Double.parseDouble(tokens[j]));
+							else if(monthCount == 5)
+								june.add(Double.parseDouble(tokens[j]));
+							else if(monthCount == 6)
+								july.add(Double.parseDouble(tokens[j]));
+							else if(monthCount == 7)
+								aug.add(Double.parseDouble(tokens[j]));
+							else if(monthCount == 8)
+								sep.add(Double.parseDouble(tokens[j]));
+						}
+					}
+					i++;
+					
+					if (tokens[dateIndex].equals(endDate))
+					{
+						monthCount++;
+						break;
+					}
+				}
+				
+				inputFile.close();
+				
+			} 
+			catch (FileNotFoundException e) 
+			{ 
+				e.printStackTrace(); 
+			}
+		}
+		resAvg.add(Math.round(calculateAvg(feb) * 100.0) / 100.0);
+		resAvg.add(Math.round(calculateAvg(march) * 100.0) / 100.0);
+		resAvg.add(Math.round(calculateAvg(april) * 100.0) / 100.0);
+		resAvg.add(Math.round(calculateAvg(may) * 100.0) / 100.0);
+		resAvg.add(Math.round(calculateAvg(june) * 100.0) / 100.0);
+		resAvg.add(Math.round(calculateAvg(july) * 100.0) / 100.0);
+		resAvg.add(Math.round(calculateAvg(aug) * 100.0) / 100.0);
+		resAvg.add(Math.round(calculateAvg(sep) * 100.0) / 100.0);
+
+		
+		return resAvg;
+	}
+	
+	public ArrayList<Double> getRetailMobilityAvg(String country)
+	{
+		ArrayList<Double> retailAvg = new ArrayList<Double>();
+		ArrayList<Double> feb = new ArrayList<Double>();
+		ArrayList<Double> march = new ArrayList<Double>();
+		ArrayList<Double> april = new ArrayList<Double>();
+		ArrayList<Double> may = new ArrayList<Double>();
+		ArrayList<Double> june = new ArrayList<Double>();
+		ArrayList<Double> july = new ArrayList<Double>();
+		ArrayList<Double> aug = new ArrayList<Double>();
+		ArrayList<Double> sep = new ArrayList<Double>();
+
+		final int countryIndex = 1, dateIndex = 2, retailIndex = 6;
+		String startDate = null;
+		String endDate = null;
+		String[] tokens = null;
+		Scanner inputFile = null;
+		int i = 0, j = 0;
+		boolean flag = true;
+		int monthCount = 1;
+		
+		
+		while(monthCount < 9)
+		{
+			
+			if(monthCount == 1)
+			{
+				startDate = "2020-02-15";
+				endDate = "2020-02-29";
+			}
+			else if(monthCount == 2)
+			{
+				startDate = "2020-03-01";
+				endDate = "2020-03-31";
+			}
+			else if(monthCount == 3)
+			{
+				startDate = "2020-04-01";
+				endDate = "2020-04-30";
+			}
+			else if(monthCount == 4)
+			{
+				startDate = "2020-05-01";
+				endDate = "2020-05-31";
+			}
+			else if(monthCount == 5)
+			{
+				startDate = "2020-06-01";
+				endDate = "2020-06-30";
+			}
+			else if(monthCount == 6)
+			{
+				startDate = "2020-07-01";
+				endDate = "2020-07-31";
+			}
+			else if(monthCount == 7)
+			{
+				startDate = "2020-08-01";
+				endDate = "2020-08-31";
+			}
+			else if(monthCount == 8)
+			{
+				startDate = "2020-09-01";
+				endDate = "2020-09-30";
+			}
+			
+			try 
+			{
+				inputFile = new Scanner(covidFile);
+				columnNames = inputFile.nextLine().split(",");
+				while (inputFile.hasNext())
+				{
+					tokens = inputFile.nextLine().split(",");
+					
+					if (!tokens[countryIndex].equals(country))
+						continue;
+					
+					if (!tokens[dateIndex].equals(startDate) && flag)
+						continue;
+					
+					flag = false;
+					for (j = 0; j < tokens.length; j++)
+					{	
+						if(j == retailIndex)
+						{
+							if(monthCount == 1)
+								feb.add(Double.parseDouble(tokens[j]));
+							else if(monthCount == 2)
+								march.add(Double.parseDouble(tokens[j]));
+							else if(monthCount == 3)
+								april.add(Double.parseDouble(tokens[j]));
+							else if(monthCount == 4)
+								may.add(Double.parseDouble(tokens[j]));
+							else if(monthCount == 5)
+								june.add(Double.parseDouble(tokens[j]));
+							else if(monthCount == 6)
+								july.add(Double.parseDouble(tokens[j]));
+							else if(monthCount == 7)
+								aug.add(Double.parseDouble(tokens[j]));
+							else if(monthCount == 8)
+								sep.add(Double.parseDouble(tokens[j]));
+						}
+					}
+					i++;
+					
+					if (tokens[dateIndex].equals(endDate))
+					{
+						monthCount++;
+						break;
+					}
+				}
+				
+				inputFile.close();
+				
+			} 
+			catch (FileNotFoundException e) 
+			{ 
+				e.printStackTrace(); 
+			}
+		}
+		retailAvg.add(Math.round(calculateAvg(feb) * 100.0) / 100.0);
+		retailAvg.add(Math.round(calculateAvg(march) * 100.0) / 100.0);
+		retailAvg.add(Math.round(calculateAvg(april) * 100.0) / 100.0);
+		retailAvg.add(Math.round(calculateAvg(may) * 100.0) / 100.0);
+		retailAvg.add(Math.round(calculateAvg(june) * 100.0) / 100.0);
+		retailAvg.add(Math.round(calculateAvg(july) * 100.0) / 100.0);
+		retailAvg.add(Math.round(calculateAvg(aug) * 100.0) / 100.0);
+		retailAvg.add(Math.round(calculateAvg(sep) * 100.0) / 100.0);
+
+		
+		return retailAvg;
+	}
+	
+	public ArrayList<Double> getTransitMobilityAvg(String country)
+	{
+		ArrayList<Double> transitAvg = new ArrayList<Double>();
+		ArrayList<Double> feb = new ArrayList<Double>();
+		ArrayList<Double> march = new ArrayList<Double>();
+		ArrayList<Double> april = new ArrayList<Double>();
+		ArrayList<Double> may = new ArrayList<Double>();
+		ArrayList<Double> june = new ArrayList<Double>();
+		ArrayList<Double> july = new ArrayList<Double>();
+		ArrayList<Double> aug = new ArrayList<Double>();
+		ArrayList<Double> sep = new ArrayList<Double>();
+
+		final int countryIndex = 1, dateIndex = 2, transitIndex = 7;
+		String startDate = null;
+		String endDate = null;
+		String[] tokens = null;
+		Scanner inputFile = null;
+		int i = 0, j = 0;
+		boolean flag = true;
+		int monthCount = 1;
+		
+		
+		while(monthCount < 9)
+		{
+			
+			if(monthCount == 1)
+			{
+				startDate = "2020-02-15";
+				endDate = "2020-02-29";
+			}
+			else if(monthCount == 2)
+			{
+				startDate = "2020-03-01";
+				endDate = "2020-03-31";
+			}
+			else if(monthCount == 3)
+			{
+				startDate = "2020-04-01";
+				endDate = "2020-04-30";
+			}
+			else if(monthCount == 4)
+			{
+				startDate = "2020-05-01";
+				endDate = "2020-05-31";
+			}
+			else if(monthCount == 5)
+			{
+				startDate = "2020-06-01";
+				endDate = "2020-06-30";
+			}
+			else if(monthCount == 6)
+			{
+				startDate = "2020-07-01";
+				endDate = "2020-07-31";
+			}
+			else if(monthCount == 7)
+			{
+				startDate = "2020-08-01";
+				endDate = "2020-08-31";
+			}
+			else if(monthCount == 8)
+			{
+				startDate = "2020-09-01";
+				endDate = "2020-09-30";
+			}
+			
+			try 
+			{
+				inputFile = new Scanner(covidFile);
+				columnNames = inputFile.nextLine().split(",");
+				while (inputFile.hasNext())
+				{
+					tokens = inputFile.nextLine().split(",");
+					
+					if (!tokens[countryIndex].equals(country))
+						continue;
+					
+					if (!tokens[dateIndex].equals(startDate) && flag)
+						continue;
+					
+					flag = false;
+					for (j = 0; j < tokens.length; j++)
+					{	
+						if(j == transitIndex)
+						{
+							if(monthCount == 1)
+								feb.add(Double.parseDouble(tokens[j]));
+							else if(monthCount == 2)
+								march.add(Double.parseDouble(tokens[j]));
+							else if(monthCount == 3)
+								april.add(Double.parseDouble(tokens[j]));
+							else if(monthCount == 4)
+								may.add(Double.parseDouble(tokens[j]));
+							else if(monthCount == 5)
+								june.add(Double.parseDouble(tokens[j]));
+							else if(monthCount == 6)
+								july.add(Double.parseDouble(tokens[j]));
+							else if(monthCount == 7)
+								aug.add(Double.parseDouble(tokens[j]));
+							else if(monthCount == 8)
+								sep.add(Double.parseDouble(tokens[j]));
+						}
+					}
+					i++;
+					
+					if (tokens[dateIndex].equals(endDate))
+					{
+						monthCount++;
+						break;
+					}
+				}
+				
+				inputFile.close();
+				
+			} 
+			catch (FileNotFoundException e) 
+			{ 
+				e.printStackTrace(); 
+			}
+		}
+		transitAvg.add(Math.round(calculateAvg(feb) * 100.0) / 100.0);
+		transitAvg.add(Math.round(calculateAvg(march) * 100.0) / 100.0);
+		transitAvg.add(Math.round(calculateAvg(april) * 100.0) / 100.0);
+		transitAvg.add(Math.round(calculateAvg(may) * 100.0) / 100.0);
+		transitAvg.add(Math.round(calculateAvg(june) * 100.0) / 100.0);
+		transitAvg.add(Math.round(calculateAvg(july) * 100.0) / 100.0);
+		transitAvg.add(Math.round(calculateAvg(aug) * 100.0) / 100.0);
+		transitAvg.add(Math.round(calculateAvg(sep) * 100.0) / 100.0);
+
+		
+		return transitAvg;
+	}
+	
+	public ArrayList<Double> getWorkplaceMobilityAvg(String country)
+	{
+		ArrayList<Double> workplaceAvg = new ArrayList<Double>();
+		ArrayList<Double> feb = new ArrayList<Double>();
+		ArrayList<Double> march = new ArrayList<Double>();
+		ArrayList<Double> april = new ArrayList<Double>();
+		ArrayList<Double> may = new ArrayList<Double>();
+		ArrayList<Double> june = new ArrayList<Double>();
+		ArrayList<Double> july = new ArrayList<Double>();
+		ArrayList<Double> aug = new ArrayList<Double>();
+		ArrayList<Double> sep = new ArrayList<Double>();
+
+		final int countryIndex = 1, dateIndex = 2, workplaceIndex = 8;
+		String startDate = null;
+		String endDate = null;
+		String[] tokens = null;
+		Scanner inputFile = null;
+		int i = 0, j = 0;
+		boolean flag = true;
+		int monthCount = 1;
+		
+		
+		while(monthCount < 9)
+		{
+			
+			if(monthCount == 1)
+			{
+				startDate = "2020-02-15";
+				endDate = "2020-02-29";
+			}
+			else if(monthCount == 2)
+			{
+				startDate = "2020-03-01";
+				endDate = "2020-03-31";
+			}
+			else if(monthCount == 3)
+			{
+				startDate = "2020-04-01";
+				endDate = "2020-04-30";
+			}
+			else if(monthCount == 4)
+			{
+				startDate = "2020-05-01";
+				endDate = "2020-05-31";
+			}
+			else if(monthCount == 5)
+			{
+				startDate = "2020-06-01";
+				endDate = "2020-06-30";
+			}
+			else if(monthCount == 6)
+			{
+				startDate = "2020-07-01";
+				endDate = "2020-07-31";
+			}
+			else if(monthCount == 7)
+			{
+				startDate = "2020-08-01";
+				endDate = "2020-08-31";
+			}
+			else if(monthCount == 8)
+			{
+				startDate = "2020-09-01";
+				endDate = "2020-09-30";
+			}
+			
+			try 
+			{
+				inputFile = new Scanner(covidFile);
+				columnNames = inputFile.nextLine().split(",");
+				while (inputFile.hasNext())
+				{
+					tokens = inputFile.nextLine().split(",");
+					
+					if (!tokens[countryIndex].equals(country))
+						continue;
+					
+					if (!tokens[dateIndex].equals(startDate) && flag)
+						continue;
+					
+					flag = false;
+					for (j = 0; j < tokens.length; j++)
+					{	
+						if(j == workplaceIndex)
+						{
+							if(monthCount == 1)
+								feb.add(Double.parseDouble(tokens[j]));
+							else if(monthCount == 2)
+								march.add(Double.parseDouble(tokens[j]));
+							else if(monthCount == 3)
+								april.add(Double.parseDouble(tokens[j]));
+							else if(monthCount == 4)
+								may.add(Double.parseDouble(tokens[j]));
+							else if(monthCount == 5)
+								june.add(Double.parseDouble(tokens[j]));
+							else if(monthCount == 6)
+								july.add(Double.parseDouble(tokens[j]));
+							else if(monthCount == 7)
+								aug.add(Double.parseDouble(tokens[j]));
+							else if(monthCount == 8)
+								sep.add(Double.parseDouble(tokens[j]));
+						}
+					}
+					i++;
+					
+					if (tokens[dateIndex].equals(endDate))
+					{
+						monthCount++;
+						break;
+					}
+				}
+				
+				inputFile.close();
+				
+			} 
+			catch (FileNotFoundException e) 
+			{ 
+				e.printStackTrace(); 
+			}
+		}
+		workplaceAvg.add(Math.round(calculateAvg(feb) * 100.0) / 100.0);
+		workplaceAvg.add(Math.round(calculateAvg(march) * 100.0) / 100.0);
+		workplaceAvg.add(Math.round(calculateAvg(april) * 100.0) / 100.0);
+		workplaceAvg.add(Math.round(calculateAvg(may) * 100.0) / 100.0);
+		workplaceAvg.add(Math.round(calculateAvg(june) * 100.0) / 100.0);
+		workplaceAvg.add(Math.round(calculateAvg(july) * 100.0) / 100.0);
+		workplaceAvg.add(Math.round(calculateAvg(aug) * 100.0) / 100.0);
+		workplaceAvg.add(Math.round(calculateAvg(sep) * 100.0) / 100.0);
+
+		
+		return workplaceAvg;
+	}
+	
+	/*
+	 * +++++ AVERAGE FUNCTION +++++++
+	 */
+	public Double calculateAvg(ArrayList<Double> list)
+	{
+		double sum = 0;
+		
+		for (int i = 1; i < list.size(); i++)
+			sum = sum + list.get(i);
+		
+		return (sum / list.size());
+	}
+	
+	public ArrayList<Double> getCasesPerMonth(String country)
+	{
+		ArrayList<Double> cases = new ArrayList<Double>();
+		final int countryIndex = 1, dateIndex = 2, caseIndex = 9;
+		String startDate = null;
+		String endDate = null;
+		String[] tokens = null;
+		Scanner inputFile = null;
+		int i = 0, j = 0;
+		boolean flag = true;
+		int monthCount = 1;
+		
+		while(monthCount < 9)
+		{
+			
+			if(monthCount == 1)
+			{
+				startDate = "2020-02-15";
+				endDate = "2020-02-29";
+			}
+			else if(monthCount == 2)
+			{
+				startDate = "2020-03-01";
+				endDate = "2020-03-31";
+			}
+			else if(monthCount == 3)
+			{
+				startDate = "2020-04-01";
+				endDate = "2020-04-30";
+			}
+			else if(monthCount == 4)
+			{
+				startDate = "2020-05-01";
+				endDate = "2020-05-31";
+			}
+			else if(monthCount == 5)
+			{
+				startDate = "2020-06-01";
+				endDate = "2020-06-30";
+			}
+			else if(monthCount == 6)
+			{
+				startDate = "2020-07-01";
+				endDate = "2020-07-31";
+			}
+			else if(monthCount == 7)
+			{
+				startDate = "2020-08-01";
+				endDate = "2020-08-31";
+			}
+			else if(monthCount == 8)
+			{
+				startDate = "2020-09-01";
+				endDate = "2020-09-30";
+			}
+		
+		
+			try 
+			{
+				inputFile = new Scanner(covidFile);
+				columnNames = inputFile.nextLine().split(",");
+				while (inputFile.hasNext())
+				{
+					tokens = inputFile.nextLine().split(",");
+					
+					if (!tokens[countryIndex].equals(country))
+						continue;
+					
+					if (!tokens[dateIndex].equals(startDate) && flag)
+						continue;
+					
+					flag = false;
+					for (j = 0; j < tokens.length; j++)
+					{
+						if (j == caseIndex && tokens[dateIndex].equals(endDate))
+						{
+							cases.add(Double.parseDouble(tokens[j]));
+						}
+					}
+					
+					i++;
+					
+					if (tokens[dateIndex].equals(endDate))
+					{
+						
+						monthCount++;
+						break;
+					}
+				}
+				
+				inputFile.close();
+				
+			} 
+			catch (FileNotFoundException e) 
+			{ 
+				e.printStackTrace(); 
+			}
+		}
+		
+	
+		return cases;
+	}
 
 	public double getCases()
 	{
@@ -263,9 +1177,7 @@ public class CovidFile implements Serializable //will handle only reads
 		try 
 		{
 			inputFile = new Scanner(covidFile);
-			
 			columnNames = inputFile.nextLine().split(",");
-			
 			while (inputFile.hasNext())
 			{
 				tokens = inputFile.nextLine().split(",");
@@ -285,7 +1197,6 @@ public class CovidFile implements Serializable //will handle only reads
 			}
 			
 			inputFile.close();
-			
 			System.out.println(i);
 		} 
 		catch (FileNotFoundException e) 
@@ -442,56 +1353,65 @@ public class CovidFile implements Serializable //will handle only reads
 		return deaths;
 	}
 	
-	public double[][] getCountryWorkplaceTrends(String country)
+	public ArrayList<Double> getCountryWorkplaceTrends(String country, String month)
 	{
 		
-		table1 = new double[rows][cols]; //clear values in case a previous read function set values to something else
-		final int countryIndex = 1, workplaceIndex = 8;
+		ArrayList<Double> workplaceMonthlyTrend = new ArrayList<Double>(); //clear values in case a previous read function set values to something else
+		final int countryIndex = 1, dateIndex = 2, workplaceIndex = 8;
+		String startDate = null;
+		String endDate = null;
 		String[] tokens = null;
 		Scanner inputFile = null;
 		int i = 0, j = 0;
 		boolean flag = true;
-		
-		try 
-		{
-			inputFile = new Scanner(covidFile);
-			
-			columnNames = inputFile.nextLine().split(",");
-			
-			while (inputFile.hasNext())
-			{
-				tokens = inputFile.nextLine().split(",");
-				
-				if (!tokens[countryIndex].equals(country))
-					continue;
-				
-				
-				//check if token has right date range?
-				/*if (!tokens[dateIndex].equals(startDate) && flag)
-					continue;
-				*/
-				
-				flag = false;
-				
-				for (j = 0; j < tokens.length; j++)
-					table1[i][j] = Double.parseDouble(tokens[j]);
-				
-				i++;
-			}
-			
-			inputFile.close();
-			
-			System.out.println(i);
-		} 
-		catch (FileNotFoundException e) 
-		{ 
-			e.printStackTrace(); 
-			return null;
+
+		if (month.equals("February")) {
+			startDate = "2020-02-15";
+			endDate = "2020-2-29";
 		}
 		
-		printTable();
-		
-		return table1;
+		try {
+			inputFile = new Scanner(covidFile);
+			columnNames = inputFile.nextLine().split(",");
+			
+			while(inputFile.hasNext()) {
+				tokens = inputFile.nextLine().split(","); //assn tokens with a line from csv broken by commas
+				
+				if(!tokens[countryIndex].equals(country)) {
+					continue;
+					//row is not desired country, skip to next line
+				}
+				
+				if(!tokens[dateIndex].equals(startDate) && flag) {
+					//flag already set to false and date doesn't match target date
+					//therefore, skip to newline
+					continue;
+				}
+				
+				flag = false;
+				for (j = 0; j < tokens.length; ++j) { //iterate thru tokens/vals in tokens array or csv line
+					if(j == workplaceIndex) {
+						//ID'd column with workPlaxe value? add it into list, then
+						workplaceMonthlyTrend.add(Double.parseDouble(tokens[j]));
+						System.out.print(workplaceMonthlyTrend.get(i) + "\n");
+						break;
+						//escape initial for loop
+					}
+				}
+				++i; //not sure what this is for atm
+				
+				if(tokens[dateIndex].equals(endDate)) {
+					break;
+				}
+				
+			}
+			inputFile.close();
+		}
+		catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+			
+		return workplaceMonthlyTrend;
 	}
 	
 	public double[][] getCountryPublicTransportTrends(String country)
