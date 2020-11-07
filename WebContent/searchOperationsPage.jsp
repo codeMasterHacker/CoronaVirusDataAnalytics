@@ -148,6 +148,28 @@
   			<input type="submit" name="mobilityTrends" value="Submit"/>
 		</form>
 		
+		<p>Choose a Mobility Trend to compare against the cases in that country</p>
+		
+		<form action="SearchOperations" method="get">
+			<select name="countries">
+				<option value="United States">United States of America</option> 
+				<option value="Mexico">Mexico</option> 
+				<option value="Canada">Canada</option>
+				<option value="United Kingdom">United Kingdom</option>
+				<option value="Japan">Japan</option>
+				<option value="United Arab Emirates">United Arab Emirates</option>
+  			</select>
+  			<select name="mobility">
+				<option value="Grocery and Pharmacy">Grocery and Pharmacy</option> 
+				<option value="Parks">Parks</option> 
+				<option value="Residential">Residential</option>
+				<option value="Retail and Recreations">Retail and Recreations</option>
+				<option value="Transit Stations">Transit Stations</option>
+				<option value="Workplaces">Workplaces</option>
+  			</select>
+  			<input type="submit" name="casesVsMobility" value="Submit"/>
+		</form>
+		
 		<p>Click here to see the country case vs death analytic</p>
 		
 		<form action="SearchOperations" method="get">

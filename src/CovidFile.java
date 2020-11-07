@@ -1059,6 +1059,109 @@ public class CovidFile implements Serializable //will handle only reads
 		
 		return (sum / list.size());
 	}
+	
+	public ArrayList<Double> getCasesPerMonth(String country)
+	{
+		ArrayList<Double> cases = new ArrayList<Double>();
+		final int countryIndex = 1, dateIndex = 2, caseIndex = 9;
+		String startDate = null;
+		String endDate = null;
+		String[] tokens = null;
+		Scanner inputFile = null;
+		int i = 0, j = 0;
+		boolean flag = true;
+		int monthCount = 1;
+		
+		while(monthCount < 9)
+		{
+			
+			if(monthCount == 1)
+			{
+				startDate = "2020-02-15";
+				endDate = "2020-02-29";
+			}
+			else if(monthCount == 2)
+			{
+				startDate = "2020-03-01";
+				endDate = "2020-03-31";
+			}
+			else if(monthCount == 3)
+			{
+				startDate = "2020-04-01";
+				endDate = "2020-04-30";
+			}
+			else if(monthCount == 4)
+			{
+				startDate = "2020-05-01";
+				endDate = "2020-05-31";
+			}
+			else if(monthCount == 5)
+			{
+				startDate = "2020-06-01";
+				endDate = "2020-06-30";
+			}
+			else if(monthCount == 6)
+			{
+				startDate = "2020-07-01";
+				endDate = "2020-07-31";
+			}
+			else if(monthCount == 7)
+			{
+				startDate = "2020-08-01";
+				endDate = "2020-08-31";
+			}
+			else if(monthCount == 8)
+			{
+				startDate = "2020-09-01";
+				endDate = "2020-09-30";
+			}
+		
+		
+			try 
+			{
+				inputFile = new Scanner(covidFile);
+				columnNames = inputFile.nextLine().split(",");
+				while (inputFile.hasNext())
+				{
+					tokens = inputFile.nextLine().split(",");
+					
+					if (!tokens[countryIndex].equals(country))
+						continue;
+					
+					if (!tokens[dateIndex].equals(startDate) && flag)
+						continue;
+					
+					flag = false;
+					for (j = 0; j < tokens.length; j++)
+					{
+						if (j == caseIndex && tokens[dateIndex].equals(endDate))
+						{
+							cases.add(Double.parseDouble(tokens[j]));
+						}
+					}
+					
+					i++;
+					
+					if (tokens[dateIndex].equals(endDate))
+					{
+						
+						monthCount++;
+						break;
+					}
+				}
+				
+				inputFile.close();
+				
+			} 
+			catch (FileNotFoundException e) 
+			{ 
+				e.printStackTrace(); 
+			}
+		}
+		
+	
+		return cases;
+	}
 
 	public double getCases()
 	{
@@ -1072,9 +1175,7 @@ public class CovidFile implements Serializable //will handle only reads
 		try 
 		{
 			inputFile = new Scanner(covidFile);
-			
 			columnNames = inputFile.nextLine().split(",");
-			
 			while (inputFile.hasNext())
 			{
 				tokens = inputFile.nextLine().split(",");
@@ -1094,7 +1195,6 @@ public class CovidFile implements Serializable //will handle only reads
 			}
 			
 			inputFile.close();
-			
 			System.out.println(i);
 		} 
 		catch (FileNotFoundException e) 

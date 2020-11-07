@@ -35,12 +35,14 @@ public class SearchOperations extends HttpServlet
 		String casesVsDeaths = request.getParameter("casesVsDeaths");
 		String allMobilityTrends = request.getParameter("mobilityTrends");
 		String countryCasesVSDeaths = request.getParameter("countryCasesVSDeaths");
+		String casesVsMobility = request.getParameter("casesVsMobility");
 		
 		
 		boolean isCasesVsDeaths = false;
 		boolean isAllMobilityTrends = false;
 		boolean isCountryCasesVSDeaths = false;
 		boolean search = false;
+		boolean isCasesVsMobility = false;
 		String country = null;
 		String startDate = null;
 		String endDate = null;
@@ -113,6 +115,7 @@ public class SearchOperations extends HttpServlet
 		{
 			isAllMobilityTrends = true;
 			country = request.getParameter("countries");
+			session.setAttribute("country", country);
 			
 			// Grocery and Pharmacy Mobility
 			ArrayList<Double> groceryAvg = fileManager.getCurrent_covidFile().getGroceryMobilityAvg(country);
@@ -180,7 +183,57 @@ public class SearchOperations extends HttpServlet
 			session.setAttribute("augWorkplace", workplaceAvg.get(6));
 			session.setAttribute("sepWorkplace", workplaceAvg.get(7));
 			
+			
+		}
+		else if(casesVsMobility != null)
+		{
+			isCasesVsMobility = true;
+			country = request.getParameter("countries");
+			String mobility = request.getParameter("mobility");
+			ArrayList<Double> cases = fileManager.getCurrent_covidFile().getCasesPerMonth(country);
+			ArrayList<Double> mobilityAvg = new ArrayList<Double>();
+			
+			if(mobility.equals("Grocery and Pharmacy"))
+				mobilityAvg = fileManager.getCurrent_covidFile().getGroceryMobilityAvg(country);
+			else if (mobility.equals("Parks"))
+				mobilityAvg = fileManager.getCurrent_covidFile().getParksMobilityAvg(country);
+			else if (mobility.equals("Residential"))
+				mobilityAvg = fileManager.getCurrent_covidFile().getResidentialMobilityAvg(country);
+			else if (mobility.equals("Retail and Recreations"))
+				mobilityAvg = fileManager.getCurrent_covidFile().getRetailMobilityAvg(country);
+			else if (mobility.equals("Transit Stations"))
+				mobilityAvg = fileManager.getCurrent_covidFile().getTransitMobilityAvg(country);
+			else if (mobility.equals("Workplaces"))
+				mobilityAvg = fileManager.getCurrent_covidFile().getWorkplaceMobilityAvg(country);
+			
 			session.setAttribute("country", country);
+			session.setAttribute("mobility", mobility);
+			
+			// cases per month
+			session.setAttribute("febCases", cases.get(0));
+			session.setAttribute("marchCases", cases.get(1));
+			session.setAttribute("aprilCases", cases.get(2));
+			session.setAttribute("mayCases", cases.get(3));
+			session.setAttribute("juneCases", cases.get(4));
+			session.setAttribute("julyCases", cases.get(5));
+			session.setAttribute("augCases", cases.get(6));
+			session.setAttribute("sepCases", cases.get(7));
+			
+			// avg mobility per month
+			session.setAttribute("febMobility", mobilityAvg.get(0));
+			session.setAttribute("marchMobility", mobilityAvg.get(1));
+			session.setAttribute("aprilMobility", mobilityAvg.get(2));
+			session.setAttribute("mayMobility", mobilityAvg.get(3));
+			session.setAttribute("juneMobility", mobilityAvg.get(4));
+			session.setAttribute("julyMobility", mobilityAvg.get(5));
+			session.setAttribute("augMobility", mobilityAvg.get(6));
+			session.setAttribute("sepMobility", mobilityAvg.get(7));
+			
+			for(int i = 0; i < cases.size(); i++)
+			{
+				System.out.println("Cases: " + cases.get(i) + " |  Mobility: " + mobilityAvg.get(i));
+			}
+				
 			
 		}
 		else if (countryCasesVSDeaths != null) {
@@ -220,6 +273,10 @@ public class SearchOperations extends HttpServlet
 		}
 		else if(isCountryCasesVSDeaths) {
 			request.getRequestDispatcher("countryCasesVSDeathsPage.jsp").forward(request,response);
+		}
+		else if(isCasesVsMobility)
+		{
+			request.getRequestDispatcher("casesVsMobility.jsp").forward(request,response);
 		}
 	}
 }
