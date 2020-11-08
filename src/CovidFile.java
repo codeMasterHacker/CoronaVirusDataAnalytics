@@ -1366,8 +1366,9 @@ public class CovidFile implements Serializable //will handle only reads
 		boolean flag = true;
 
 		if (month.equals("February")) {
+			System.out.print("February selected\n");
 			startDate = "2020-02-15";
-			endDate = "2020-2-29";
+			endDate = "2020-02-29";
 		}
 		
 		try {
@@ -1388,22 +1389,23 @@ public class CovidFile implements Serializable //will handle only reads
 					continue;
 				}
 				
-				flag = false;
+				flag = false; //we've gone past the start date; we need to skip the above if-stmt
+				
 				for (j = 0; j < tokens.length; ++j) { //iterate thru tokens/vals in tokens array or csv line
+					
 					if(j == workplaceIndex) {
 						//ID'd column with workPlaxe value? add it into list, then
 						workplaceMonthlyTrend.add(Double.parseDouble(tokens[j]));
-						System.out.print(workplaceMonthlyTrend.get(i) + "\n");
+						System.out.print(tokens[countryIndex]+" "+tokens[dateIndex]+" "+workplaceMonthlyTrend.get(i) + "\n");
 						break;
 						//escape initial for loop
 					}
-				}
-				++i; //not sure what this is for atm
-				
+				} 
 				if(tokens[dateIndex].equals(endDate)) {
+					System.out.print("end selected\n");
 					break;
 				}
-				
+				++i; //indexes actual return array
 			}
 			inputFile.close();
 		}

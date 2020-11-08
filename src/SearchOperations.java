@@ -287,12 +287,13 @@ public class SearchOperations extends HttpServlet
 			session.setAttribute("country", country);
 			session.setAttribute("mobility", month);
 			
-			session.setAttribute("1", workplaceMobility.get(0));
-			session.setAttribute("2", workplaceMobility.get(1));
-			session.setAttribute("3",workplaceMobility.get(2));
-			session.setAttribute("4", workplaceMobility.get(3));
-			session.setAttribute("5", workplaceMobility.get(4));
-			/*for(int i = 0; i < workplaceMobility.size(); ++i) {
+			session.setAttribute("one", workplaceMobility.get(0));
+			session.setAttribute("two", workplaceMobility.get(1));
+			session.setAttribute("three", workplaceMobility.get(2));
+			session.setAttribute("four", workplaceMobility.get(3));
+			session.setAttribute("five", workplaceMobility.get(4)); 
+			
+			/* for(int i = 0; i < workplaceMobility.size(); ++i) {
 				if(workplaceMobility.size() < 31)
 				session.setAttribute(String.valueOf(i), workplaceMobility.get(i));
 			}
@@ -300,7 +301,7 @@ public class SearchOperations extends HttpServlet
 				for(int i = workplaceMobility.size(); i < 31; ++i) {
 					session.setAttribute(String.valueOf(i), 0.0);
 				}
-			}*/
+			} */
 			//session.setAttribute("Workplace Mobility Trends", table1);
 			//session.setAttribute("Public Transit Mobility Trends", table2);
 		}
@@ -312,6 +313,7 @@ public class SearchOperations extends HttpServlet
 		
 		if(search)
 		{
+			System.out.print("search selected\n");
 			session.setAttribute("columnNames", fileManager.getCurrent_covidFile().getColumnNames());
 			session.setAttribute("table", table);
 			
@@ -319,6 +321,7 @@ public class SearchOperations extends HttpServlet
 		}
 		else if(isCasesVsDeaths)
 		{
+			System.out.print("iscasevsdeath selected\n");
 			request.getRequestDispatcher("casesVsDeathsPage.jsp").forward(request,response);
 		}
 		else if(isAllMobilityTrends)
@@ -329,6 +332,7 @@ public class SearchOperations extends HttpServlet
 			request.getRequestDispatcher("countryCasesVSDeathsPage.jsp").forward(request,response);
 		}
 		else if (isMultiGraph) {
+			System.out.print("multigraph selected\n");
 			request.getRequestDispatcher("workPlacesVSTransportation.jsp").forward(request, response);
 		}
 		else if(isCasesVsMobility)

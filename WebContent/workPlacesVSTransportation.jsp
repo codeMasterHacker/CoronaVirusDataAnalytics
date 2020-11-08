@@ -1,5 +1,5 @@
-    <%@ page language="java" contentType="text/html; charset=UTF-8"	pageEncoding="UTF-8"%>
-    <%@ page import="java.util.*" %>
+    <%-- page language="java" contentType="text/html; charset=UTF-8"	pageEncoding="UTF-8"--%>
+    <%-- page import="java.util.*" --%>
     <%-- page import="com.google.gson.Gson"--%>
     <%-- page import="com.google.gson.JsonObject"--%>
      
@@ -51,22 +51,19 @@
     <!DOCTYPE HTML>
     <html>
     <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <script type="text/javascript">
+    <%--meta http-equiv="Content-Type" content="text/html; charset=UTF-8"--%>
+    <script>
     window.onload = function() { 
      
-   	var chart = new CanvasJS.Chart("chartContainer", {
+   		var chart = new CanvasJS.Chart("chartContainer", {
    		title:{
    			text: "Workplace Mobility Trends in ${country} on ${month}"
    		},
    		axisX:[{
-   			title: "Day"
+   			title: "Days"
    		},
-   		axisY:[{
-   			lineColor: "#C24642",
-   			tickColor: "#C24642",
-   			labelFontColor: "#C24642",
-   			titleFontColor: "#C24642",
+   		axisY:[
+   		{
    			includeZero: true,
    		},
    		{
@@ -76,7 +73,8 @@
    			labelFontColor: "#369EAD",
    			titleFontColor: "#369EAD",
    			includeZero: true,
-   		}],
+   		}
+   		],
    		toolTip: {
    			shared: true
    		},
