@@ -1369,7 +1369,36 @@ public class CovidFile implements Serializable //will handle only reads
 			System.out.print("February selected\n");
 			startDate = "2020-02-15";
 			endDate = "2020-02-29";
+		} else if (month.equals("March")) {
+			System.out.print("March selected\n");
+			startDate = "2020-03-01";
+			endDate = "2020-03-31";
+		} else if (month.equals("April")) {
+			System.out.print("April selected\n");
+			startDate = "2020-04-01";
+			endDate = "2020-04-30";
+		} else if (month.equals("May")) {
+			System.out.print("May selected\n");
+			startDate = "2020-05-01";
+			endDate = "2020-05-31";
+		} else if (month.equals("June")) {
+			System.out.print("June selected\n");
+			startDate = "2020-06-01";
+			endDate = "2020-06-30";
+		} else if (month.equals("July")) {
+			System.out.print("July selected\n");
+			startDate = "2020-07-01";
+			endDate = "2020-07-31";
+		} else if (month.equals("August")) {
+			System.out.print("August selected\n");
+			startDate = "2020-08-01";
+			endDate = "2020-08-31";
+		} else if (month.equals("September")) {
+			System.out.print("September selected\n");
+			startDate = "2020-09-01";
+			endDate = "2020-09-30";
 		}
+		
 		
 		try {
 			inputFile = new Scanner(covidFile);
@@ -1402,7 +1431,7 @@ public class CovidFile implements Serializable //will handle only reads
 					}
 				} 
 				if(tokens[dateIndex].equals(endDate)) {
-					System.out.print("end selected\n");
+					//System.out.print("end selected\n");
 					break;
 				}
 				++i; //indexes actual return array

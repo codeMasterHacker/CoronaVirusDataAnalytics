@@ -57,6 +57,11 @@ public class SearchOperations extends HttpServlet
 		String month = null;
 		
 		String[][] table = null;
+		ArrayList<String> monthDays = 
+				new ArrayList<>(Arrays.asList("one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten",
+				"eleven", "twelve", "thirteen","fourteen","fifteen","sixteen","seventeen","eighteen","nineteen","twenty",
+				"twentyone","twentytwo","twentythree","twentyfour","twentyfive","twentysix","twentyseven","twentyeight","twentynine",
+				"thirty","thirtyone"));
 		//String[][] table1 = null;
 		//String[][] table2 = null;
 		
@@ -276,6 +281,7 @@ public class SearchOperations extends HttpServlet
 			//search = true;
 			country = request.getParameter("countries");
 			month = request.getParameter("months");
+			int dayTrack = 0;
 					
 			ArrayList<Double> workplaceMobility = new ArrayList<Double>();
 			ArrayList<Double> publicTransitMobility = new ArrayList<Double>();
@@ -285,25 +291,62 @@ public class SearchOperations extends HttpServlet
 			//table2 = fileManager.getCurrent_covidFile().getCountryPublicTransportTrends(request.getParameter("countries"));
 			
 			session.setAttribute("country", country);
-			session.setAttribute("mobility", month);
-			
-			session.setAttribute("one", workplaceMobility.get(0));
+			session.setAttribute("month", month);
+			/*System.out.print("print data\n");
+			for(int i = 0; i < workplaceMobility.size(); ++i) {
+				System.out.print(workplaceMobility.get(i)+"\n");
+			}
+			System.out.print("print data end\n");
+			*/
+			/*session.setAttribute("one", workplaceMobility.get(0));
 			session.setAttribute("two", workplaceMobility.get(1));
 			session.setAttribute("three", workplaceMobility.get(2));
 			session.setAttribute("four", workplaceMobility.get(3));
 			session.setAttribute("five", workplaceMobility.get(4)); 
-			
-			/* for(int i = 0; i < workplaceMobility.size(); ++i) {
-				if(workplaceMobility.size() < 31)
-				session.setAttribute(String.valueOf(i), workplaceMobility.get(i));
+			session.setAttribute("six", workplaceMobility.get(5)); 
+			session.setAttribute("seven", workplaceMobility.get(6)); 
+			session.setAttribute("eight", workplaceMobility.get(7)); 
+			session.setAttribute("nine", workplaceMobility.get(8)); 
+			session.setAttribute("ten", workplaceMobility.get(9)); 
+			session.setAttribute("eleven", workplaceMobility.get(10)); 
+			session.setAttribute("twelve", workplaceMobility.get(11)); 
+			session.setAttribute("thirteen", workplaceMobility.get(12)); 
+			session.setAttribute("fourteen", workplaceMobility.get(13)); 
+			session.setAttribute("fifteen", workplaceMobility.get(14)); 
+			session.setAttribute("sixteen", workplaceMobility.get(15));
+			session.setAttribute("seventeen", workplaceMobility.get(16));
+			session.setAttribute("eighteen", workplaceMobility.get(17));
+			session.setAttribute("nineteen", workplaceMobility.get(18));
+			session.setAttribute("twenty", workplaceMobility.get(19)); 
+			session.setAttribute("twentyone", workplaceMobility.get(20)); 
+			session.setAttribute("twentytwo", workplaceMobility.get(21)); 
+			session.setAttribute("twentythree", workplaceMobility.get(22)); 
+			session.setAttribute("twentyfour", workplaceMobility.get(23)); 
+			session.setAttribute("twentyfive", workplaceMobility.get(24)); 
+			session.setAttribute("twentysix", workplaceMobility.get(25)); 
+			session.setAttribute("twentyseven", workplaceMobility.get(26)); 
+			session.setAttribute("twentyeight", workplaceMobility.get(27)); 
+			session.setAttribute("twentynine", workplaceMobility.get(28)); 
+			session.setAttribute("thirty", workplaceMobility.get(29));
+			session.setAttribute("thirtyone", workplaceMobility.get(30));
+			*/
+			dayTrack = 0;
+			for(int i = 0; i < workplaceMobility.size(); ++i) {
+				session.setAttribute(monthDays.get(i), workplaceMobility.get(i));
+				System.out.print(monthDays.get(i)+": "+workplaceMobility.get(i) + "\n");
+				dayTrack = i;
 			}
-			if(workplaceMobility.size() < 31) {
-				for(int i = workplaceMobility.size(); i < 31; ++i) {
-					session.setAttribute(String.valueOf(i), 0.0);
+			System.out.print("days accounted: "+ (dayTrack+1) + "\n");
+			System.out.print("workplaceMobility.size: "+workplaceMobility.size() + "\n");
+			System.out.print("monthDays.size: "+monthDays.size() + "\n");
+			
+			if( workplaceMobility.size() < 31) {
+				System.out.print("zero fill entered\n");
+				for(int i = dayTrack; i < monthDays.size(); ++i) {
+					session.setAttribute(monthDays.get(i), 0.0);
+					++dayTrack;
 				}
-			} */
-			//session.setAttribute("Workplace Mobility Trends", table1);
-			//session.setAttribute("Public Transit Mobility Trends", table2);
+			}
 		}
 		else
 		{
@@ -313,7 +356,7 @@ public class SearchOperations extends HttpServlet
 		
 		if(search)
 		{
-			System.out.print("search selected\n");
+			//System.out.print("search selected\n");
 			session.setAttribute("columnNames", fileManager.getCurrent_covidFile().getColumnNames());
 			session.setAttribute("table", table);
 			
@@ -321,7 +364,7 @@ public class SearchOperations extends HttpServlet
 		}
 		else if(isCasesVsDeaths)
 		{
-			System.out.print("iscasevsdeath selected\n");
+			//System.out.print("iscasevsdeath selected\n");
 			request.getRequestDispatcher("casesVsDeathsPage.jsp").forward(request,response);
 		}
 		else if(isAllMobilityTrends)
