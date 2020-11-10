@@ -62,6 +62,11 @@ public class SearchOperations extends HttpServlet
 				"eleven", "twelve", "thirteen","fourteen","fifteen","sixteen","seventeen","eighteen","nineteen","twenty",
 				"twentyone","twentytwo","twentythree","twentyfour","twentyfive","twentysix","twentyseven","twentyeight","twentynine",
 				"thirty","thirtyone"));
+		ArrayList<String> monthDays1 = 
+				new ArrayList<>(Arrays.asList("one1", "two1", "three1", "four1", "five1", "six1", "seven1", "eight1", "nine1", "ten1",
+				"eleven1", "twelve1", "thirteen1","fourteen1","fifteen1","sixteen1","seventeen1","eighteen1","nineteen1","twenty1",
+				"twentyone1","twentytwo1","twentythree1","twentyfour1","twentyfive1","twentysix1","twentyseven1","twentyeight1","twentynine1",
+				"thirty1","thirtyone1"));
 		//String[][] table1 = null;
 		//String[][] table2 = null;
 		
@@ -282,13 +287,14 @@ public class SearchOperations extends HttpServlet
 			country = request.getParameter("countries");
 			month = request.getParameter("months");
 			int dayTrack = 0;
+			int dayTrack1 = 0;
 					
 			ArrayList<Double> workplaceMobility = new ArrayList<Double>();
 			ArrayList<Double> publicTransitMobility = new ArrayList<Double>();
 			
 			isMultiGraph = true;
 			workplaceMobility = fileManager.getCurrent_covidFile().getCountryWorkplaceTrends(country, month);
-			//table2 = fileManager.getCurrent_covidFile().getCountryPublicTransportTrends(request.getParameter("countries"));
+			publicTransitMobility = fileManager.getCurrent_covidFile().getCountryPublicTransportTrendsMonthly(country, month);
 			
 			session.setAttribute("country", country);
 			session.setAttribute("month", month);
@@ -333,11 +339,17 @@ public class SearchOperations extends HttpServlet
 			dayTrack = 0;
 			for(int i = 0; i < workplaceMobility.size(); ++i) {
 				session.setAttribute(monthDays.get(i), workplaceMobility.get(i));
-				System.out.print(monthDays.get(i)+": "+workplaceMobility.get(i) + "\n");
+				//System.out.print(monthDays.get(i)+": "+workplaceMobility.get(i) + "\n");
 				dayTrack = i;
+			}
+			for(int i = 0; i < publicTransitMobility.size(); ++i) {
+				session.setAttribute(monthDays1.get(i), publicTransitMobility.get(i));
+				System.out.print(monthDays1.get(i)+": "+publicTransitMobility.get(i) + "\n");
+				dayTrack1 = i;
 			}
 			System.out.print("days accounted: "+ (dayTrack+1) + "\n");
 			System.out.print("workplaceMobility.size: "+workplaceMobility.size() + "\n");
+			System.out.print("publicTransitMobility.size: "+publicTransitMobility.size() + "\n");
 			System.out.print("monthDays.size: "+monthDays.size() + "\n");
 			
 			if( workplaceMobility.size() < 31) {
@@ -345,6 +357,13 @@ public class SearchOperations extends HttpServlet
 				for(int i = dayTrack; i < monthDays.size(); ++i) {
 					session.setAttribute(monthDays.get(i), 0.0);
 					++dayTrack;
+				}
+			}
+			if( publicTransitMobility.size() < 31) {
+				System.out.print("second zero fill entered\n");
+				for(int i = dayTrack1; i < monthDays1.size(); ++i) {
+					session.setAttribute(monthDays1.get(i), 0.0);
+					++dayTrack1;
 				}
 			}
 		}

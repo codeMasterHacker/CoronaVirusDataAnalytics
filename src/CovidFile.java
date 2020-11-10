@@ -1425,7 +1425,7 @@ public class CovidFile implements Serializable //will handle only reads
 					if(j == workplaceIndex) {
 						//ID'd column with workPlaxe value? add it into list, then
 						workplaceMonthlyTrend.add(Double.parseDouble(tokens[j]));
-						System.out.print(tokens[countryIndex]+" "+tokens[dateIndex]+" "+workplaceMonthlyTrend.get(i) + "\n");
+						//System.out.print(tokens[countryIndex]+" "+tokens[dateIndex]+" "+workplaceMonthlyTrend.get(i) + "\n");
 						break;
 						//escape initial for loop
 					}
@@ -1443,6 +1443,98 @@ public class CovidFile implements Serializable //will handle only reads
 		}
 			
 		return workplaceMonthlyTrend;
+	}
+	
+	public ArrayList<Double> getCountryPublicTransportTrendsMonthly(String country, String month)
+	{
+		
+		ArrayList<Double> publicTransitMonthlyTrend = new ArrayList<Double>(); //clear values in case a previous read function set values to something else
+		final int countryIndex = 1, dateIndex = 2, publicTransitIndex = 7;
+		String startDate = null;
+		String endDate = null;
+		String[] tokens = null;
+		Scanner inputFile = null;
+		int i = 0, j = 0;
+		boolean flag = true;
+
+		if (month.equals("February")) {
+			System.out.print("February selected\n");
+			startDate = "2020-02-15";
+			endDate = "2020-02-29";
+		} else if (month.equals("March")) {
+			System.out.print("March selected\n");
+			startDate = "2020-03-01";
+			endDate = "2020-03-31";
+		} else if (month.equals("April")) {
+			System.out.print("April selected\n");
+			startDate = "2020-04-01";
+			endDate = "2020-04-30";
+		} else if (month.equals("May")) {
+			System.out.print("May selected\n");
+			startDate = "2020-05-01";
+			endDate = "2020-05-31";
+		} else if (month.equals("June")) {
+			System.out.print("June selected\n");
+			startDate = "2020-06-01";
+			endDate = "2020-06-30";
+		} else if (month.equals("July")) {
+			System.out.print("July selected\n");
+			startDate = "2020-07-01";
+			endDate = "2020-07-31";
+		} else if (month.equals("August")) {
+			System.out.print("August selected\n");
+			startDate = "2020-08-01";
+			endDate = "2020-08-31";
+		} else if (month.equals("September")) {
+			System.out.print("September selected\n");
+			startDate = "2020-09-01";
+			endDate = "2020-09-30";
+		}
+		
+		
+		try {
+			inputFile = new Scanner(covidFile);
+			columnNames = inputFile.nextLine().split(",");
+			
+			while(inputFile.hasNext()) {
+				tokens = inputFile.nextLine().split(","); //assn tokens with a line from csv broken by commas
+				
+				if(!tokens[countryIndex].equals(country)) {
+					continue;
+					//row is not desired country, skip to next line
+				}
+				
+				if(!tokens[dateIndex].equals(startDate) && flag) {
+					//flag already set to false and date doesn't match target date
+					//therefore, skip to newline
+					continue;
+				}
+				
+				flag = false; //we've gone past the start date; we need to skip the above if-stmt
+				
+				for (j = 0; j < tokens.length; ++j) { //iterate thru tokens/vals in tokens array or csv line
+					
+					if(j == publicTransitIndex) {
+						//ID'd column with workPlaxe value? add it into list, then
+						publicTransitMonthlyTrend.add(Double.parseDouble(tokens[j]));
+						System.out.print(tokens[countryIndex]+" "+tokens[dateIndex]+" "+publicTransitMonthlyTrend.get(i) + "\n");
+						break;
+						//escape initial for loop
+					}
+				} 
+				if(tokens[dateIndex].equals(endDate)) {
+					//System.out.print("end selected\n");
+					break;
+				}
+				++i; //indexes actual return array
+			}
+			inputFile.close();
+		}
+		catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+			
+		return publicTransitMonthlyTrend;
 	}
 	
 	public double[][] getCountryPublicTransportTrends(String country)

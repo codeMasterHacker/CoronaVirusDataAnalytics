@@ -5,7 +5,7 @@
 window.onload = function() { 
 	var chart = new CanvasJS.Chart("chartContainer", {
 	title:{
-		text: "Workplace Mobility Trends in ${country} on ${month}"
+		text: "Workplace and Public Transpoty Mobility Trends in ${country} on ${month}"
 	},
 	axisX:{
 		
@@ -65,6 +65,46 @@ window.onload = function() {
 			{ x: 29, y: ${twentynine} },
 			{ x: 30, y: ${thirty} },
 			{ x: 31, y: ${thirtyone} }
+		]
+	},
+	{
+		type: "line",
+		name: "Public Transport Mobility Trend",
+		color: "#7F6084",
+		showInLegend: true,
+		axisYIndex: 0,
+		dataPoints: [
+			{ x: 1, y: ${one1} },
+			{ x: 2, y: ${two1} },
+			{ x: 3, y: ${three1} },
+			{ x: 4, y: ${four1} },
+			{ x: 5, y: ${five1} },
+			{ x: 6, y: ${six1} },
+			{ x: 7, y: ${seven1} },
+			{ x: 8, y: ${eight1} },
+			{ x: 9, y: ${nine1} },
+			{ x: 10, y: ${ten1} },
+			{ x: 11, y: ${eleven1} },
+			{ x: 12, y: ${twelve1} },
+			{ x: 13, y: ${thirteen1} },
+			{ x: 14, y: ${fourteen1} },
+			{ x: 15, y: ${fifteen1} },
+			{ x: 16, y: ${sixteen1} },
+			{ x: 17, y: ${seventeen1} },
+			{ x: 18, y: ${eighteen1} },
+			{ x: 19, y: ${nineteen1} },
+			{ x: 20, y: ${twenty1} },
+			{ x: 21, y: ${twentyone1} },
+			{ x: 22, y: ${twentytwo1} },
+			{ x: 23, y: ${twentythree1} },
+			{ x: 24, y: ${twentyfour1} },
+			{ x: 25, y: ${twentyfive1} },
+			{ x: 26, y: ${twentysix1} },
+			{ x: 27, y: ${twentyseven1} },
+			{ x: 28, y: ${twentyeight1} },
+			{ x: 29, y: ${twentynine1} },
+			{ x: 30, y: ${thirty1} },
+			{ x: 31, y: ${thirtyone1} }
 		]
 	}]
 });
