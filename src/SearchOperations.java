@@ -21,7 +21,13 @@ public class SearchOperations extends HttpServlet
 		if (fileManager == null)
 		{
 			//fileManager = new CovidFileManager("/Users/cristinalawson/eclipse-workspace/cs180_project/WebContent/covidFiles");
-			fileManager = new CovidFileManager("/Users/jesword/git/cs180project-022-it-s-corona-time/WebContent/covidFiles");
+
+			fileManager = new CovidFileManager("E:\\Luccas\\Documents\\docs_2\\UCR Docs\\Fall_2020\\cs180\\cs180_project\\cs180project-022-it-s-corona-time\\WebContent\\covidFiles");
+
+			//fileManager = new CovidFileManager("/Users/jesword/git/cs180project-022-it-s-corona-time/WebContent/covidFiles");
+
+			//fileManager = new CovidFileManager("/Users/jesword/git/cs180project-022-it-s-corona-time/WebContent/covidFiles");
+
 			//fileManager = new CovidFileManager("/Users/Enrique/Desktop/codeFolders/Java/cs180project-022-it-s-corona-time/WebContent/covidFiles");
 		}
 		
@@ -35,9 +41,11 @@ public class SearchOperations extends HttpServlet
 		String casesVsDeaths = request.getParameter("casesVsDeaths");
 		String allMobilityTrends = request.getParameter("mobilityTrends");
 		String countryCasesVSDeaths = request.getParameter("countryCasesVSDeaths");
+		String multiGraph = request.getParameter("multiGraph");
 		String casesVsMobility = request.getParameter("casesVsMobility");
+
 		
-		
+		boolean isMultiGraph = false;
 		boolean isCasesVsDeaths = false;
 		boolean isAllMobilityTrends = false;
 		boolean isCountryCasesVSDeaths = false;
@@ -46,8 +54,21 @@ public class SearchOperations extends HttpServlet
 		String country = null;
 		String startDate = null;
 		String endDate = null;
+		String month = null;
 		
 		String[][] table = null;
+		ArrayList<String> monthDays = 
+				new ArrayList<>(Arrays.asList("one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten",
+				"eleven", "twelve", "thirteen","fourteen","fifteen","sixteen","seventeen","eighteen","nineteen","twenty",
+				"twentyone","twentytwo","twentythree","twentyfour","twentyfive","twentysix","twentyseven","twentyeight","twentynine",
+				"thirty","thirtyone"));
+		ArrayList<String> monthDays1 = 
+				new ArrayList<>(Arrays.asList("one1", "two1", "three1", "four1", "five1", "six1", "seven1", "eight1", "nine1", "ten1",
+				"eleven1", "twelve1", "thirteen1","fourteen1","fifteen1","sixteen1","seventeen1","eighteen1","nineteen1","twenty1",
+				"twentyone1","twentytwo1","twentythree1","twentyfour1","twentyfive1","twentysix1","twentyseven1","twentyeight1","twentynine1",
+				"thirty1","thirtyone1"));
+		//String[][] table1 = null;
+		//String[][] table2 = null;
 		
 		if (searchOp1 != null)
 		{
@@ -249,6 +270,102 @@ public class SearchOperations extends HttpServlet
 			session.setAttribute("Deaths", deaths);
 			session.setAttribute("CountryCasesVsDeathPercent", countryCasesVSDeathPercent);
 			
+		} else if (multiGraph != null) {
+			//double workPlaces = 0;
+			//double transportation = 0;
+			//double countryCasesVSDeathPercent = 0.0;
+			//transport on col 7, public on 8
+			
+			//workPlaces = fileManager.getCurrent_covidFile().getCountryWorkplaceTrends(request.getParameter("countries"));
+			//transportation = fileManager.getCurrent_covidFile().getCountryPublicTransportTrends(request.getParameter("countries"));
+			/*countryCasesVSDeathPercent = (deaths / cases) * 100;
+			session.setAttribute("Cases", cases);
+			session.setAttribute("Deaths", deaths);
+			session.setAttribute("CountryCasesVsDeathPercent", countryCasesVSDeathPercent);
+			*/
+			//search = true;
+			country = request.getParameter("countries");
+			month = request.getParameter("months");
+			int dayTrack = 0;
+			int dayTrack1 = 0;
+					
+			ArrayList<Double> workplaceMobility = new ArrayList<Double>();
+			ArrayList<Double> publicTransitMobility = new ArrayList<Double>();
+			
+			isMultiGraph = true;
+			workplaceMobility = fileManager.getCurrent_covidFile().getCountryWorkplaceTrends(country, month);
+			publicTransitMobility = fileManager.getCurrent_covidFile().getCountryPublicTransportTrendsMonthly(country, month);
+			
+			session.setAttribute("country", country);
+			session.setAttribute("month", month);
+			/*System.out.print("print data\n");
+			for(int i = 0; i < workplaceMobility.size(); ++i) {
+				System.out.print(workplaceMobility.get(i)+"\n");
+			}
+			System.out.print("print data end\n");
+			*/
+			/*session.setAttribute("one", workplaceMobility.get(0));
+			session.setAttribute("two", workplaceMobility.get(1));
+			session.setAttribute("three", workplaceMobility.get(2));
+			session.setAttribute("four", workplaceMobility.get(3));
+			session.setAttribute("five", workplaceMobility.get(4)); 
+			session.setAttribute("six", workplaceMobility.get(5)); 
+			session.setAttribute("seven", workplaceMobility.get(6)); 
+			session.setAttribute("eight", workplaceMobility.get(7)); 
+			session.setAttribute("nine", workplaceMobility.get(8)); 
+			session.setAttribute("ten", workplaceMobility.get(9)); 
+			session.setAttribute("eleven", workplaceMobility.get(10)); 
+			session.setAttribute("twelve", workplaceMobility.get(11)); 
+			session.setAttribute("thirteen", workplaceMobility.get(12)); 
+			session.setAttribute("fourteen", workplaceMobility.get(13)); 
+			session.setAttribute("fifteen", workplaceMobility.get(14)); 
+			session.setAttribute("sixteen", workplaceMobility.get(15));
+			session.setAttribute("seventeen", workplaceMobility.get(16));
+			session.setAttribute("eighteen", workplaceMobility.get(17));
+			session.setAttribute("nineteen", workplaceMobility.get(18));
+			session.setAttribute("twenty", workplaceMobility.get(19)); 
+			session.setAttribute("twentyone", workplaceMobility.get(20)); 
+			session.setAttribute("twentytwo", workplaceMobility.get(21)); 
+			session.setAttribute("twentythree", workplaceMobility.get(22)); 
+			session.setAttribute("twentyfour", workplaceMobility.get(23)); 
+			session.setAttribute("twentyfive", workplaceMobility.get(24)); 
+			session.setAttribute("twentysix", workplaceMobility.get(25)); 
+			session.setAttribute("twentyseven", workplaceMobility.get(26)); 
+			session.setAttribute("twentyeight", workplaceMobility.get(27)); 
+			session.setAttribute("twentynine", workplaceMobility.get(28)); 
+			session.setAttribute("thirty", workplaceMobility.get(29));
+			session.setAttribute("thirtyone", workplaceMobility.get(30));
+			*/
+			dayTrack = 0;
+			for(int i = 0; i < workplaceMobility.size(); ++i) {
+				session.setAttribute(monthDays.get(i), workplaceMobility.get(i));
+				//System.out.print(monthDays.get(i)+": "+workplaceMobility.get(i) + "\n");
+				dayTrack = i;
+			}
+			for(int i = 0; i < publicTransitMobility.size(); ++i) {
+				session.setAttribute(monthDays1.get(i), publicTransitMobility.get(i));
+				System.out.print(monthDays1.get(i)+": "+publicTransitMobility.get(i) + "\n");
+				dayTrack1 = i;
+			}
+			System.out.print("days accounted: "+ (dayTrack+1) + "\n");
+			System.out.print("workplaceMobility.size: "+workplaceMobility.size() + "\n");
+			System.out.print("publicTransitMobility.size: "+publicTransitMobility.size() + "\n");
+			System.out.print("monthDays.size: "+monthDays.size() + "\n");
+			
+			if( workplaceMobility.size() < 31) {
+				System.out.print("zero fill entered\n");
+				for(int i = dayTrack; i < monthDays.size(); ++i) {
+					session.setAttribute(monthDays.get(i), 0.0);
+					++dayTrack;
+				}
+			}
+			if( publicTransitMobility.size() < 31) {
+				System.out.print("second zero fill entered\n");
+				for(int i = dayTrack1; i < monthDays1.size(); ++i) {
+					session.setAttribute(monthDays1.get(i), 0.0);
+					++dayTrack1;
+				}
+			}
 		}
 		else
 		{
@@ -258,6 +375,7 @@ public class SearchOperations extends HttpServlet
 		
 		if(search)
 		{
+			//System.out.print("search selected\n");
 			session.setAttribute("columnNames", fileManager.getCurrent_covidFile().getColumnNames());
 			session.setAttribute("table", table);
 			
@@ -265,6 +383,7 @@ public class SearchOperations extends HttpServlet
 		}
 		else if(isCasesVsDeaths)
 		{
+			//System.out.print("iscasevsdeath selected\n");
 			request.getRequestDispatcher("casesVsDeathsPage.jsp").forward(request,response);
 		}
 		else if(isAllMobilityTrends)
@@ -273,6 +392,10 @@ public class SearchOperations extends HttpServlet
 		}
 		else if(isCountryCasesVSDeaths) {
 			request.getRequestDispatcher("countryCasesVSDeathsPage.jsp").forward(request,response);
+		}
+		else if (isMultiGraph) {
+			System.out.print("multigraph selected\n");
+			request.getRequestDispatcher("workPlacesVSTransportation.jsp").forward(request, response);
 		}
 		else if(isCasesVsMobility)
 		{

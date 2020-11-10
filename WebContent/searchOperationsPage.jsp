@@ -184,6 +184,28 @@
   			<input type="submit" name="countryCasesVSDeaths" value="Submit"/>
 		</form>
 		
+		<p>Click here to see the differences between mobility trends for workplaces and public transportation in the listed countries based on the specific month. </p>
+		<form action="SearchOperations" method="get">
+			<select name="countries">
+				<option value="United States">United States of America</option> 
+				<option value="Mexico">Mexico</option> 
+				<option value="Canada">Canada</option>
+				<option value="United Kingdom">United Kingdom</option>
+				<option value="Japan">Japan</option>
+				<option value="United Arab Emirates">United Arab Emirates</option>
+  			</select>
+  			<select name="months">
+				<option value="February">February</option> 
+				<option value="March">March</option> 
+				<option value="April">April</option>
+				<option value="May">May</option>
+				<option value="June">June</option>
+				<option value="July">July</option>
+				<option value="August">August</option>
+				<option value="September">September</option>
+  			</select>
+			<input type="submit" name="multiGraph" value="Submit"/>
+		</form>
 		
 		<p>Click here if you would like to import the previous version of the data</p>
 		
