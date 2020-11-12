@@ -1,7 +1,13 @@
 import java.io.*;
 import java.util.*;
+import java.awt.*;
+import java.awt.image.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
+import org.jfree.chart.*;
+import org.jfree.chart.plot.*;
+import org.jfree.data.general.*;
+
 
 public class SearchOperations extends HttpServlet 
 {
@@ -22,13 +28,15 @@ public class SearchOperations extends HttpServlet
 		{
 			//fileManager = new CovidFileManager("/Users/cristinalawson/eclipse-workspace/cs180_project/WebContent/covidFiles");
 
-			fileManager = new CovidFileManager("E:\\Luccas\\Documents\\docs_2\\UCR Docs\\Fall_2020\\cs180\\cs180_project\\cs180project-022-it-s-corona-time\\WebContent\\covidFiles");
+			//fileManager = new CovidFileManager("E:\\Luccas\\Documents\\docs_2\\UCR Docs\\Fall_2020\\cs180\\cs180_project\\cs180project-022-it-s-corona-time\\WebContent\\covidFiles");
 
 			//fileManager = new CovidFileManager("/Users/jesword/git/cs180project-022-it-s-corona-time/WebContent/covidFiles");
 
 			//fileManager = new CovidFileManager("/Users/jesword/git/cs180project-022-it-s-corona-time/WebContent/covidFiles");
 
 			//fileManager = new CovidFileManager("/Users/Enrique/Desktop/codeFolders/Java/cs180project-022-it-s-corona-time/WebContent/covidFiles");
+			
+			fileManager = new CovidFileManager("C:\\Users\\Enrique Munoz\\eclipse-workspace\\cs180project-022-it-s-corona-time\\WebContent\\covidFiles");
 		}
 		
 		String searchOp1 = request.getParameter("submit1");
@@ -69,6 +77,24 @@ public class SearchOperations extends HttpServlet
 				"thirty1","thirtyone1"));
 		//String[][] table1 = null;
 		//String[][] table2 = null;
+		
+		
+		
+		
+		String richPoor_testing = request.getParameter("richPoor_testing");
+		CovidFile currentFile = fileManager.getCurrent_covidFile();
+		DefaultPieDataset pieChart_dataSet = null;
+		JFreeChart testing_pieChart = null;
+		String label = null;
+		String[] labels = null;
+		String[] isos = null;
+		double[] gdps = null;
+		int[] tests = null;
+		BufferedImage bufferedImage = null;
+		
+		
+		
+		
 		
 		if (searchOp1 != null)
 		{
@@ -367,6 +393,75 @@ public class SearchOperations extends HttpServlet
 				}
 			}
 		}
+		else if (richPoor_testing != null)
+		{
+			gdps = currentFile.getGDP_perCountry();
+			isos = currentFile.getIsos();
+			tests = currentFile.getTests_perCountry();
+			
+			bubbleSort(gdps, isos, tests);
+			
+			pieChart_dataSet = new DefaultPieDataset();
+			
+			labels = new String[10];
+			
+			int i  = 0, j = tests.length-1;
+			while (i < 5 && j > -1) //top 5 richest countries with tests greater than 0
+			{
+				if (tests[j] > 0)
+				{
+					//label = "Rich Country: " + isos[j] + "\n" + "Tests: " + tests[j] + "\n" + "GDP: " + gdps[j];
+					label = "Rich Country: " + isos[j];
+					labels[i] = label;
+					
+					pieChart_dataSet.setValue(label, tests[j]);
+					i++;
+					
+					System.out.println("Country: " + isos[j]);
+					System.out.println("Tests: " + tests[j]);
+					System.out.println("GDP: " + gdps[j]);
+				}
+				
+				j--;
+			}
+			
+			//i  = 0;
+			j = 0;
+			while (i < 10 && j < tests.length) //top 5 poorest countries with tests greater than 0
+			{
+				if (tests[j] > 0)
+				{
+					//label = "Poor Country: " + isos[j] + "\n" + "Tests: " + tests[j] + "\n" + "GDP: " + gdps[j];
+					label = "Poor Country: " + isos[j];
+					labels[i] = label;
+					
+					pieChart_dataSet.setValue(label, tests[j]);
+					i++;
+					
+					System.out.println("Country: " + isos[j]);
+					System.out.println("Number of Tests: " + tests[j]);
+					System.out.println("GDP: " + gdps[j]);
+				}
+				
+				j++;
+			}
+			
+			testing_pieChart = ChartFactory.createPieChart("Top 5 Richest and Poorest Countries With Their Respective Test Count Proportions", pieChart_dataSet, true, true, false);
+			
+			PiePlot plot = (PiePlot) testing_pieChart.getPlot();
+			for (i = 0; i < 10; i++)
+			{
+				if (i < 5)
+					plot.setSectionPaint(labels[i], new Color(1.0f, 0.0f, 0.0f, 0.2f*(i+1))); 
+				else
+					plot.setSectionPaint(labels[i], new Color(0.0f, 0.0f, 1.0f, 0.2f*((i%5)+1)));
+			}
+			
+			bufferedImage = testing_pieChart.createBufferedImage(500, 500);
+			ChartUtilities.writeBufferedImageAsPNG(response.getOutputStream(), bufferedImage);
+					
+			response.getOutputStream().close();
+		}
 		else
 		{
 			response.sendError(404, "Error!!!");
@@ -400,6 +495,34 @@ public class SearchOperations extends HttpServlet
 		else if(isCasesVsMobility)
 		{
 			request.getRequestDispatcher("casesVsMobility.jsp").forward(request,response);
+		}
+	}
+	
+	private static void bubbleSort(double[] gdps, String[] isos, int[] tests) 
+	{
+		int lastPos, index, tempTest;
+		double tempGDP;
+		String tempISO;
+		
+		for (lastPos = gdps.length - 1; lastPos >= 0; lastPos--)
+		{
+			for (index = 0; index <= lastPos - 1; index++)
+			{
+				if (gdps[index] > gdps[index + 1]) 
+				{
+					tempGDP = gdps[index]; 
+					gdps[index] = gdps[index + 1]; 
+					gdps[index + 1] = tempGDP;
+					
+					tempISO = isos[index];
+					isos[index] = isos[index + 1];
+					isos[index + 1] = tempISO;
+					
+					tempTest = tests[index];
+					tests[index] = tests[index + 1];
+					tests[index + 1] = tempTest;
+				}
+			}
 		}
 	}
 }

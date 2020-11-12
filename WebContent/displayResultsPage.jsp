@@ -14,7 +14,7 @@
 		<button>Return to Search Operations Page</button>
 	</form>
 	
-	<form action="editFilesPage.jsp">
+	<form action="editFilesPage.jsp" method="post">
 		<button>Go to Edit(Insert, Update, Delete) Files Page</button>
 	</form>
 	

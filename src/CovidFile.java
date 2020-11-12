@@ -1857,8 +1857,7 @@ public class CovidFile implements Serializable //will handle only reads
 			{
 				tokens = inputFile.nextLine().split(",");
 				
-				country = tokens[countryIndex];
-				
+				country = tokens[countryIndex];			
 
 				if (!country.equals(previousCountry))
 				{
@@ -1904,5 +1903,285 @@ public class CovidFile implements Serializable //will handle only reads
 		printTable();
 		
 		return table;
+	}
+	
+	public double[] getPop65_perCountry()
+	{
+		final int isoIndex = 0, index65 = 17, numCountries = 133;
+		int i = 0;
+		String[] tokens = null;
+		String[] previousTokens = null;
+		Scanner inputFile = null;
+		double percent = 0.0;
+		final double missingValue = -404.0;
+		double[] populationsOver65 = new double[numCountries];
+		
+		try 
+		{
+			inputFile = new Scanner(covidFile);
+			
+			columnNames = inputFile.nextLine().split(",");
+			
+			previousTokens = inputFile.nextLine().split(",");
+			
+			while (inputFile.hasNext())
+			{
+				tokens = inputFile.nextLine().split(",");
+				
+				if (tokens[isoIndex].equals(previousTokens[isoIndex]))
+				{
+					previousTokens = tokens;
+					continue;
+				}
+				
+				percent = Double.parseDouble(previousTokens[index65]);
+				if (percent == missingValue)
+					percent = 0.0;
+				
+				populationsOver65[i] = percent;
+				i++;
+				
+				previousTokens = tokens;
+			}
+			
+			percent = Double.parseDouble(previousTokens[index65]);
+			if (percent == missingValue)
+				percent = 0.0;
+			
+			populationsOver65[i] = percent; //for the last country
+			
+			inputFile.close();
+		} 
+		catch (FileNotFoundException e) 
+		{ 
+			e.printStackTrace(); 
+			return null;
+		}
+		
+		return populationsOver65;
+	}
+	
+	public int[] getDeaths_perCountry()
+	{
+		final int isoIndex = 0, deathIndex = 10, numCountries = 133;
+		int i = 0;
+		String[] tokens = null;
+		String[] previousTokens = null;
+		Scanner inputFile = null;
+		int deaths = 0;
+		double temp = 0.0;
+		final double missingValue = -404.0;
+		int[] totalDeaths = new int[numCountries];
+		
+		try 
+		{
+			inputFile = new Scanner(covidFile);
+			
+			columnNames = inputFile.nextLine().split(",");
+			
+			previousTokens = inputFile.nextLine().split(",");
+			
+			while (inputFile.hasNext())
+			{
+				tokens = inputFile.nextLine().split(",");
+				
+				if (tokens[isoIndex].equals(previousTokens[isoIndex]))
+				{
+					previousTokens = tokens;
+					continue;
+				}
+				
+				temp = Double.parseDouble(previousTokens[deathIndex]);
+				if (temp == missingValue)
+					deaths = 0;
+				else
+					deaths = (int)temp;
+				
+				totalDeaths[i] = deaths;
+				i++;
+				
+				previousTokens = tokens;
+			}
+			
+			temp = Double.parseDouble(previousTokens[deathIndex]);
+			if (temp == missingValue)
+				deaths = 0;
+			else
+				deaths = (int)temp;
+			
+			totalDeaths[i] = deaths; //for the last country
+			
+			inputFile.close();
+		} 
+		catch (FileNotFoundException e) 
+		{ 
+			e.printStackTrace(); 
+			return null;
+		}
+		
+		return totalDeaths;
+	}
+	
+	public double[] getGDP_perCountry()
+	{
+		final int isoIndex = 0, gdpIndex = 13, numCountries = 133;
+		int i = 0;
+		String[] tokens = null;
+		String[] previousTokens = null;
+		Scanner inputFile = null;
+		double gdp = 0.0;
+		final double missingValue = -404.0;
+		double[] countriesGDP = new double[numCountries];
+		
+		try 
+		{
+			inputFile = new Scanner(covidFile);
+			
+			columnNames = inputFile.nextLine().split(",");
+			
+			previousTokens = inputFile.nextLine().split(",");
+			
+			while (inputFile.hasNext())
+			{
+				tokens = inputFile.nextLine().split(",");
+				
+				if (tokens[isoIndex].equals(previousTokens[isoIndex]))
+				{
+					previousTokens = tokens;
+					continue;
+				}
+				
+				gdp = Double.parseDouble(previousTokens[gdpIndex]);
+				if (gdp == missingValue)
+					gdp = 0.0;
+				
+				countriesGDP[i] = gdp;
+				i++;
+				
+				previousTokens = tokens;
+			}
+			
+			gdp = Double.parseDouble(previousTokens[gdpIndex]);
+			if (gdp == missingValue)
+				gdp = 0.0;
+			
+			countriesGDP[i] = gdp; //for the last country
+			
+			inputFile.close();
+		} 
+		catch (FileNotFoundException e) 
+		{ 
+			e.printStackTrace(); 
+			return null;
+		}
+		
+		return countriesGDP;
+	}
+	
+	public int[] getTests_perCountry()
+	{
+		final int isoIndex = 0, testIndex = 12, numCountries = 133;
+		int i = 0;
+		String[] tokens = null;
+		String[] previousTokens = null;
+		Scanner inputFile = null;
+		int tests = 0;
+		double temp = 0.0;
+		final double missingValue = -404.0;
+		int[] totalTests = new int[numCountries];
+		
+		try 
+		{
+			inputFile = new Scanner(covidFile);
+			
+			columnNames = inputFile.nextLine().split(",");
+			
+			previousTokens = inputFile.nextLine().split(",");
+			
+			while (inputFile.hasNext())
+			{
+				tokens = inputFile.nextLine().split(",");
+				
+				if (tokens[isoIndex].equals(previousTokens[isoIndex]))
+				{
+					previousTokens = tokens;
+					continue;
+				}
+				
+				temp = Double.parseDouble(previousTokens[testIndex]);
+				if (temp == missingValue)
+					tests = 0;
+				else
+					tests = (int)temp;
+				
+				totalTests[i] = tests;
+				i++;
+				
+				previousTokens = tokens;
+			}
+			
+			temp = Double.parseDouble(previousTokens[testIndex]);
+			if (temp == missingValue)
+				tests = 0;
+			else
+				tests = (int)temp;
+			
+			totalTests[i] = tests; //for the last country
+			
+			inputFile.close();
+		} 
+		catch (FileNotFoundException e) 
+		{ 
+			e.printStackTrace(); 
+			return null;
+		}
+		
+		return totalTests;
+	}
+	
+	public String[] getIsos()
+	{
+		final int isoIndex = 1, numCountries = 133;
+		int i = 0;
+		String[] tokens = null;
+		String[] previousTokens = null;
+		Scanner inputFile = null;
+		String[] isos = new String[numCountries];
+		
+		try 
+		{
+			inputFile = new Scanner(covidFile);
+			
+			columnNames = inputFile.nextLine().split(",");
+			
+			previousTokens = inputFile.nextLine().split(",");
+			
+			while (inputFile.hasNext())
+			{
+				tokens = inputFile.nextLine().split(",");
+				
+				if (tokens[isoIndex].equals(previousTokens[isoIndex]))
+				{
+					previousTokens = tokens;
+					continue;
+				}
+				
+				isos[i] = previousTokens[isoIndex];
+				i++;
+				
+				previousTokens = tokens;
+			}
+			
+			isos[i] = previousTokens[isoIndex]; //for the last country
+			
+			inputFile.close();
+		} 
+		catch (FileNotFoundException e) 
+		{ 
+			e.printStackTrace(); 
+			return null;
+		}
+		
+		return isos;
 	}
 }

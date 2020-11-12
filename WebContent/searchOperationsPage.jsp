@@ -207,8 +207,12 @@
 			<input type="submit" name="multiGraph" value="Submit"/>
 		</form>
 		
-		<p>Click here if you would like to import the previous version of the data</p>
+		<p>Click here to see how rich countries tested compared to poor countries.</p>
+		<form action="SearchOperations" method="get">
+			<input type="submit" name="richPoor_testing" value="Compare Testing"/>
+		</form>
 		
+		<p>Click here if you would like to import the previous version of the data</p>
 		<form action="SearchOperations" method="get">
 			<input type="submit" name="importData" value="Import Data"/>
 		</form>
