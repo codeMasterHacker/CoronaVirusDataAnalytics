@@ -148,6 +148,13 @@
   			<input type="submit" name="mobilityTrends" value="Submit"/>
 		</form>
 		
+		<p>Click here to see Worldwide Mobility Trends analytic</p>
+		
+		<form action="SearchOperations" method="get">
+			<input type="submit" name="worldwideMobilityTrends" value="Submit"/>
+		</form>
+		
+		
 		<p>Choose a Mobility Trend to compare against the cases in that country</p>
 		
 		<form action="SearchOperations" method="get">
