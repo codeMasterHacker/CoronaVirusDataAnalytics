@@ -36,7 +36,9 @@ public class SearchOperations extends HttpServlet
 
 			//fileManager = new CovidFileManager("/Users/Enrique/Desktop/codeFolders/Java/cs180project-022-it-s-corona-time/WebContent/covidFiles");
 			
-			fileManager = new CovidFileManager("C:\\Users\\Enrique Munoz\\eclipse-workspace\\cs180project-022-it-s-corona-time\\WebContent\\covidFiles");
+			//fileManager = new CovidFileManager("C:\\Users\\Enrique Munoz\\eclipse-workspace\\cs180project-022-it-s-corona-time\\WebContent\\covidFiles");
+			
+			fileManager = new CovidFileManager("/Users/celyna/cs180project-022-it-s-corona-time/WebContent/covidFiles/");
 		}
 		
 		String searchOp1 = request.getParameter("submit1");
@@ -411,7 +413,7 @@ public class SearchOperations extends HttpServlet
 				if (tests[j] > 0)
 				{
 					//label = "Rich Country: " + isos[j] + "\n" + "Tests: " + tests[j] + "\n" + "GDP: " + gdps[j];
-					label = "Rich Country: " + isos[j];
+					label = "First World Country: " + isos[j];
 					labels[i] = label;
 					
 					pieChart_dataSet.setValue(label, tests[j]);
@@ -432,7 +434,7 @@ public class SearchOperations extends HttpServlet
 				if (tests[j] > 0)
 				{
 					//label = "Poor Country: " + isos[j] + "\n" + "Tests: " + tests[j] + "\n" + "GDP: " + gdps[j];
-					label = "Poor Country: " + isos[j];
+					label = "Developing Country: " + isos[j];
 					labels[i] = label;
 					
 					pieChart_dataSet.setValue(label, tests[j]);
@@ -446,7 +448,7 @@ public class SearchOperations extends HttpServlet
 				j++;
 			}
 			
-			testing_pieChart = ChartFactory.createPieChart("Top 5 Richest and Poorest Countries With Their Respective Test Count Proportions", pieChart_dataSet, true, true, false);
+			testing_pieChart = ChartFactory.createPieChart("Top 5 First World and Developing Countries With Their Respective Test Count Proportions", pieChart_dataSet, true, true, false);
 			
 			PiePlot plot = (PiePlot) testing_pieChart.getPlot();
 			for (i = 0; i < 10; i++)

@@ -1,6 +1,9 @@
 <!DOCTYPE HTML>
 <html>
 <head>
+<!-- CSS -->
+<link rel="stylesheet" type="text/css" href="styles.css" media="screen"/>
+
 <script>
 
 
@@ -160,12 +163,17 @@ function toogleDataSeries(e){
 
 }
 </script>
+
 </head>
+
 <body>
 <div id="chartContainer" style="height: 300px; width: 100%;"></div>
 <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
-<form action="SearchOperationsPage" method="get"> 
-		<button>Return to Search Operations Page</button>
-	</form>
+<br><br>
+
+<form action="SearchOperationsPage" method="get">
+	<input type="submit" name="SearchOperationsPage" value="Go back to homepage" class="gobutton"/>
+</form>
+
 </body>
 </html>

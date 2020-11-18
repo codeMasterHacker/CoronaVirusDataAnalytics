@@ -1,11 +1,18 @@
 <!DOCTYPE HTML>
 <html>
 <head>
+
+<!-- CSS -->
+<link rel="stylesheet" type="text/css" href="styles.css" media="screen"/>
+
 <script type="text/javascript">
 window.onload = function() { 
 	var chart = new CanvasJS.Chart("chartContainer", {
+	animationEnabled: true,
+	theme:"light2",
+		
 	title:{
-		text: "Workplace and Public Transpoty Mobility Trends in ${country} on ${month}"
+		text: "Workplace and Public Transportation Mobility Trends in ${country} on ${month}"
 	},
 	axisX:{
 		
@@ -127,7 +134,7 @@ function toggleDataSeries(e){
 <div id="chartContainer" style="height: 300px; width: 100%;"></div>
 <script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 <form action="SearchOperationsPage" method="get"> 
-		<button>Return to Search Operations Page</button>
+		<input type="submit" name="SearchOperationsPage" value="Go back to homepage" class="gobutton"/>
 	</form>
 </body>
 </html>                           
