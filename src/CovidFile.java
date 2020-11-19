@@ -1812,37 +1812,7 @@ public class CovidFile implements Serializable //will handle only reads
 	String aug = "2020-08-31";
 	String sep = "2020-09-30";
 	double deaths = 0.0;
-	String saveFile = "/Users/jesword/git/cs180project-022-it-s-corona-time/WebContent/savedData/casesVsDeathsWorldWide.txt";
-	String savedCases = "";
-	ArrayList<String> data = new ArrayList<String>();
 	
-	Scanner scanner;
-	try {
-		scanner = new Scanner(new File(saveFile));
-        //Set the delimiter used in file
-        scanner.useDelimiter(",|\n");
-    
-        while (scanner.hasNext()) 
-        	data.add(scanner.next());
-
-        scanner.close();
-	} catch (FileNotFoundException e1) {
-		// TODO Auto-generated catch block
-		e1.printStackTrace();
-	}
-     
-	
-	for(int index = 0; index < data.size(); index++)
-	{
-		if(data.get(index).equals("deaths"))
-			savedCases = data.get(index + 1);
-	}
-	
-	
-	deaths = Double.parseDouble(savedCases);
-	
-	if(data.get(data.size() - 1).equals("0"))
-		return deaths;
 	
 		try 
 		{
@@ -1874,29 +1844,6 @@ public class CovidFile implements Serializable //will handle only reads
 			{ 
 				e.printStackTrace(); 
 			}
-		
-		//---------- SAVING --------------
-		for(int index = 0; index < data.size(); index++)
-		{
-			if(data.get(index).equals("deaths"))
-				data.set(index + 1, String.valueOf(deaths));
-		}
-		data.set(data.size() - 1, "0");
-		try 
-        {
-            FileWriter myWriter = new FileWriter(saveFile);
-
-            for(int in = 0; in < data.size(); in++)
-            {
-                myWriter.write(data.get(in) + ",");
-            }
-            myWriter.close();
-
-        } catch (IOException e) 
-        {
-            System.out.println("An error occurred.");
-            e.printStackTrace();
-        }
 	
 		return deaths;
 
