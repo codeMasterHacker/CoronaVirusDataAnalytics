@@ -66,8 +66,8 @@
 			<div class="row">
 				<div class="column">
 					<div class="leftycolumn">
-						<div class="allcountries" style="width:380px; height:200px; text-align:center;">
-							<p><span style="font-weight:500;">Returns all fields for the country between those dates:</span></p>	
+						<div class="allcountries" style="width:380px; height:205px; text-align:center;">
+							<p><span style="font-weight:500;">View all countries by date:</span></p>	
 			
 							<form action="SearchOperations" method="get">
 								<label for="countries">Countries: </label> 
@@ -98,7 +98,7 @@
 					
 					
 						<div class="allcountries" style="width:380px; height:120px; text-align:center;">
-							<p><span style="font-weight:500;">Click here to see Mobility Trends analytic</span></p>
+							<p><span style="font-weight:500;">View mobility trends by country:</span></p>
 							
 							<form action="SearchOperations" method="get">
 								<select name="countries">
@@ -117,7 +117,7 @@
 						</div>
 					
 						<div class="allcountries" style="width:380px; height:120px; text-align:center;">
-							<p><span style="font-weight:500;">Returns total tests and population for a country</span></p>
+							<p><span style="font-weight:500;">View total tests and population by country:</span></p>
 							
 							<form action="SearchOperations" method="get">
 								<label for="countries">Countries:</label> 
@@ -139,7 +139,7 @@
 					
 					
 						<div class="allcountries" style="width:380px; height:140px; text-align:center;">
-							<p><span style="font-weight:500;">Returns all countries with a health index that is less than the one chosen</span></p>
+							<p><span style="font-weight:500;">View all countries with a health index less than the one chosen:</span></p>
 							
 							<form action="SearchOperations" method="get">
 								<label for="healthIndices">Health Indices:</label> 
@@ -159,7 +159,7 @@
 					
 					
 						<div class="allcountries" style="width:380px; height:120px; text-align:center;">
-							<p><span style="font-weight:500;">Returns a countries baseline fields</span></p>
+							<p><span style="font-weight:500;">View a country's baseline fields</span></p>
 							
 							<form action="SearchOperations" method="get">
 								<label for="countries">Countries:</label> 
@@ -184,11 +184,11 @@
 		<!-- right wrapper -->
 				<div class="column">
 					<div class="rightycolumn">
-						<div class="allcountries" style="width:380px; height:140px; text-align:center;">
-							<p><span style="font-weight:500;">Returns all countries with a population age above 65 percentage greater than the one chosen</span></p>
+						<div class="allcountries" style="width:380px; height:135px; text-align:center;">
+							<p><span style="font-weight:500;">View all countries with a population percentage (of ages 65+) greater than the one chosen:</span></p>
 							
 							<form action="SearchOperations" method="get">
-								<label for="percents">Percents:</label> 
+								<label for="percents">Percentages:</label> 
 								<select name="percents">
 									<option value="10.0">10%</option> 
 									<option value="30.0">30%</option> 
@@ -205,7 +205,7 @@
 						</div>
 						
 						<div class="allcountries" style="width:380px; height:220px; text-align:center;">
-							<p><span style="font-weight:500;">Returns confirmed cases and deaths for the country between those dates:</span></p>
+							<p><span style="font-weight:500;">View confirmed cases and deaths for the country by date range:</span></p>
 							
 							<form action="SearchOperations" method="get">
 								<label for="countries">Countries:</label> 
@@ -235,8 +235,8 @@
 						</div>
 						
 						
-						<div class="allcountries" style="width:380px; height:140px; text-align:center;">
-							<p><span style="font-weight:500;">Choose a Mobility Trend to compare against the cases in that country</span></p>
+						<div class="allcountries" style="width:380px; height:120px; text-align:center;">
+							<p><span style="font-weight:500;">Compare a mobility trend to the number of cases in a country:</span></p>
 							
 							<form action="SearchOperations" method="get">
 								<select name="mobility">
@@ -264,7 +264,7 @@
 						
 						
 						<div class="allcountries" style="width:380px; height:120px; text-align:center;">
-							<p><span style="font-weight:500;">Click here to see the country case vs death analytic</span></p>
+							<p><span style="font-weight:500;">View number of cases vs. deaths by country:</span></p>
 							
 							<form action="SearchOperations" method="get">
 								<select name="countries">
@@ -283,8 +283,8 @@
 						</div>
 						
 						
-						<div class="allcountries" style="width:380px; height:150px; text-align:center;">
-							<p><span style="font-weight:500;">Click here to see the differences between mobility trends for workplaces and public transportation in the listed countries based on the specific month. </span></p>
+						<div class="allcountries" style="width:380px; height:140px; text-align:center;">
+							<p><span style="font-weight:500;">View the differences between mobility trends for work places and public transportation in listed countries by month: </span></p>
 							
 							<form action="SearchOperations" method="get">
 								<select name="countries">
