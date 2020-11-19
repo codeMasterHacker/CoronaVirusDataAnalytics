@@ -1,4 +1,6 @@
 import java.io.*;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.*;
 import java.awt.*;
 import java.awt.image.*;
@@ -26,13 +28,11 @@ public class SearchOperations extends HttpServlet
 		
 		if (fileManager == null)
 		{
-			fileManager = new CovidFileManager("/Users/cristinalawson/eclipse-workspace/cs180_project/WebContent/covidFiles");
+			//fileManager = new CovidFileManager("/Users/cristinalawson/eclipse-workspace/cs180_project/WebContent/covidFiles");
 
 			//fileManager = new CovidFileManager("E:\\Luccas\\Documents\\docs_2\\UCR Docs\\Fall_2020\\cs180\\cs180_project\\cs180project-022-it-s-corona-time\\WebContent\\covidFiles");
 
-			//fileManager = new CovidFileManager("/Users/jesword/git/cs180project-022-it-s-corona-time/WebContent/covidFiles");
-
-			//fileManager = new CovidFileManager("/Users/jesword/git/cs180project-022-it-s-corona-time/WebContent/covidFiles");
+			fileManager = new CovidFileManager("/Users/jesword/git/cs180project-022-it-s-corona-time/WebContent/covidFiles");
 
 			//fileManager = new CovidFileManager("/Users/Enrique/Desktop/codeFolders/Java/cs180project-022-it-s-corona-time/WebContent/covidFiles");
 			
@@ -152,12 +152,16 @@ public class SearchOperations extends HttpServlet
 			double deaths = 0;
 			double casesVsDeathPercent = 0.0;
 			
+			
 			cases = fileManager.getCurrent_covidFile().getCases();
 			deaths = fileManager.getCurrent_covidFile().getDeaths();
 			casesVsDeathPercent = (deaths / cases) * 100;
+			
+			DecimalFormat roundedAnswer = new DecimalFormat("#.###");
+	        roundedAnswer.setRoundingMode(RoundingMode.CEILING);
 			session.setAttribute("Cases", cases);
 			session.setAttribute("Deaths", deaths);
-			session.setAttribute("CasesVsDeathPercent", casesVsDeathPercent);
+			session.setAttribute("CasesVsDeathPercent", roundedAnswer.format(casesVsDeathPercent));
 			
 		} else if (worldwideMobilityTrends != null) {
 			System.out.print("wwnull selected\n");

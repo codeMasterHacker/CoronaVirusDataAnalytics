@@ -1470,42 +1470,51 @@ public class CovidFile implements Serializable //will handle only reads
 
 	public double getCases()
 	{
-		final int casesIndex = 9;
+		final int countryIndex = 1, dateIndex = 2, caseIndex = 9;
 		String[] tokens = null;
 		Scanner inputFile = null;
 		int i = 0, j = 0;
 		boolean flag = true;
-		double cases = 0;
+		String feb = "2020-02-29";
+		String march = "2020-03-31";
+		String april = "2020-04-30";
+		String may = "2020-05-31";
+		String june = "2020-06-30";
+		String july = "2020-07-31";
+		String aug = "2020-08-31";
+		String sep = "2020-09-30";
+		double cases = 0.0;
 		
-		try 
-		{
-			inputFile = new Scanner(covidFile);
-			columnNames = inputFile.nextLine().split(",");
-			while (inputFile.hasNext())
+			try 
 			{
-				tokens = inputFile.nextLine().split(",");
-				
-				flag = false;
-				
-				for (j = 0; j < tokens.length; j++)
+				inputFile = new Scanner(covidFile);
+				columnNames = inputFile.nextLine().split(",");
+				while (inputFile.hasNext())
 				{
-					if (j == casesIndex)
+					tokens = inputFile.nextLine().split(",");
+					
+					flag = false;
+					for (j = 0; j < tokens.length; j++)
 					{
-						cases = cases + Double.parseDouble(tokens[j]);
+						if (j == caseIndex && (tokens[dateIndex].equals(feb) | tokens[dateIndex].equals(march))
+								| tokens[dateIndex].equals(april) | tokens[dateIndex].equals(may)
+								| tokens[dateIndex].equals(june) | tokens[dateIndex].equals(july)
+								| tokens[dateIndex].equals(aug) | tokens[dateIndex].equals(sep))
+						{
+							cases = cases + (Double.parseDouble(tokens[j]));
+						}
 					}
+					
+					i++;
+					
 				}
-				
-				i++;
-				
-			}
 			
-			inputFile.close();
-			System.out.println(i);
-		} 
-		catch (FileNotFoundException e) 
-		{ 
-			e.printStackTrace(); 
-		}
+				inputFile.close();
+			} 
+				catch (FileNotFoundException e) 
+				{ 
+					e.printStackTrace(); 
+				}
 		
 		return cases;
 	}
@@ -1561,49 +1570,54 @@ public class CovidFile implements Serializable //will handle only reads
 	
 	
 	public double getDeaths()
-	{
-		final int deathsIndex = 10;
-		String[] tokens = null;
-		Scanner inputFile = null;
-		int i = 0, j = 0;
-		boolean flag = true;
-		double cases = 0;
-		double deaths = 0;
-		
+	{final int countryIndex = 1, dateIndex = 2, deathIndex = 10;
+	String[] tokens = null;
+	Scanner inputFile = null;
+	int i = 0, j = 0;
+	boolean flag = true;
+	String feb = "2020-02-29";
+	String march = "2020-03-31";
+	String april = "2020-04-30";
+	String may = "2020-05-31";
+	String june = "2020-06-30";
+	String july = "2020-07-31";
+	String aug = "2020-08-31";
+	String sep = "2020-09-30";
+	double deaths = 0.0;
+	
 		try 
 		{
 			inputFile = new Scanner(covidFile);
-			
 			columnNames = inputFile.nextLine().split(",");
-			
 			while (inputFile.hasNext())
 			{
 				tokens = inputFile.nextLine().split(",");
 				
 				flag = false;
-				
 				for (j = 0; j < tokens.length; j++)
 				{
-					if (j == deathsIndex)
+					if (j == deathIndex && (tokens[dateIndex].equals(feb) | tokens[dateIndex].equals(march))
+							| tokens[dateIndex].equals(april) | tokens[dateIndex].equals(may)
+							| tokens[dateIndex].equals(june) | tokens[dateIndex].equals(july)
+							| tokens[dateIndex].equals(aug) | tokens[dateIndex].equals(sep))
 					{
-						deaths = deaths + Double.parseDouble(tokens[j]);
+						deaths = deaths + (Double.parseDouble(tokens[j]));
 					}
 				}
 				
 				i++;
 				
 			}
-			
-			inputFile.close();
-			
-			System.out.println(i);
-		} 
-		catch (FileNotFoundException e) 
-		{ 
-			e.printStackTrace(); 
-		}
 		
+			inputFile.close();
+		} 
+			catch (FileNotFoundException e) 
+			{ 
+				e.printStackTrace(); 
+			}
+	
 		return deaths;
+
 	}
 	
 	public double getCountryDeaths(String country)
