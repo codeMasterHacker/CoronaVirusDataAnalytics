@@ -30,7 +30,7 @@
 					<div class="column1">
 						<div class= "input-icons">
 							<form action="SearchOperations" method="get">
-								<i class="fa fa-eye icon"></i>
+								<i class="fa fa-eye icon" style="padding-top: 15px;"></i>
 								<input type="submit" name="casesVsDeaths" value="View cases vs. deaths analytic" class="topbuttons"/>
 							</form>
 						</div>
@@ -41,7 +41,7 @@
 					<div class="column2">
 						<div class="input-icons">
 							<form action="SearchOperations" method="get">
-								<i class="fa fa-globe" aria-hidden="true"></i>
+								<i class="fa fa-globe" aria-hidden="true" style="padding-top: 15px;"></i>
 								<input type="submit" name="richPoor_testing" value="Compare testing between first world and developing countries" class="topbuttons"/>
 							</form>
 						</div>
@@ -52,7 +52,7 @@
 					<div class="column3">
 						<div class = "input-icons">
 							<form action="SearchOperations" method="get">
-								<i class="fa fa-cloud-upload" aria-hidden="true"></i>
+								<i class="fa fa-cloud-upload" aria-hidden="true" style="padding-top: 15px;"></i>
 								<input type="submit" name="importData" value=" Import previous versions of data" class="topbuttons"/>
 							</form>
 						</div>
@@ -66,12 +66,12 @@
 			<div class="row">
 				<div class="column">
 					<div class="leftycolumn">
-						<div class="allcountries" style="width:380px; height:205px; text-align:center;">
+						<div class="allcountries" style="width:380px; height:200px; text-align:center;">
 							<p><span style="font-weight:500;">View all countries by date:</span></p>	
 			
 							<form action="SearchOperations" method="get">
 								<label for="countries">Countries: </label> 
-								<select name="countries">
+								<select name="countries" style = "padding:0px;">
 									<option value="United States">United States of America</option> 
 									<option value="Mexico">Mexico</option> 
 									<option value="Canada">Canada</option>
@@ -97,11 +97,11 @@
 						</div>
 					
 					
-						<div class="allcountries" style="width:380px; height:120px; text-align:center;">
+						<div class="allcountries" style="width:380px; height:125px; text-align:center;">
 							<p><span style="font-weight:500;">View mobility trends by country:</span></p>
 							
 							<form action="SearchOperations" method="get">
-								<select name="countries">
+								<select name="countries" style = "padding:0px;">
 									<option value="United States">United States of America</option> 
 									<option value="Mexico">Mexico</option> 
 									<option value="Canada">Canada</option>
@@ -116,12 +116,12 @@
 							</form>
 						</div>
 					
-						<div class="allcountries" style="width:380px; height:120px; text-align:center;">
+						<div class="allcountries" style="width:380px; height:125px; text-align:center;">
 							<p><span style="font-weight:500;">View total tests and population by country:</span></p>
 							
 							<form action="SearchOperations" method="get">
-								<label for="countries">Countries:</label> 
-								<select name="countries">
+								<label for="countries" style = "padding:0px;">Countries:</label> 
+								<select name="countries" style = "padding:0px;">
 									<option value="United States">United States of America</option> 
 									<option value="Mexico">Mexico</option> 
 									<option value="Canada">Canada</option>
@@ -138,12 +138,12 @@
 					
 					
 					
-						<div class="allcountries" style="width:380px; height:140px; text-align:center;">
+						<div class="allcountries" style="width:380px; height:125px; text-align:center;">
 							<p><span style="font-weight:500;">View all countries with a health index less than the one chosen:</span></p>
 							
 							<form action="SearchOperations" method="get">
 								<label for="healthIndices">Health Indices:</label> 
-								<select name="healthIndices">
+								<select name="healthIndices" style = "padding:0px;">
 									<option value="0.9">0.9</option> 
 									<option value="0.8">0.8</option> 
 									<option value="0.7">0.7</option>
@@ -158,12 +158,12 @@
 						</div>
 					
 					
-						<div class="allcountries" style="width:380px; height:120px; text-align:center;">
+						<div class="allcountries" style="width:380px; height:125px; text-align:center;">
 							<p><span style="font-weight:500;">View a country's baseline fields</span></p>
 							
 							<form action="SearchOperations" method="get">
 								<label for="countries">Countries:</label> 
-								<select name="countries">
+								<select name="countries" style = "padding:0px;">
 									<option value="United States">United States of America</option> 
 									<option value="Mexico">Mexico</option> 
 									<option value="Canada">Canada</option>
@@ -184,12 +184,12 @@
 		<!-- right wrapper -->
 				<div class="column">
 					<div class="rightycolumn">
-						<div class="allcountries" style="width:380px; height:135px; text-align:center;">
+						<div class="allcountries" style="width:380px; height:140px; text-align:center;">
 							<p><span style="font-weight:500;">View all countries with a population percentage (of ages 65+) greater than the one chosen:</span></p>
 							
 							<form action="SearchOperations" method="get">
 								<label for="percents">Percentages:</label> 
-								<select name="percents">
+								<select name="percents" style = "padding:0px;">
 									<option value="10.0">10%</option> 
 									<option value="30.0">30%</option> 
 									<option value="50.0">50%</option>
@@ -209,7 +209,7 @@
 							
 							<form action="SearchOperations" method="get">
 								<label for="countries">Countries:</label> 
-								<select name="countries">
+								<select name="countries" style = "padding:0px;">
 									<option value="United States">United States of America</option> 
 									<option value="Mexico">Mexico</option> 
 									<option value="Canada">Canada</option>
@@ -239,7 +239,7 @@
 							<p><span style="font-weight:500;">Compare a mobility trend to the number of cases in a country:</span></p>
 							
 							<form action="SearchOperations" method="get">
-								<select name="mobility">
+								<select name="mobility" style = "padding:0px;">
 									<option value="Grocery and Pharmacy">Grocery and Pharmacy</option> 
 									<option value="Parks">Parks</option> 
 									<option value="Residential">Residential</option>
@@ -247,7 +247,7 @@
 									<option value="Transit Stations">Transit Stations</option>
 									<option value="Workplaces">Workplaces</option>
 					  			</select>
-					  			<select name="countries">
+					  			<select name="countries" style = "padding:0px;">
 									<option value="United States">United States of America</option> 
 									<option value="Mexico">Mexico</option> 
 									<option value="Canada">Canada</option>
@@ -267,7 +267,7 @@
 							<p><span style="font-weight:500;">View number of cases vs. deaths by country:</span></p>
 							
 							<form action="SearchOperations" method="get">
-								<select name="countries">
+								<select name="countries" style = "padding:0px;">
 									<option value="United States">United States of America</option> 
 									<option value="Mexico">Mexico</option> 
 									<option value="Canada">Canada</option>
@@ -287,7 +287,7 @@
 							<p><span style="font-weight:500;">View the differences between mobility trends for work places and public transportation in listed countries by month: </span></p>
 							
 							<form action="SearchOperations" method="get">
-								<select name="countries">
+								<select name="countries" style = "padding:0px;">
 									<option value="United States">United States of America</option> 
 									<option value="Mexico">Mexico</option> 
 									<option value="Canada">Canada</option>
@@ -295,7 +295,7 @@
 									<option value="Japan">Japan</option>
 									<option value="United Arab Emirates">United Arab Emirates</option>
 					  			</select>
-					  			<select name="months">
+					  			<select name="months" style = "padding:0px;">
 									<option value="February">February</option> 
 									<option value="March">March</option> 
 									<option value="April">April</option>

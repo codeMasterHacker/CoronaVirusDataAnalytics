@@ -22,12 +22,14 @@
 	select {
 		font-family:'Poppins', sans-serif;
 		font-size: 12px;
-		padding: 16px 20px;
 		border: 1px solid #ddd;
 		border-radius: 5px;
 		background-color: #fff;
 		cursor:pointer;
 	}
+	
+	
+		
 	
 	input[type=text] {
 		border: 1px solid #bbb;
@@ -199,8 +201,6 @@
 	
 	.input-icons i {
 		position: absolute;	
-		padding-top:18px;
-		padding-left:15px;
 		font-size:13px;
 	}
 	
@@ -214,8 +214,4 @@
 		color: #5ba767;
 	}
 	
-	.icon {
-		padding: 10px;
-		min-width: 40px;
-	}
 	
