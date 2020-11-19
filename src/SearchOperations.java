@@ -159,8 +159,6 @@ public class SearchOperations extends HttpServlet
 			
 			long startTime = System.nanoTime();
 			
-			long startTime = System.nanoTime();
-			
 			cases = fileManager.getCurrent_covidFile().getCases();
 			deaths = fileManager.getCurrent_covidFile().getDeaths();
 			casesVsDeathPercent = (deaths / cases) * 100;	
@@ -323,14 +321,6 @@ public class SearchOperations extends HttpServlet
 			country = request.getParameter("countries");
 			session.setAttribute("country", country);
 			
-			ArrayList<Double> groceryAvg = new ArrayList<Double>();
-			ArrayList<Double> parksAvg = new ArrayList<Double>();
-			ArrayList<Double> resAvg = new ArrayList<Double>();
-			ArrayList<Double> retailAvg = new ArrayList<Double>();
-			ArrayList<Double> transitAvg = new ArrayList<Double>();
-			ArrayList<Double> workplaceAvg = new ArrayList<Double>();
-			
-			ArrayList<String> data = new ArrayList<String>();
 			ArrayList<Double> groceryAvg = new ArrayList<Double>();
 			ArrayList<Double> parksAvg = new ArrayList<Double>();
 			ArrayList<Double> resAvg = new ArrayList<Double>();
