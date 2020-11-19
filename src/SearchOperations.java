@@ -1,4 +1,6 @@
 import java.io.*;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.*;
 import java.awt.*;
 import java.awt.image.*;
@@ -27,12 +29,20 @@ public class SearchOperations extends HttpServlet
 		if (fileManager == null)
 		{
 			//fileManager = new CovidFileManager("/Users/cristinalawson/eclipse-workspace/cs180_project/WebContent/covidFiles");
+
 			//fileManager = new CovidFileManager("E:\\Luccas\\Documents\\docs_2\\UCR Docs\\Fall_2020\\cs180\\cs180_project\\cs180project-022-it-s-corona-time\\WebContent\\covidFiles");
-			//fileManager = new CovidFileManager("/Users/jesword/git/cs180project-022-it-s-corona-time/WebContent/covidFiles");
-			//fileManager = new CovidFileManager("/Users/jesword/git/cs180project-022-it-s-corona-time/WebContent/covidFiles");
-			//fileManager = new CovidFileManager("/Users/Enrique/Desktop/codeFolders/Java/cs180project-022-it-s-corona-time/WebContent/covidFiles");			
-			fileManager = new CovidFileManager("C:\\Users\\Enrique Munoz\\eclipse-workspace\\cs180project-022-it-s-corona-time\\WebContent\\covidFiles");
+
+			fileManager = new CovidFileManager("/Users/jesword/git/cs180project-022-it-s-corona-time/WebContent/covidFiles");
+
+			//fileManager = new CovidFileManager("/Users/Enrique/Desktop/codeFolders/Java/cs180project-022-it-s-corona-time/WebContent/covidFiles");
+			
+			//fileManager = new CovidFileManager("C:\\Users\\Enrique Munoz\\eclipse-workspace\\cs180project-022-it-s-corona-time\\WebContent\\covidFiles");
 		}
+
+
+		
+		// SAVE FILE
+		String mobilityFile = "/Users/jesword/git/cs180project-022-it-s-corona-time/WebContent/savedData/mobility.txt";
 		
 		String searchOp1 = request.getParameter("submit1");
 		String searchOp2 = request.getParameter("submit2");
@@ -147,12 +157,23 @@ public class SearchOperations extends HttpServlet
 			double deaths = 0;
 			double casesVsDeathPercent = 0.0;
 			
+			long startTime = System.nanoTime();
+			
+			long startTime = System.nanoTime();
+			
 			cases = fileManager.getCurrent_covidFile().getCases();
 			deaths = fileManager.getCurrent_covidFile().getDeaths();
-			casesVsDeathPercent = (deaths / cases) * 100;
+			casesVsDeathPercent = (deaths / cases) * 100;	
+			
+			DecimalFormat roundedAnswer = new DecimalFormat("#.###");
+	        roundedAnswer.setRoundingMode(RoundingMode.CEILING);
 			session.setAttribute("Cases", cases);
 			session.setAttribute("Deaths", deaths);
-			session.setAttribute("CasesVsDeathPercent", casesVsDeathPercent);
+			session.setAttribute("CasesVsDeathPercent", roundedAnswer.format(casesVsDeathPercent));
+			
+			long endTime = System.nanoTime();
+			long executionTime = (endTime - startTime) / 1000000;
+			System.out.println("Execution Time: " + executionTime + " milliseconds");
 			
 		} else if (worldwideMobilityTrends != null) {
 			System.out.print("wwnull selected\n");
@@ -302,8 +323,74 @@ public class SearchOperations extends HttpServlet
 			country = request.getParameter("countries");
 			session.setAttribute("country", country);
 			
+			ArrayList<Double> groceryAvg = new ArrayList<Double>();
+			ArrayList<Double> parksAvg = new ArrayList<Double>();
+			ArrayList<Double> resAvg = new ArrayList<Double>();
+			ArrayList<Double> retailAvg = new ArrayList<Double>();
+			ArrayList<Double> transitAvg = new ArrayList<Double>();
+			ArrayList<Double> workplaceAvg = new ArrayList<Double>();
+			
+			ArrayList<String> data = new ArrayList<String>();
+			ArrayList<Double> groceryAvg = new ArrayList<Double>();
+			ArrayList<Double> parksAvg = new ArrayList<Double>();
+			ArrayList<Double> resAvg = new ArrayList<Double>();
+			ArrayList<Double> retailAvg = new ArrayList<Double>();
+			ArrayList<Double> transitAvg = new ArrayList<Double>();
+			ArrayList<Double> workplaceAvg = new ArrayList<Double>();
+			
+			ArrayList<String> data = new ArrayList<String>();
+			
+			long startTime = System.nanoTime();
+			Scanner scanner;
+			try {
+				scanner = new Scanner(new File(mobilityFile));
+		        //Set the delimiter used in file
+		        scanner.useDelimiter(",|\n");
+		    
+		        while (scanner.hasNext()) 
+		        	data.add(scanner.next());
+
+		        scanner.close();
+			} catch (FileNotFoundException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			System.out.println(data.size());
+
+			System.out.println("Country: " + country);
 			// Grocery and Pharmacy Mobility
-			ArrayList<Double> groceryAvg = fileManager.getCurrent_covidFile().getGroceryMobilityAvg(country);
+			if(data.get(data.size() - 1).equals(country))
+			{
+				for(int j = 0; j < 48; j++)
+				{
+
+					if(j < 8)
+						groceryAvg.add(Double.parseDouble(data.get(j)));
+					else if(j < 16)
+						parksAvg.add(Double.parseDouble(data.get(j)));
+					else if(j < 24)
+						resAvg.add(Double.parseDouble(data.get(j)));
+					else if(j < 32)
+						retailAvg.add(Double.parseDouble(data.get(j)));
+					else if(j < 40)
+						transitAvg.add(Double.parseDouble(data.get(j)));
+					else if(j < 48)
+						workplaceAvg.add(Double.parseDouble(data.get(j)));
+				}
+
+			}
+			else
+			{
+				groceryAvg = fileManager.getCurrent_covidFile().getGroceryMobilityAvg(country);
+				parksAvg = fileManager.getCurrent_covidFile().getParksMobilityAvg(country);
+				resAvg = fileManager.getCurrent_covidFile().getResidentialMobilityAvg(country);
+				retailAvg = fileManager.getCurrent_covidFile().getRetailMobilityAvg(country);
+				transitAvg = fileManager.getCurrent_covidFile().getTransitMobilityAvg(country);
+				workplaceAvg = fileManager.getCurrent_covidFile().getWorkplaceMobilityAvg(country);
+			}
+			
+		
+			// Grocery
 			session.setAttribute("febGrocery", groceryAvg.get(0));
 			session.setAttribute("marchGrocery", groceryAvg.get(1));
 			session.setAttribute("aprilGrocery", groceryAvg.get(2));
@@ -313,8 +400,7 @@ public class SearchOperations extends HttpServlet
 			session.setAttribute("augGrocery", groceryAvg.get(6));
 			session.setAttribute("sepGrocery", groceryAvg.get(7));
 			
-			// Parks mobility
-			ArrayList<Double> parksAvg = fileManager.getCurrent_covidFile().getParksMobilityAvg(country);
+			// Parks
 			session.setAttribute("febParks", parksAvg.get(0));
 			session.setAttribute("marchParks", parksAvg.get(1));
 			session.setAttribute("aprilParks", parksAvg.get(2));
@@ -325,7 +411,7 @@ public class SearchOperations extends HttpServlet
 			session.setAttribute("sepParks", parksAvg.get(7));
 			
 			// Parks mobility
-			ArrayList<Double> resAvg = fileManager.getCurrent_covidFile().getResidentialMobilityAvg(country);
+
 			session.setAttribute("febRes", resAvg.get(0));
 			session.setAttribute("marchRes", resAvg.get(1));
 			session.setAttribute("aprilRes", resAvg.get(2));
@@ -336,7 +422,7 @@ public class SearchOperations extends HttpServlet
 			session.setAttribute("sepRes", resAvg.get(7));
 						
 			// retail mobility
-			ArrayList<Double> retailAvg = fileManager.getCurrent_covidFile().getRetailMobilityAvg(country);
+
 			session.setAttribute("febRetail", retailAvg.get(0));
 			session.setAttribute("marchRetail", retailAvg.get(1));
 			session.setAttribute("aprilRetail", retailAvg.get(2));
@@ -347,7 +433,7 @@ public class SearchOperations extends HttpServlet
 			session.setAttribute("sepRetail", retailAvg.get(7));
 						
 			// Transit mobility
-			ArrayList<Double> transitAvg = fileManager.getCurrent_covidFile().getTransitMobilityAvg(country);
+	
 			session.setAttribute("febTransit", transitAvg.get(0));
 			session.setAttribute("marchTransit", transitAvg.get(1));
 			session.setAttribute("aprilTransit", transitAvg.get(2));
@@ -358,7 +444,7 @@ public class SearchOperations extends HttpServlet
 			session.setAttribute("sepTransit", transitAvg.get(7));
 						
 			// Workplace mobility
-			ArrayList<Double> workplaceAvg = fileManager.getCurrent_covidFile().getWorkplaceMobilityAvg(country);
+
 			session.setAttribute("febWorkplace", workplaceAvg.get(0));
 			session.setAttribute("marchWorkplace", workplaceAvg.get(1));
 			session.setAttribute("aprilWorkplace", workplaceAvg.get(2));
@@ -368,6 +454,60 @@ public class SearchOperations extends HttpServlet
 			session.setAttribute("augWorkplace", workplaceAvg.get(6));
 			session.setAttribute("sepWorkplace", workplaceAvg.get(7));
 			
+			data.clear();
+			
+			for(Double value : groceryAvg)
+			{
+				String temp = Double.toString(value);
+				data.add(temp);
+			}
+			for(Double value : parksAvg)
+			{
+				String temp = Double.toString(value);
+				data.add(temp);
+			}
+			for(Double value : resAvg)
+			{
+				String temp = Double.toString(value);
+				data.add(temp);
+			}
+			for(Double value : retailAvg)
+			{
+				String temp = Double.toString(value);
+				data.add(temp);
+			}
+			for(Double value : transitAvg)
+			{
+				String temp = Double.toString(value);
+				data.add(temp);
+			}
+			for(Double value : workplaceAvg)
+			{
+				String temp = Double.toString(value);
+				data.add(temp);
+			}
+
+			data.add(country);
+			
+			try 
+	        {
+	            FileWriter myWriter = new FileWriter(mobilityFile);
+	            
+	            for(int in = 0; in < data.size(); in++)
+	            		myWriter.write(data.get(in) + ",");
+	            
+	            myWriter.close();
+
+	        } catch (IOException e) 
+	        {
+	            System.out.println("An error occurred.");
+	            e.printStackTrace();
+	        }
+			
+			long endTime = System.nanoTime();
+			long executionTime = (endTime - startTime) / 1000000;
+			System.out.println("Execution Time: " + executionTime + " milliseconds");
+				
 			
 		}
 		else if(casesVsMobility != null)
@@ -375,6 +515,8 @@ public class SearchOperations extends HttpServlet
 			isCasesVsMobility = true;
 			country = request.getParameter("countries");
 			String mobility = request.getParameter("mobility");
+			
+			long startTime = System.nanoTime();
 			ArrayList<Double> cases = fileManager.getCurrent_covidFile().getCasesPerMonth(country);
 			ArrayList<Double> mobilityAvg = new ArrayList<Double>();
 			
@@ -393,6 +535,7 @@ public class SearchOperations extends HttpServlet
 			
 			session.setAttribute("country", country);
 			session.setAttribute("mobility", mobility);
+			
 			
 			// cases per month
 			session.setAttribute("febCases", cases.get(0));
@@ -414,11 +557,10 @@ public class SearchOperations extends HttpServlet
 			session.setAttribute("augMobility", mobilityAvg.get(6));
 			session.setAttribute("sepMobility", mobilityAvg.get(7));
 			
-			for(int i = 0; i < cases.size(); i++)
-			{
-				System.out.println("Cases: " + cases.get(i) + " |  Mobility: " + mobilityAvg.get(i));
-			}
-				
+			long endTime = System.nanoTime();
+			long executionTime = (endTime - startTime) / 1000000;
+			System.out.println("Execution Time: " + executionTime + " milliseconds");
+	
 			
 		}
 		else if (countryCasesVSDeaths != null) {
@@ -611,6 +753,7 @@ public class SearchOperations extends HttpServlet
 			//System.out.print("search selected\n");
 			session.setAttribute("columnNames", fileManager.getCurrent_covidFile().getColumnNames());
 			session.setAttribute("table", table);
+			
 			
 			response.sendRedirect("displayResultsPage.jsp");
 		}

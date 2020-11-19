@@ -16,6 +16,10 @@ public class CovidFile implements Serializable //will handle only reads
 	
 	private File covidFile; //no setters for this field
 	
+	// Save Files
+	private String caseVsMobilityFile = "/Users/jesword/git/cs180project-022-it-s-corona-time/WebContent/savedData/caseVsMobility.txt";
+	private String casesVsWorldWideFile = "/Users/jesword/git/cs180project-022-it-s-corona-time/WebContent/savedData/casesVsDeathsWorldWide.txt";
+	
 	public CovidFile(File file)
 	{
 		covidFile = file;
@@ -1602,6 +1606,31 @@ public class CovidFile implements Serializable //will handle only reads
 		int i = 0, j = 0;
 		boolean flag = true;
 		int monthCount = 1;
+		ArrayList<String> data = new ArrayList<String>();
+		
+		Scanner scanner;
+		try {
+			scanner = new Scanner(new File(caseVsMobilityFile));
+	        //Set the delimiter used in file
+	        scanner.useDelimiter(",|\n");
+	    
+	        while (scanner.hasNext()) 
+	        	data.add(scanner.next());
+
+	        scanner.close();
+		} catch (FileNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		if(data.get(data.size() - 1).equals("0") && data.get(data.size() - 2).equals(country))
+		{
+
+			for(int index = 0; index < data.size() - 2; index++)
+				cases.add(Double.parseDouble(data.get(index)));
+			
+			return cases;
+		}
 		
 		while(monthCount < 9)
 		{
@@ -1690,48 +1719,137 @@ public class CovidFile implements Serializable //will handle only reads
 			}
 		}
 		
+		
+		//---------- SAVING --------------
+		data.clear();
+		for(int index = 0; index < cases.size(); index++)
+		{
+			String temp = Double.toString(cases.get(index));
+			data.add(temp);
+		}
+		data.add(country);
+		data.add("0");
+		
+		try 
+        {
+            FileWriter myWriter = new FileWriter(caseVsMobilityFile);
+
+            for(int in = 0; in < data.size(); in++)
+            {
+                myWriter.write(data.get(in) + ",");
+            }
+            myWriter.close();
+
+        } catch (IOException e) 
+        {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+		
 	
 		return cases;
 	}
 
 	public double getCases()
 	{
-		final int casesIndex = 9;
+		final int countryIndex = 1, dateIndex = 2, caseIndex = 9;
 		String[] tokens = null;
 		Scanner inputFile = null;
 		int i = 0, j = 0;
 		boolean flag = true;
-		double cases = 0;
+		String feb = "2020-02-29";
+		String march = "2020-03-31";
+		String april = "2020-04-30";
+		String may = "2020-05-31";
+		String june = "2020-06-30";
+		String july = "2020-07-31";
+		String aug = "2020-08-31";
+		String sep = "2020-09-30";
+		double cases = 0.0;
+
+		String savedCases = "";
+		ArrayList<String> data = new ArrayList<String>();
 		
-		try 
-		{
-			inputFile = new Scanner(covidFile);
-			columnNames = inputFile.nextLine().split(",");
-			while (inputFile.hasNext())
-			{
-				tokens = inputFile.nextLine().split(",");
-				
-				flag = false;
-				
-				for (j = 0; j < tokens.length; j++)
-				{
-					if (j == casesIndex)
-					{
-						cases = cases + Double.parseDouble(tokens[j]);
-					}
-				}
-				
-				i++;
-				
-			}
-			
-			inputFile.close();
-			System.out.println(i);
-		} 
-		catch (FileNotFoundException e) 
-		{ 
-			e.printStackTrace(); 
+		Scanner scanner;
+		try {
+			scanner = new Scanner(new File(casesVsWorldWideFile));
+	        //Set the delimiter used in file
+	        scanner.useDelimiter(",|\n");
+	    
+	        while (scanner.hasNext()) 
+	        	data.add(scanner.next());
+
+	        scanner.close();
+		} catch (FileNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
+         
+		
+		for(int index = 0; index < data.size(); index++)
+		{
+			if(data.get(index).equals("cases"))
+				savedCases = data.get(index + 1);
+		}
+		
+		cases = Double.parseDouble(savedCases);
+		
+		if(data.get(data.size() - 2).equals("0"))
+			return cases;
+		
+			try 
+			{
+				inputFile = new Scanner(covidFile);
+				columnNames = inputFile.nextLine().split(",");
+				while (inputFile.hasNext())
+				{
+					tokens = inputFile.nextLine().split(",");
+					
+					flag = false;
+					for (j = 0; j < tokens.length; j++)
+					{
+						if (j == caseIndex && (tokens[dateIndex].equals(feb) | tokens[dateIndex].equals(march))
+								| tokens[dateIndex].equals(april) | tokens[dateIndex].equals(may)
+								| tokens[dateIndex].equals(june) | tokens[dateIndex].equals(july)
+								| tokens[dateIndex].equals(aug) | tokens[dateIndex].equals(sep))
+						{
+							cases = cases + (Double.parseDouble(tokens[j]));
+						}
+					}
+					
+					i++;
+					
+				}
+			
+				inputFile.close();
+			} 
+				catch (FileNotFoundException e) 
+				{ 
+					e.printStackTrace(); 
+				}
+			
+			//---------- SAVING --------------
+			for(int index = 0; index < data.size(); index++)
+			{
+				if(data.get(index).equals("cases"))
+					data.set(index + 1, String.valueOf(cases));
+			}
+			data.set(data.size() - 2, "0");
+			try 
+	        {
+	            FileWriter myWriter = new FileWriter(casesVsWorldWideFile);
+
+	            for(int in = 0; in < data.size(); in++)
+	            {
+	                myWriter.write(data.get(in) + ",");
+	            }
+	            myWriter.close();
+
+	        } catch (IOException e) 
+	        {
+	            System.out.println("An error occurred.");
+	            e.printStackTrace();
+	        }
 		
 		return cases;
 	}
@@ -1787,49 +1905,108 @@ public class CovidFile implements Serializable //will handle only reads
 	
 	
 	public double getDeaths()
+	{final int countryIndex = 1, dateIndex = 2, deathIndex = 10;
+	String[] tokens = null;
+	Scanner inputFile = null;
+	int i = 0, j = 0;
+	boolean flag = true;
+	String feb = "2020-02-29";
+	String march = "2020-03-31";
+	String april = "2020-04-30";
+	String may = "2020-05-31";
+	String june = "2020-06-30";
+	String july = "2020-07-31";
+	String aug = "2020-08-31";
+	String sep = "2020-09-30";
+	double deaths = 0.0;
+	String saveFile = "/Users/jesword/git/cs180project-022-it-s-corona-time/WebContent/savedData/casesVsDeathsWorldWide.txt";
+	String savedCases = "";
+	ArrayList<String> data = new ArrayList<String>();
+	
+	Scanner scanner;
+	try {
+		scanner = new Scanner(new File(saveFile));
+        //Set the delimiter used in file
+        scanner.useDelimiter(",|\n");
+    
+        while (scanner.hasNext()) 
+        	data.add(scanner.next());
+
+        scanner.close();
+	} catch (FileNotFoundException e1) {
+		// TODO Auto-generated catch block
+		e1.printStackTrace();
+	}
+     
+	
+	for(int index = 0; index < data.size(); index++)
 	{
-		final int deathsIndex = 10;
-		String[] tokens = null;
-		Scanner inputFile = null;
-		int i = 0, j = 0;
-		boolean flag = true;
-		double cases = 0;
-		double deaths = 0;
-		
+		if(data.get(index).equals("deaths"))
+			savedCases = data.get(index + 1);
+	}
+	
+	
+	deaths = Double.parseDouble(savedCases);
+	
+	if(data.get(data.size() - 1).equals("0"))
+		return deaths;
+	
 		try 
 		{
 			inputFile = new Scanner(covidFile);
-			
 			columnNames = inputFile.nextLine().split(",");
-			
 			while (inputFile.hasNext())
 			{
 				tokens = inputFile.nextLine().split(",");
 				
 				flag = false;
-				
 				for (j = 0; j < tokens.length; j++)
 				{
-					if (j == deathsIndex)
+					if (j == deathIndex && (tokens[dateIndex].equals(feb) | tokens[dateIndex].equals(march))
+							| tokens[dateIndex].equals(april) | tokens[dateIndex].equals(may)
+							| tokens[dateIndex].equals(june) | tokens[dateIndex].equals(july)
+							| tokens[dateIndex].equals(aug) | tokens[dateIndex].equals(sep))
 					{
-						deaths = deaths + Double.parseDouble(tokens[j]);
+						deaths = deaths + (Double.parseDouble(tokens[j]));
 					}
 				}
 				
 				i++;
 				
 			}
-			
-			inputFile.close();
-			
-			System.out.println(i);
-		} 
-		catch (FileNotFoundException e) 
-		{ 
-			e.printStackTrace(); 
-		}
 		
+			inputFile.close();
+		} 
+			catch (FileNotFoundException e) 
+			{ 
+				e.printStackTrace(); 
+			}
+		
+		//---------- SAVING --------------
+		for(int index = 0; index < data.size(); index++)
+		{
+			if(data.get(index).equals("deaths"))
+				data.set(index + 1, String.valueOf(deaths));
+		}
+		data.set(data.size() - 1, "0");
+		try 
+        {
+            FileWriter myWriter = new FileWriter(saveFile);
+
+            for(int in = 0; in < data.size(); in++)
+            {
+                myWriter.write(data.get(in) + ",");
+            }
+            myWriter.close();
+
+        } catch (IOException e) 
+        {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+	
 		return deaths;
+
 	}
 	
 	public double getCountryDeaths(String country)
