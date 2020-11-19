@@ -10,6 +10,8 @@ public class CovidFile implements Serializable //will handle only reads
 	private String[][] table; //no getters and setters for this field
 	private String[] columnNames; //no setters for this field
 	
+	private DataStruct_IncrDesign[] dataStruct_incrDesign;
+	
 	private double[][] table1; //table for graphs
 	
 	private File covidFile; //no setters for this field
@@ -38,6 +40,7 @@ public class CovidFile implements Serializable //will handle only reads
 	public int get_rowNum() { return rows; }
 	public String[] get_columnNames() { return columnNames; }
 	public File getFile() { return covidFile; }
+	public DataStruct_IncrDesign[] get_dataStruct_incrDesign() { return dataStruct_incrDesign; }
 	
 	private int readColumns()
 	{
@@ -58,20 +61,93 @@ public class CovidFile implements Serializable //will handle only reads
 		return columnNames.length;
 	}
 	
-	private int countRows()
+//	private int countRows() //original
+//	{
+//		Scanner inputFile = null;
+//		int count = -1; ////-1 because I'm not counting the column names at the beginning
+//		
+//		try
+//		{
+//			inputFile = new Scanner(covidFile);
+//			
+//			while (inputFile.hasNext())
+//			{
+//				inputFile.nextLine();
+//				count++;
+//			}
+//			
+//			inputFile.close();
+//		}
+//		catch(IOException e) 
+//		{ 
+//			e.printStackTrace(); 
+//			return 0;
+//		}
+//		
+//		System.out.println(count);
+//		return count;
+//	}
+	
+	private int countRows() //copy
 	{
 		Scanner inputFile = null;
-		int count = -1; ////-1 because I'm not counting the column names at the beginning
+		int i = 0, count = -1; //-1 because I'm not counting the column names at the beginning
+		
+		final int isoIndex = 1, testIndex = 12, gdpIndex = 13, numCountries = 133;
+		String[] tokens = null;
+		String[] previousTokens = null;
+		
+		dataStruct_incrDesign = null;
 		
 		try
 		{
 			inputFile = new Scanner(covidFile);
+			dataStruct_incrDesign = new DataStruct_IncrDesign[numCountries];
+			
+			inputFile.nextLine(); //skips over the column names, which don't count toward the number of rows
+			
+			previousTokens = inputFile.nextLine().split(",");
+			count++;
 			
 			while (inputFile.hasNext())
 			{
-				inputFile.nextLine();
+				tokens = inputFile.nextLine().split(",");
 				count++;
+				
+				//create the dataStruct_incrDesign array, which has fields countryName, totalTests, GDP, and gdpRank
+				if (tokens[isoIndex].equals(previousTokens[isoIndex]))
+				{
+					previousTokens = tokens;
+					continue;
+				}
+				
+				if (i < numCountries)
+				{
+					dataStruct_incrDesign[i] = new DataStruct_IncrDesign();
+					dataStruct_incrDesign[i].countryName = previousTokens[isoIndex];
+					dataStruct_incrDesign[i].totalTests = (int) Double.parseDouble(previousTokens[testIndex]);
+					dataStruct_incrDesign[i].GDP = Double.parseDouble(previousTokens[gdpIndex]);
+					dataStruct_incrDesign[i].gdpRank = i;
+					i++;
+				
+					previousTokens = tokens;
+				}
 			}
+			
+			if (i < numCountries) //for last country
+			{
+				dataStruct_incrDesign[i] = new DataStruct_IncrDesign();
+				dataStruct_incrDesign[i].countryName = previousTokens[isoIndex];
+				dataStruct_incrDesign[i].totalTests =(int) Double.parseDouble(previousTokens[testIndex]);
+				dataStruct_incrDesign[i].GDP = Double.parseDouble(previousTokens[gdpIndex]);
+				dataStruct_incrDesign[i].gdpRank = i;
+				i++;
+			
+				previousTokens = tokens;
+			}
+			
+			//sort dataStruct_incrDesign array based on gdp
+			bubbleSort(dataStruct_incrDesign);
 			
 			inputFile.close();
 		}
@@ -85,9 +161,89 @@ public class CovidFile implements Serializable //will handle only reads
 		return count;
 	}
 	
-	private int cleanData()
+//	private int cleanData() //original
+//	{
+//		String[] tokens = null;
+//		String[] temp = null;
+//		String oldPath = covidFile.getAbsolutePath();
+//		String newPath = null;
+//		String missingValue = "-404.0";
+//		
+//		Scanner inputFile = null;
+//		PrintWriter outputFile = null;
+//		File newFile = null;
+//		
+//		StringBuilder path = null;
+//		
+//		int i = 0, fileSize = -1; //-1 because I'm not counting the column names at the beginning
+//		
+//		try
+//		{
+//			inputFile = new Scanner(covidFile);
+//			
+//			path = new StringBuilder(oldPath);
+//			path.insert(oldPath.length()-4, "_0"); // ".csv" has 4 characters
+//			
+//			newPath = path.toString();
+//			newFile = new File(newPath);
+//			
+//			outputFile = new PrintWriter(newFile);
+//			
+//			while (inputFile.hasNext())
+//			{
+//				tokens = inputFile.nextLine().split(",");
+//				
+//				for (i = 0; i < tokens.length; i++) //checks for empty strings
+//				{
+//					if (tokens[i].isEmpty())
+//						tokens[i] = missingValue;
+//				}
+//				
+//				if (tokens.length != cols) //missing values
+//				{
+//					temp = new String[cols];
+//					
+//					for (i = 0; i < tokens.length; i++) //copy tokens to temp
+//						temp[i] = tokens[i];
+//					
+//					for (; i < temp.length; i++) //add missing value filler at the end
+//						temp[i] = missingValue;
+//					
+//					tokens = temp;
+//				}
+//				
+//				for (i = 0; i < tokens.length-1; i++)
+//					outputFile.print(tokens[i] + ",");
+//				outputFile.println(tokens[i]);
+//				
+//				fileSize++;
+//			}
+//			
+//			inputFile.close();
+//			outputFile.close();
+//			
+//			covidFile.delete(); //deletes bad data
+//			covidFile = newFile; //reference covidFile to the new file created by the PrintWriter object
+//			
+//			System.out.println(fileSize);
+//			
+//			return fileSize;
+//		}
+//		catch(IOException e) 
+//		{ 
+//			e.printStackTrace(); 
+//			inputFile.close();
+//			return 0;
+//		}
+//	}
+	
+	
+	
+	private int cleanData() //copy
 	{
+		final int isoIndex = 1, testIndex = 12, gdpIndex = 13, numCountries = 133;
 		String[] tokens = null;
+		String[] previousTokens = null;
 		String[] temp = null;
 		String oldPath = covidFile.getAbsolutePath();
 		String newPath = null;
@@ -99,11 +255,14 @@ public class CovidFile implements Serializable //will handle only reads
 		
 		StringBuilder path = null;
 		
-		int i = 0, fileSize = -1; //-1 because I'm not counting the column names at the beginning
+		int i = 0, j = 0, fileSize = -1; //-1 because I'm not counting the column names at the beginning
+		
+		dataStruct_incrDesign = null;
 		
 		try
 		{
 			inputFile = new Scanner(covidFile);
+			dataStruct_incrDesign = new DataStruct_IncrDesign[numCountries];
 			
 			path = new StringBuilder(oldPath);
 			path.insert(oldPath.length()-4, "_0"); // ".csv" has 4 characters
@@ -112,6 +271,39 @@ public class CovidFile implements Serializable //will handle only reads
 			newFile = new File(newPath);
 			
 			outputFile = new PrintWriter(newFile);
+			
+			previousTokens = inputFile.nextLine().split(","); //column names, which have perfect formatting
+			
+			for (i = 0; i < previousTokens.length-1; i++)
+				outputFile.print(previousTokens[i] + ",");
+			outputFile.println(previousTokens[i]);
+			
+			previousTokens = inputFile.nextLine().split(",");
+			
+			for (i = 0; i < previousTokens.length; i++) //checks for empty strings
+			{
+				if (previousTokens[i].isEmpty())
+					previousTokens[i] = missingValue;
+			}
+			
+			if (previousTokens.length != cols) //missing values
+			{
+				temp = new String[cols];
+				
+				for (i = 0; i < previousTokens.length; i++) //copy tokens to temp
+					temp[i] = previousTokens[i];
+				
+				for (; i < temp.length; i++) //add missing value filler at the end
+					temp[i] = missingValue;
+				
+				previousTokens = temp;
+			}
+			
+			for (i = 0; i < previousTokens.length-1; i++)
+				outputFile.print(previousTokens[i] + ",");
+			outputFile.println(previousTokens[i]);
+			
+			fileSize++;
 			
 			while (inputFile.hasNext())
 			{
@@ -141,7 +333,41 @@ public class CovidFile implements Serializable //will handle only reads
 				outputFile.println(tokens[i]);
 				
 				fileSize++;
+				
+				//create the dataStruct_incrDesign array, which has fields countryName, totalTests, GDP, and gdpRank
+				if (tokens[isoIndex].equals(previousTokens[isoIndex]))
+				{
+					previousTokens = tokens;
+					continue;
+				}
+				
+				if (j < numCountries)
+				{
+					dataStruct_incrDesign[j] = new DataStruct_IncrDesign();
+					dataStruct_incrDesign[j].countryName = previousTokens[isoIndex];
+					dataStruct_incrDesign[j].totalTests =(int) Double.parseDouble(previousTokens[testIndex]);
+					dataStruct_incrDesign[j].GDP = Double.parseDouble(previousTokens[gdpIndex]);
+					dataStruct_incrDesign[j].gdpRank = j;
+					j++;
+				
+					previousTokens = tokens;
+				}
 			}
+			
+			if (j < numCountries) //for last country
+			{
+				dataStruct_incrDesign[j] = new DataStruct_IncrDesign();
+				dataStruct_incrDesign[j].countryName = previousTokens[isoIndex];
+				dataStruct_incrDesign[j].totalTests =(int) Double.parseDouble(previousTokens[testIndex]);
+				dataStruct_incrDesign[j].GDP = Double.parseDouble(previousTokens[gdpIndex]);
+				dataStruct_incrDesign[j].gdpRank = j;
+				j++;
+			
+				previousTokens = tokens;
+			}
+			
+			//sort dataStruct_incrDesign array based on gdp
+			bubbleSort(dataStruct_incrDesign);
 			
 			inputFile.close();
 			outputFile.close();
@@ -2486,5 +2712,29 @@ public class CovidFile implements Serializable //will handle only reads
 		}
 		
 		return isos;
+	}
+	
+	
+	
+	public static void bubbleSort(DataStruct_IncrDesign[] array)
+	{
+		int lastPos, index;
+		DataStruct_IncrDesign temp;
+		
+		for (lastPos = array.length - 1; lastPos >= 0; lastPos--)
+		{
+			for (index = 0; index <= lastPos - 1; index++)
+			{
+				if (array[index].GDP > array[index + 1].GDP)
+				{
+					temp = array[index];
+					array[index] = array[index + 1];
+					array[index + 1] = temp;
+					
+					array[index].gdpRank = index+1;
+					array[index + 1].gdpRank = index+2;
+				}
+			}
+		}
 	}
 }
