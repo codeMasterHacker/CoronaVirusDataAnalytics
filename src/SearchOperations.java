@@ -328,56 +328,13 @@ public class SearchOperations extends HttpServlet
 			ArrayList<Double> transitAvg = new ArrayList<Double>();
 			ArrayList<Double> workplaceAvg = new ArrayList<Double>();
 			
-			ArrayList<String> data = new ArrayList<String>();
-			
-			long startTime = System.nanoTime();
-			Scanner scanner;
-			try {
-				scanner = new Scanner(new File(mobilityFile));
-		        //Set the delimiter used in file
-		        scanner.useDelimiter(",|\n");
-		    
-		        while (scanner.hasNext()) 
-		        	data.add(scanner.next());
-
-		        scanner.close();
-			} catch (FileNotFoundException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-			System.out.println(data.size());
-
-			System.out.println("Country: " + country);
-			// Grocery and Pharmacy Mobility
-			if(data.get(data.size() - 1).equals(country))
-			{
-				for(int j = 0; j < 48; j++)
-				{
-
-					if(j < 8)
-						groceryAvg.add(Double.parseDouble(data.get(j)));
-					else if(j < 16)
-						parksAvg.add(Double.parseDouble(data.get(j)));
-					else if(j < 24)
-						resAvg.add(Double.parseDouble(data.get(j)));
-					else if(j < 32)
-						retailAvg.add(Double.parseDouble(data.get(j)));
-					else if(j < 40)
-						transitAvg.add(Double.parseDouble(data.get(j)));
-					else if(j < 48)
-						workplaceAvg.add(Double.parseDouble(data.get(j)));
-				}
-
-			}
-			else
-			{
+	
 				groceryAvg = fileManager.getCurrent_covidFile().getGroceryMobilityAvg(country);
 				parksAvg = fileManager.getCurrent_covidFile().getParksMobilityAvg(country);
 				resAvg = fileManager.getCurrent_covidFile().getResidentialMobilityAvg(country);
 				retailAvg = fileManager.getCurrent_covidFile().getRetailMobilityAvg(country);
 				transitAvg = fileManager.getCurrent_covidFile().getTransitMobilityAvg(country);
 				workplaceAvg = fileManager.getCurrent_covidFile().getWorkplaceMobilityAvg(country);
-			}
 			
 		
 			// Grocery
@@ -443,60 +400,6 @@ public class SearchOperations extends HttpServlet
 			session.setAttribute("julyWorkplace", workplaceAvg.get(5));
 			session.setAttribute("augWorkplace", workplaceAvg.get(6));
 			session.setAttribute("sepWorkplace", workplaceAvg.get(7));
-			
-			data.clear();
-			
-			for(Double value : groceryAvg)
-			{
-				String temp = Double.toString(value);
-				data.add(temp);
-			}
-			for(Double value : parksAvg)
-			{
-				String temp = Double.toString(value);
-				data.add(temp);
-			}
-			for(Double value : resAvg)
-			{
-				String temp = Double.toString(value);
-				data.add(temp);
-			}
-			for(Double value : retailAvg)
-			{
-				String temp = Double.toString(value);
-				data.add(temp);
-			}
-			for(Double value : transitAvg)
-			{
-				String temp = Double.toString(value);
-				data.add(temp);
-			}
-			for(Double value : workplaceAvg)
-			{
-				String temp = Double.toString(value);
-				data.add(temp);
-			}
-
-			data.add(country);
-			
-			try 
-	        {
-	            FileWriter myWriter = new FileWriter(mobilityFile);
-	            
-	            for(int in = 0; in < data.size(); in++)
-	            		myWriter.write(data.get(in) + ",");
-	            
-	            myWriter.close();
-
-	        } catch (IOException e) 
-	        {
-	            System.out.println("An error occurred.");
-	            e.printStackTrace();
-	        }
-			
-			long endTime = System.nanoTime();
-			long executionTime = (endTime - startTime) / 1000000;
-			System.out.println("Execution Time: " + executionTime + " milliseconds");
 				
 			
 		}
