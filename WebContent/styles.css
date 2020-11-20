@@ -1,0 +1,217 @@
+
+	body {
+		margin:0;
+		font-family:'Poppins', sans-serif;
+		font-size: 12px;
+		background-color: #f0f0f0;
+		color: #505050;
+		
+	}
+	
+	h1 {
+		text-align:center;
+		width:100%;
+	}
+	
+	h4 {
+		font-weight:400;
+		font-size:12px;
+	}
+	
+	
+	select {
+		font-family:'Poppins', sans-serif;
+		font-size: 12px;
+		border: 1px solid #ddd;
+		border-radius: 5px;
+		background-color: #fff;
+		cursor:pointer;
+	}
+	
+	
+		
+	
+	input[type=text] {
+		border: 1px solid #bbb;
+		border-radius:5px;
+		font-family:'Poppins', sans-serif;
+		font-size: 11px;
+		cursor:pointer;
+	}
+	
+	.navbar {
+		text-align:center;
+		width:100%;
+		height:70px;
+		padding:25px;
+	
+	}
+	
+	.wrapper {
+		justify-content: center;
+	} 
+	
+	.row {
+		display:flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		width: 100%;
+	}
+	
+	.column {
+		display:flex;
+		flex-direction: column;
+		flex-basis: 100%;
+		flex: 1;
+		align-items:center;
+	}
+
+	
+	.leftycolumn {
+		height: 100%;
+	}
+	
+	.rightycolumn {
+		height:100%;
+	}
+	
+	.column1 {
+		height: 100%;
+		margin-top:30px;
+		margin-bottom:50px;
+		margin-left:250px;
+
+	}
+	
+	.column2 {
+		height:100%;
+		margin-top:30px;
+		margin-bottom:50px;
+
+	}
+	
+	.column3 {
+		height: 100%;
+		margin-top:30px;
+		margin-bottom:50px;
+		margin-right:250px;
+
+	}
+	
+	
+	@media only screen and (max-width: 1500px) {
+		.column1 {
+			height: 100%;
+			margin-top:10px;
+			margin-bottom:10px;
+			margin-left:0px;
+		}
+	
+		.column2 {
+			height:100%;
+			margin-top:10px;
+			margin-bottom:10px;
+		}
+	
+		.column3 {
+			height: 100%;
+			margin-top:10px;
+			margin-bottom:10px;
+			margin-right:0px;
+		}
+	
+	}
+
+	
+	.allcountries {
+		background-color:#fff;
+		border-radius: 50px;
+		color: #505050;
+		font-size:12px;
+		border: 1px solid #707070;
+		padding:20px;
+		box-shadow: 0px 3px 6px #bbb;
+		margin-top:30px;
+		overflow:hidden;
+		margin-right:50px;
+		margin-left:50px;
+		margin-bottom: 50px;
+	}
+	
+	.editfiles {
+		background-color:#fff;
+		border-radius: 50px;
+		color: #505050;
+		font-size:12px;
+		border: 1px solid #707070;
+		padding:40px;
+		box-shadow: 0px 3px 6px #bbb;
+		margin-top:30px;
+		overflow:hidden;
+		margin-right:50px;
+		margin-left:50px;
+		margin-bottom: 50px;
+	}
+	
+	.topbuttons {
+		font-family:'Poppins', sans-serif;
+		font-weight: 500;
+		background-color:#5ba767;
+		border-radius: 15px;
+		padding: 12px 15px 12px 30px;
+		color: #fff;
+		font-size:12px;
+		box-shadow: 0px 3px 6px #bbb;
+		transition: 0.3s;
+		border:1px solid #5ba767;
+		cursor:pointer;
+	}
+	
+	.topbuttons:hover {
+		background-color:#f0f0f0;
+		border:1px solid #5ba767;
+		color:#5ba767;
+		transition: 0.3s;
+		padding: 12px 15px 12px 30px;
+		cursor:pointer;
+	}
+	
+	.gobutton {
+		font-family:'Poppins', sans-serif;
+		background-color:#5ba767;
+		border-radius: 10px;
+		color: #fff;
+		font-size:10px;
+		padding:5px 10px 5px 10px;
+		box-shadow: 0px 3px 6px #bbb;
+		transition: 0.3s;
+		border:1px solid #5ba767;
+		transition:0.3s;
+		cursor:pointer;
+	}
+	
+	.gobutton:hover {
+		background-color:#f0f0f0;
+		color: #5ba767;
+		transition: 0.3s;
+		border: 1px solid #5ba767;
+		cursor:pointer;
+	
+	}
+	
+	.input-icons i {
+		position: absolute;	
+		font-size:13px;
+	}
+	
+	.input-icons {
+		width:100%;
+		vertical-align:center;
+		color:#fff;
+	}
+	
+	.input-icons:hover {
+		color: #5ba767;
+	}
+	
+	

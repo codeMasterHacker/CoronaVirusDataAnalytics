@@ -6,12 +6,16 @@
 <!DOCTYPE HTML>
 <html>
 <head> 
+<!-- CSS -->
+<link rel="stylesheet" type="text/css" href="styles.css" media="screen"/>
+
 <script>
 
 window.onload = function () {
 
 var chart = new CanvasJS.Chart("chartContainer", {
 	animationEnabled: true,
+	theme:"light2",
 	
 	title:{
 		text:"Cases Vs Deaths World Wide"
@@ -41,13 +45,15 @@ chart.render();
 </script>
 </head>
 <body>
-<div id="chartContainer" style="height: 500px; width: 100%;"></div>
+<div id="chartContainer" style="height: 300px; width: 100%;"></div>
 
 <h4>The data shows that out of the people that have caught COVID-19,<br>
- ${CasesVsDeathPercent}% of people have died from it.</h4>
+ <strong>${CasesVsDeathPercent}%</strong> of people have died from it.</h4>
 <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 </body>
+
+<br><br>
 <form action="SearchOperationsPage" method="get"> 
-		<button>Return to Search Operations Page</button>
+		<input type="submit" name="SearchOperationsPage" value="Go back to homepage" class="gobutton"/>
 	</form>
 </html>
