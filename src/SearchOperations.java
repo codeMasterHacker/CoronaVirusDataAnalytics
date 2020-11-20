@@ -39,14 +39,11 @@ public class SearchOperations extends HttpServlet
 			//fileManager = new CovidFileManager("C:\\Users\\Enrique Munoz\\eclipse-workspace\\cs180project-022-it-s-corona-time\\WebContent\\covidFiles");
 
 			
-			fileManager = new CovidFileManager("/Users/celyna/cs180project-022-it-s-corona-time/WebContent/covidFiles/");
+			//fileManager = new CovidFileManager("/Users/celyna/cs180project-022-it-s-corona-time/WebContent/covidFiles/");
 
 		}
 
 
-		
-		// SAVE FILE
-		String mobilityFile = "/Users/jesword/git/cs180project-022-it-s-corona-time/WebContent/savedData/mobility.txt";
 		
 		String searchOp1 = request.getParameter("submit1");
 		String searchOp2 = request.getParameter("submit2");

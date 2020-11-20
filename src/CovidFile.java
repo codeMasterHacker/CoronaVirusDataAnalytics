@@ -1603,53 +1603,14 @@ public class CovidFile implements Serializable //will handle only reads
 		int i = 0, j = 0;
 		boolean flag = true;
 		int monthCount = 1;
-		ArrayList<String> data = new ArrayList<String>();
-		
-		
-		while(monthCount < 9)
-		{
-			
-			if(monthCount == 1)
-			{
-				startDate = "2020-02-15";
-				endDate = "2020-02-29";
-			}
-			else if(monthCount == 2)
-			{
-				startDate = "2020-03-01";
-				endDate = "2020-03-31";
-			}
-			else if(monthCount == 3)
-			{
-				startDate = "2020-04-01";
-				endDate = "2020-04-30";
-			}
-			else if(monthCount == 4)
-			{
-				startDate = "2020-05-01";
-				endDate = "2020-05-31";
-			}
-			else if(monthCount == 5)
-			{
-				startDate = "2020-06-01";
-				endDate = "2020-06-30";
-			}
-			else if(monthCount == 6)
-			{
-				startDate = "2020-07-01";
-				endDate = "2020-07-31";
-			}
-			else if(monthCount == 7)
-			{
-				startDate = "2020-08-01";
-				endDate = "2020-08-31";
-			}
-			else if(monthCount == 8)
-			{
-				startDate = "2020-09-01";
-				endDate = "2020-09-30";
-			}
-		
+		String feb = "2020-02-29";
+		String march = "2020-03-31";
+		String april = "2020-04-30";
+		String may = "2020-05-31";
+		String june = "2020-06-30";
+		String july = "2020-07-31";
+		String aug = "2020-08-31";
+		String sep = "2020-09-30";
 		
 			try 
 			{
@@ -1662,26 +1623,58 @@ public class CovidFile implements Serializable //will handle only reads
 					if (!tokens[countryIndex].equals(country))
 						continue;
 					
-					if (!tokens[dateIndex].equals(startDate) && flag)
-						continue;
-					
 					flag = false;
 					for (j = 0; j < tokens.length; j++)
 					{
-						if (j == caseIndex && tokens[dateIndex].equals(endDate))
+						if (j == caseIndex && tokens[dateIndex].equals(feb))
 						{
 							cases.add(Double.parseDouble(tokens[j]));
+						}
+						else if (j == caseIndex && tokens[dateIndex].equals(march))
+						{
+							double temp = Double.parseDouble(tokens[j]);
+							double monthlyCases = temp - cases.get(cases.size() - 1);
+							cases.add(monthlyCases);
+						}
+						else if (j == caseIndex && tokens[dateIndex].equals(april))
+						{
+							double temp = Double.parseDouble(tokens[j]);
+							double monthlyCases = temp - cases.get(cases.size() - 1);
+							cases.add(monthlyCases);
+						}
+						else if (j == caseIndex && tokens[dateIndex].equals(may))
+						{
+							double temp = Double.parseDouble(tokens[j]);
+							double monthlyCases = temp - cases.get(cases.size() - 1);
+							cases.add(monthlyCases);
+						}
+						else if (j == caseIndex && tokens[dateIndex].equals(june))
+						{
+							double temp = Double.parseDouble(tokens[j]);
+							double monthlyCases = temp - cases.get(cases.size() - 1);
+							cases.add(monthlyCases);
+						}
+						else if (j == caseIndex && tokens[dateIndex].equals(july))
+						{
+							double temp = Double.parseDouble(tokens[j]);
+							double monthlyCases = temp - cases.get(cases.size() - 1);
+							cases.add(monthlyCases);
+						}
+						else if (j == caseIndex && tokens[dateIndex].equals(aug))
+						{
+							double temp = Double.parseDouble(tokens[j]);
+							double monthlyCases = temp - cases.get(cases.size() - 1);
+							cases.add(monthlyCases);
+						}
+						else if (j == caseIndex && tokens[dateIndex].equals(sep))
+						{
+							double temp = Double.parseDouble(tokens[j]);
+							double monthlyCases = temp - cases.get(cases.size() - 1);
+							cases.add(monthlyCases);
 						}
 					}
 					
 					i++;
-					
-					if (tokens[dateIndex].equals(endDate))
-					{
-						
-						monthCount++;
-						break;
-					}
 				}
 				
 				inputFile.close();
@@ -1691,7 +1684,7 @@ public class CovidFile implements Serializable //will handle only reads
 			{ 
 				e.printStackTrace(); 
 			}
-		}
+		
 	
 		return cases;
 	}

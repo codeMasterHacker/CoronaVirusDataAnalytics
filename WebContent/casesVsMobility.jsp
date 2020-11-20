@@ -8,8 +8,8 @@
 window.onload = function () {
 	var chart = new CanvasJS.Chart("chartContainer", {
 	title:{
-		text: "Cases Per Month vs Average ${mobility} Mobility Per Month in ${country}"
-		theme: "light2",
+		text: "Cases Per Month vs Average ${mobility} Mobility Per Month in ${country}",
+		theme: "light2"
 	},
 	axisY:[{
 		lineColor: "#C24642",
