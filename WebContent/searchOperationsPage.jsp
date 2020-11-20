@@ -4,8 +4,137 @@
 	<head>
 		<meta charset="UTF-8">
 		
+
 		<!-- CSS -->
 		<link rel="stylesheet" type="text/css" href="styles.css" media="screen"/>
+
+		<form action="SearchOperations" method="get">
+			<label for="countries">Countries:</label> 
+			<select name="countries">
+				<option value="United States">United States of America</option> 
+				<option value="Mexico">Mexico</option> 
+				<option value="Canada">Canada</option>
+				<option value="United Kingdom">United Kingdom</option>
+				<option value="Japan">Japan</option>
+				<option value="United Arab Emirates">United Arab Emirates</option>
+  			</select>
+  			
+			<input type="submit" name="submit5" value="Submit"/>
+		</form>
+		
+		
+		
+		
+		<p>Returns all countries with a population age above 65 percentage greater than the one chosen</p>
+		
+		<form action="SearchOperations" method="get">
+			<label for="percents">Percents:</label> 
+			<select name="percents">
+				<option value="10.0">10%</option> 
+				<option value="30.0">30%</option> 
+				<option value="50.0">50%</option>
+				<option value="70.0">70%</option>
+				<option value="90.0">90%</option>
+  			</select>
+  			
+			<input type="submit" name="submit6" value="Submit"/>
+		</form>
+		
+		<p>Click here to see the worldwide cases vs deaths analytic</p>
+		
+		<form action="SearchOperations" method="get">
+			<input type="submit" name="casesVsDeaths" value="Submit"/>
+		</form>
+		
+		<p>Click here to see Mobility Trends analytic</p>
+		
+		<form action="SearchOperations" method="get">
+			<select name="countries">
+				<option value="United States">United States of America</option> 
+				<option value="Mexico">Mexico</option> 
+				<option value="Canada">Canada</option>
+				<option value="United Kingdom">United Kingdom</option>
+				<option value="Japan">Japan</option>
+				<option value="United Arab Emirates">United Arab Emirates</option>
+  			</select>
+  			<input type="submit" name="mobilityTrends" value="Submit"/>
+		</form>
+		
+		<p>Click here to see Worldwide Mobility Trends analytic</p>
+		
+		<form action="SearchOperations" method="get">
+			<input type="submit" name="worldwideMobilityTrends" value="Submit"/>
+		</form>
+		
+		
+		<p>Choose a Mobility Trend to compare against the cases in that country</p>
+		
+		<form action="SearchOperations" method="get">
+			<select name="countries">
+				<option value="United States">United States of America</option> 
+				<option value="Mexico">Mexico</option> 
+				<option value="Canada">Canada</option>
+				<option value="United Kingdom">United Kingdom</option>
+				<option value="Japan">Japan</option>
+				<option value="United Arab Emirates">United Arab Emirates</option>
+  			</select>
+  			<select name="mobility">
+				<option value="Grocery and Pharmacy">Grocery and Pharmacy</option> 
+				<option value="Parks">Parks</option> 
+				<option value="Residential">Residential</option>
+				<option value="Retail and Recreations">Retail and Recreations</option>
+				<option value="Transit Stations">Transit Stations</option>
+				<option value="Workplaces">Workplaces</option>
+  			</select>
+  			<input type="submit" name="casesVsMobility" value="Submit"/>
+		</form>
+		
+		<p>Click here to see the country case vs death analytic</p>
+		
+		<form action="SearchOperations" method="get">
+			<select name="countries">
+				<option value="United States">United States of America</option> 
+				<option value="Mexico">Mexico</option> 
+				<option value="Canada">Canada</option>
+				<option value="United Kingdom">United Kingdom</option>
+				<option value="Japan">Japan</option>
+				<option value="United Arab Emirates">United Arab Emirates</option>
+  			</select>
+  			<input type="submit" name="countryCasesVSDeaths" value="Submit"/>
+		</form>
+		
+		<p>Click here to see the differences between mobility trends for workplaces and public transportation in the listed countries based on the specific month. </p>
+		<form action="SearchOperations" method="get">
+			<select name="countries">
+				<option value="United States">United States of America</option> 
+				<option value="Mexico">Mexico</option> 
+				<option value="Canada">Canada</option>
+				<option value="United Kingdom">United Kingdom</option>
+				<option value="Japan">Japan</option>
+				<option value="United Arab Emirates">United Arab Emirates</option>
+  			</select>
+  			<select name="months">
+				<option value="February">February</option> 
+				<option value="March">March</option> 
+				<option value="April">April</option>
+				<option value="May">May</option>
+				<option value="June">June</option>
+				<option value="July">July</option>
+				<option value="August">August</option>
+				<option value="September">September</option>
+  			</select>
+			<input type="submit" name="multiGraph" value="Submit"/>
+		</form>
+		
+		<p>Click here to see how rich countries tested compared to poor countries.</p>
+		<form action="SearchOperations" method="get">
+			<input type="submit" name="richPoor_testing" value="Compare Testing"/>
+		</form>
+		
+		<p>Click here if you would like to import the previous version of the data</p>
+		<form action="SearchOperations" method="get">
+			<input type="submit" name="importData" value="Import Data"/>
+		</form>
 		
 		<!-- FONTS -->
 		<link rel="preconnect" href="https://fonts.gstatic.com">

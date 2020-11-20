@@ -23,7 +23,10 @@ public class EditFiles extends HttpServlet
 		CovidFileManager fileManager = (CovidFileManager)session.getAttribute("fileManager");
 		
 		if (fileManager == null)
-			fileManager = new CovidFileManager("/Users/Enrique/Desktop/codeFolders/Java/cs180project-022-it-s-corona-time/WebContent/covidFiles");
+		{
+			//fileManager = new CovidFileManager("/Users/Enrique/Desktop/codeFolders/Java/cs180project-022-it-s-corona-time/WebContent/covidFiles");
+			fileManager = new CovidFileManager("C:\\Users\\Enrique Munoz\\eclipse-workspace\\cs180project-022-it-s-corona-time\\WebContent\\covidFiles");
+		}
 		
 		String insert = request.getParameter("submit1");
 		String update = request.getParameter("submit2");

@@ -39,4 +39,44 @@
     <servlet-name>EditFiles</servlet-name>
     <url-pattern>/EditFiles</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>OperationsServlet</display-name>
+    <servlet-name>OperationsServlet</servlet-name>
+    <servlet-class>OperationsServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>OperationsServlet</servlet-name>
+    <url-pattern>/OperationsServlet</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>EditServlet</display-name>
+    <servlet-name>EditServlet</servlet-name>
+    <servlet-class>EditServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>EditServlet</servlet-name>
+    <url-pattern>/EditServlet</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>ChartServlet</display-name>
+    <servlet-name>ChartServlet</servlet-name>
+    <servlet-class>ChartServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ChartServlet</servlet-name>
+    <url-pattern>/ChartServlet</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>SearchServlet</display-name>
+    <servlet-name>SearchServlet</servlet-name>
+    <servlet-class>SearchServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>SearchServlet</servlet-name>
+    <url-pattern>/SearchServlet</url-pattern>
+  </servlet-mapping>
 </web-app>

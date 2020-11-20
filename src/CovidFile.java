@@ -10,9 +10,12 @@ public class CovidFile implements Serializable //will handle only reads
 	private String[][] table; //no getters and setters for this field
 	private String[] columnNames; //no setters for this field
 	
+	private DataStruct_IncrDesign[] dataStruct_incrDesign;
+	
 	private double[][] table1; //table for graphs
 	
 	private File covidFile; //no setters for this field
+	
 	
 	public CovidFile(File file)
 	{
@@ -38,6 +41,7 @@ public class CovidFile implements Serializable //will handle only reads
 	public int get_rowNum() { return rows; }
 	public String[] get_columnNames() { return columnNames; }
 	public File getFile() { return covidFile; }
+	public DataStruct_IncrDesign[] get_dataStruct_incrDesign() { return dataStruct_incrDesign; }
 	
 	private int readColumns()
 	{
@@ -58,20 +62,93 @@ public class CovidFile implements Serializable //will handle only reads
 		return columnNames.length;
 	}
 	
-	private int countRows()
+//	private int countRows() //original
+//	{
+//		Scanner inputFile = null;
+//		int count = -1; ////-1 because I'm not counting the column names at the beginning
+//		
+//		try
+//		{
+//			inputFile = new Scanner(covidFile);
+//			
+//			while (inputFile.hasNext())
+//			{
+//				inputFile.nextLine();
+//				count++;
+//			}
+//			
+//			inputFile.close();
+//		}
+//		catch(IOException e) 
+//		{ 
+//			e.printStackTrace(); 
+//			return 0;
+//		}
+//		
+//		System.out.println(count);
+//		return count;
+//	}
+	
+	private int countRows() //copy
 	{
 		Scanner inputFile = null;
-		int count = -1; ////-1 because I'm not counting the column names at the beginning
+		int i = 0, count = -1; //-1 because I'm not counting the column names at the beginning
+		
+		final int isoIndex = 1, testIndex = 12, gdpIndex = 13, numCountries = 133;
+		String[] tokens = null;
+		String[] previousTokens = null;
+		
+		dataStruct_incrDesign = null;
 		
 		try
 		{
 			inputFile = new Scanner(covidFile);
+			dataStruct_incrDesign = new DataStruct_IncrDesign[numCountries];
+			
+			inputFile.nextLine(); //skips over the column names, which don't count toward the number of rows
+			
+			previousTokens = inputFile.nextLine().split(",");
+			count++;
 			
 			while (inputFile.hasNext())
 			{
-				inputFile.nextLine();
+				tokens = inputFile.nextLine().split(",");
 				count++;
+				
+				//create the dataStruct_incrDesign array, which has fields countryName, totalTests, GDP, and gdpRank
+				if (tokens[isoIndex].equals(previousTokens[isoIndex]))
+				{
+					previousTokens = tokens;
+					continue;
+				}
+				
+				if (i < numCountries)
+				{
+					dataStruct_incrDesign[i] = new DataStruct_IncrDesign();
+					dataStruct_incrDesign[i].countryName = previousTokens[isoIndex];
+					dataStruct_incrDesign[i].totalTests = (int) Double.parseDouble(previousTokens[testIndex]);
+					dataStruct_incrDesign[i].GDP = Double.parseDouble(previousTokens[gdpIndex]);
+					dataStruct_incrDesign[i].gdpRank = i;
+					i++;
+				
+					previousTokens = tokens;
+				}
 			}
+			
+			if (i < numCountries) //for last country
+			{
+				dataStruct_incrDesign[i] = new DataStruct_IncrDesign();
+				dataStruct_incrDesign[i].countryName = previousTokens[isoIndex];
+				dataStruct_incrDesign[i].totalTests =(int) Double.parseDouble(previousTokens[testIndex]);
+				dataStruct_incrDesign[i].GDP = Double.parseDouble(previousTokens[gdpIndex]);
+				dataStruct_incrDesign[i].gdpRank = i;
+				i++;
+			
+				previousTokens = tokens;
+			}
+			
+			//sort dataStruct_incrDesign array based on gdp
+			bubbleSort(dataStruct_incrDesign);
 			
 			inputFile.close();
 		}
@@ -85,9 +162,89 @@ public class CovidFile implements Serializable //will handle only reads
 		return count;
 	}
 	
-	private int cleanData()
+//	private int cleanData() //original
+//	{
+//		String[] tokens = null;
+//		String[] temp = null;
+//		String oldPath = covidFile.getAbsolutePath();
+//		String newPath = null;
+//		String missingValue = "-404.0";
+//		
+//		Scanner inputFile = null;
+//		PrintWriter outputFile = null;
+//		File newFile = null;
+//		
+//		StringBuilder path = null;
+//		
+//		int i = 0, fileSize = -1; //-1 because I'm not counting the column names at the beginning
+//		
+//		try
+//		{
+//			inputFile = new Scanner(covidFile);
+//			
+//			path = new StringBuilder(oldPath);
+//			path.insert(oldPath.length()-4, "_0"); // ".csv" has 4 characters
+//			
+//			newPath = path.toString();
+//			newFile = new File(newPath);
+//			
+//			outputFile = new PrintWriter(newFile);
+//			
+//			while (inputFile.hasNext())
+//			{
+//				tokens = inputFile.nextLine().split(",");
+//				
+//				for (i = 0; i < tokens.length; i++) //checks for empty strings
+//				{
+//					if (tokens[i].isEmpty())
+//						tokens[i] = missingValue;
+//				}
+//				
+//				if (tokens.length != cols) //missing values
+//				{
+//					temp = new String[cols];
+//					
+//					for (i = 0; i < tokens.length; i++) //copy tokens to temp
+//						temp[i] = tokens[i];
+//					
+//					for (; i < temp.length; i++) //add missing value filler at the end
+//						temp[i] = missingValue;
+//					
+//					tokens = temp;
+//				}
+//				
+//				for (i = 0; i < tokens.length-1; i++)
+//					outputFile.print(tokens[i] + ",");
+//				outputFile.println(tokens[i]);
+//				
+//				fileSize++;
+//			}
+//			
+//			inputFile.close();
+//			outputFile.close();
+//			
+//			covidFile.delete(); //deletes bad data
+//			covidFile = newFile; //reference covidFile to the new file created by the PrintWriter object
+//			
+//			System.out.println(fileSize);
+//			
+//			return fileSize;
+//		}
+//		catch(IOException e) 
+//		{ 
+//			e.printStackTrace(); 
+//			inputFile.close();
+//			return 0;
+//		}
+//	}
+	
+	
+	
+	private int cleanData() //copy
 	{
+		final int isoIndex = 1, testIndex = 12, gdpIndex = 13, numCountries = 133;
 		String[] tokens = null;
+		String[] previousTokens = null;
 		String[] temp = null;
 		String oldPath = covidFile.getAbsolutePath();
 		String newPath = null;
@@ -99,11 +256,14 @@ public class CovidFile implements Serializable //will handle only reads
 		
 		StringBuilder path = null;
 		
-		int i = 0, fileSize = -1; //-1 because I'm not counting the column names at the beginning
+		int i = 0, j = 0, fileSize = -1; //-1 because I'm not counting the column names at the beginning
+		
+		dataStruct_incrDesign = null;
 		
 		try
 		{
 			inputFile = new Scanner(covidFile);
+			dataStruct_incrDesign = new DataStruct_IncrDesign[numCountries];
 			
 			path = new StringBuilder(oldPath);
 			path.insert(oldPath.length()-4, "_0"); // ".csv" has 4 characters
@@ -112,6 +272,39 @@ public class CovidFile implements Serializable //will handle only reads
 			newFile = new File(newPath);
 			
 			outputFile = new PrintWriter(newFile);
+			
+			previousTokens = inputFile.nextLine().split(","); //column names, which have perfect formatting
+			
+			for (i = 0; i < previousTokens.length-1; i++)
+				outputFile.print(previousTokens[i] + ",");
+			outputFile.println(previousTokens[i]);
+			
+			previousTokens = inputFile.nextLine().split(",");
+			
+			for (i = 0; i < previousTokens.length; i++) //checks for empty strings
+			{
+				if (previousTokens[i].isEmpty())
+					previousTokens[i] = missingValue;
+			}
+			
+			if (previousTokens.length != cols) //missing values
+			{
+				temp = new String[cols];
+				
+				for (i = 0; i < previousTokens.length; i++) //copy tokens to temp
+					temp[i] = previousTokens[i];
+				
+				for (; i < temp.length; i++) //add missing value filler at the end
+					temp[i] = missingValue;
+				
+				previousTokens = temp;
+			}
+			
+			for (i = 0; i < previousTokens.length-1; i++)
+				outputFile.print(previousTokens[i] + ",");
+			outputFile.println(previousTokens[i]);
+			
+			fileSize++;
 			
 			while (inputFile.hasNext())
 			{
@@ -141,7 +334,41 @@ public class CovidFile implements Serializable //will handle only reads
 				outputFile.println(tokens[i]);
 				
 				fileSize++;
+				
+				//create the dataStruct_incrDesign array, which has fields countryName, totalTests, GDP, and gdpRank
+				if (tokens[isoIndex].equals(previousTokens[isoIndex]))
+				{
+					previousTokens = tokens;
+					continue;
+				}
+				
+				if (j < numCountries)
+				{
+					dataStruct_incrDesign[j] = new DataStruct_IncrDesign();
+					dataStruct_incrDesign[j].countryName = previousTokens[isoIndex];
+					dataStruct_incrDesign[j].totalTests =(int) Double.parseDouble(previousTokens[testIndex]);
+					dataStruct_incrDesign[j].GDP = Double.parseDouble(previousTokens[gdpIndex]);
+					dataStruct_incrDesign[j].gdpRank = j;
+					j++;
+				
+					previousTokens = tokens;
+				}
 			}
+			
+			if (j < numCountries) //for last country
+			{
+				dataStruct_incrDesign[j] = new DataStruct_IncrDesign();
+				dataStruct_incrDesign[j].countryName = previousTokens[isoIndex];
+				dataStruct_incrDesign[j].totalTests =(int) Double.parseDouble(previousTokens[testIndex]);
+				dataStruct_incrDesign[j].GDP = Double.parseDouble(previousTokens[gdpIndex]);
+				dataStruct_incrDesign[j].gdpRank = j;
+				j++;
+			
+				previousTokens = tokens;
+			}
+			
+			//sort dataStruct_incrDesign array based on gdp
+			bubbleSort(dataStruct_incrDesign);
 			
 			inputFile.close();
 			outputFile.close();
@@ -249,6 +476,57 @@ public class CovidFile implements Serializable //will handle only reads
 		printTable();
 		
 		return table;
+	}
+	
+	public ArrayList<Double> getAllGroceryMobilityAvg()
+	{
+		String[] countries = {"United Arab Emirates", "Afghanistan", "Antigua and Barbuda", "Angola", "Argentina", "Austria", "Australia", "Aruba", "Bosnia and Herzegovina", "Barbados", "Bangladesh", "Belgium", "Burkina Faso", "Bulgaria", "Bahrain", "Benin", "Bolivia", "Brazil", "Botswana", "Belarus", "Belize", "Canada", "Switzerland", "Côte d'Ivoire", "Chile", "Cameroon", "Colombia", "Costa Rica", "Czechia", "Germany", "Denmark", "Dominican Republic", "Ecuador", "Estonia", "Egypt", "Spain", "Finland", "Fiji", "France", "Gabon", "United Kingdom", "Ghana", "Greece", "Guatemala"};
+		int i = 0;
+		ArrayList<Double> groceryAvg = new ArrayList<Double>();
+		ArrayList<Double> groceryAvgAll = new ArrayList<Double>();
+		double feb = 0;
+		double march = 0;
+		double april = 0;
+		double may = 0;
+		double june = 0;
+		double july = 0;
+		double aug = 0;
+		double sep = 0;
+		
+		for (i = 0; i < countries.length; i++)
+		{	
+			groceryAvg = getGroceryMobilityAvg(countries[i]);
+			feb = feb + groceryAvg.get(0);
+			march = march + groceryAvg.get(1);
+			april = april + groceryAvg.get(2);
+			may = may + groceryAvg.get(3);
+			june = june + groceryAvg.get(4);
+			july = july + groceryAvg.get(5);
+			aug = aug + groceryAvg.get(6);
+			sep = sep + groceryAvg.get(7);
+		}
+		
+		feb = feb/countries.length;
+		march = march/countries.length;
+		april = april/countries.length;
+		may = may/countries.length;
+		june = june/countries.length;
+		july = july/countries.length;
+		aug = aug/countries.length;
+		sep = sep/countries.length;
+		
+		groceryAvgAll.add(Math.round(feb * 100.0) / 100.0);
+		groceryAvgAll.add(Math.round(march * 100.0) / 100.0);
+		groceryAvgAll.add(Math.round(april * 100.0) / 100.0);
+		groceryAvgAll.add(Math.round(may * 100.0) / 100.0);
+		groceryAvgAll.add(Math.round(june * 100.0) / 100.0);
+		groceryAvgAll.add(Math.round(july * 100.0) / 100.0);
+		groceryAvgAll.add(Math.round(aug * 100.0) / 100.0);
+		groceryAvgAll.add(Math.round(sep * 100.0) / 100.0);
+		
+		
+		return groceryAvg;
+		
 	}
 	
 	public ArrayList<Double> getGroceryMobilityAvg(String country)
@@ -384,6 +662,57 @@ public class CovidFile implements Serializable //will handle only reads
 		return groceryAvg;
 	}
 	
+	public ArrayList<Double> getAllParksMobilityAvg()
+	{
+		String[] countries = {"United Arab Emirates", "Afghanistan", "Antigua and Barbuda", "Angola", "Argentina", "Austria", "Australia", "Aruba", "Bosnia and Herzegovina", "Barbados", "Bangladesh", "Belgium", "Burkina Faso", "Bulgaria", "Bahrain", "Benin", "Bolivia", "Brazil", "Botswana", "Belarus", "Belize", "Canada", "Switzerland", "Côte d'Ivoire", "Chile", "Cameroon", "Colombia", "Costa Rica", "Czechia", "Germany", "Denmark", "Dominican Republic", "Ecuador", "Estonia", "Egypt", "Spain", "Finland", "Fiji", "France", "Gabon", "United Kingdom", "Ghana", "Greece", "Guatemala"};
+		int i = 0;
+		ArrayList<Double> parksAvg = new ArrayList<Double>();
+		ArrayList<Double> parksAvgAll = new ArrayList<Double>();
+		double feb = 0;
+		double march = 0;
+		double april = 0;
+		double may = 0;
+		double june = 0;
+		double july = 0;
+		double aug = 0;
+		double sep = 0;
+		
+		for (i = 0; i < countries.length; i++)
+		{	
+			parksAvg = getGroceryMobilityAvg(countries[i]);
+			feb = feb + parksAvg.get(0);
+			march = march + parksAvg.get(1);
+			april = april + parksAvg.get(2);
+			may = may + parksAvg.get(3);
+			june = june + parksAvg.get(4);
+			july = july + parksAvg.get(5);
+			aug = aug + parksAvg.get(6);
+			sep = sep + parksAvg.get(7);
+		}
+		
+		feb = feb/countries.length;
+		march = march/countries.length;
+		april = april/countries.length;
+		may = may/countries.length;
+		june = june/countries.length;
+		july = july/countries.length;
+		aug = aug/countries.length;
+		sep = sep/countries.length;
+		
+		parksAvgAll.add(Math.round(feb * 100.0) / 100.0);
+		parksAvgAll.add(Math.round(march * 100.0) / 100.0);
+		parksAvgAll.add(Math.round(april * 100.0) / 100.0);
+		parksAvgAll.add(Math.round(may * 100.0) / 100.0);
+		parksAvgAll.add(Math.round(june * 100.0) / 100.0);
+		parksAvgAll.add(Math.round(july * 100.0) / 100.0);
+		parksAvgAll.add(Math.round(aug * 100.0) / 100.0);
+		parksAvgAll.add(Math.round(sep * 100.0) / 100.0);
+		
+		
+		return parksAvg;
+		
+	}
+	
 	public ArrayList<Double> getParksMobilityAvg(String country)
 	{
 		ArrayList<Double> parksAvg = new ArrayList<Double>();
@@ -515,6 +844,57 @@ public class CovidFile implements Serializable //will handle only reads
 
 		
 		return parksAvg;
+	}
+	
+	public ArrayList<Double> getAllResidentialMobilityAvg()
+	{
+		String[] countries = {"United Arab Emirates", "Afghanistan", "Antigua and Barbuda", "Angola", "Argentina", "Austria", "Australia", "Aruba", "Bosnia and Herzegovina", "Barbados", "Bangladesh", "Belgium", "Burkina Faso", "Bulgaria", "Bahrain", "Benin", "Bolivia", "Brazil", "Botswana", "Belarus", "Belize", "Canada", "Switzerland", "Côte d'Ivoire", "Chile", "Cameroon", "Colombia", "Costa Rica", "Czechia", "Germany", "Denmark", "Dominican Republic", "Ecuador", "Estonia", "Egypt", "Spain", "Finland", "Fiji", "France", "Gabon", "United Kingdom", "Ghana", "Greece", "Guatemala"};
+		int i = 0;
+		ArrayList<Double> resAvg = new ArrayList<Double>();
+		ArrayList<Double> resAvgAll = new ArrayList<Double>();
+		double feb = 0;
+		double march = 0;
+		double april = 0;
+		double may = 0;
+		double june = 0;
+		double july = 0;
+		double aug = 0;
+		double sep = 0;
+		
+		for (i = 0; i < countries.length; i++)
+		{	
+			resAvg = getGroceryMobilityAvg(countries[i]);
+			feb = feb + resAvg.get(0);
+			march = march + resAvg.get(1);
+			april = april + resAvg.get(2);
+			may = may + resAvg.get(3);
+			june = june + resAvg.get(4);
+			july = july + resAvg.get(5);
+			aug = aug + resAvg.get(6);
+			sep = sep + resAvg.get(7);
+		}
+		
+		feb = feb/countries.length;
+		march = march/countries.length;
+		april = april/countries.length;
+		may = may/countries.length;
+		june = june/countries.length;
+		july = july/countries.length;
+		aug = aug/countries.length;
+		sep = sep/countries.length;
+		
+		resAvgAll.add(Math.round(feb * 100.0) / 100.0);
+		resAvgAll.add(Math.round(march * 100.0) / 100.0);
+		resAvgAll.add(Math.round(april * 100.0) / 100.0);
+		resAvgAll.add(Math.round(may * 100.0) / 100.0);
+		resAvgAll.add(Math.round(june * 100.0) / 100.0);
+		resAvgAll.add(Math.round(july * 100.0) / 100.0);
+		resAvgAll.add(Math.round(aug * 100.0) / 100.0);
+		resAvgAll.add(Math.round(sep * 100.0) / 100.0);
+		
+		
+		return resAvg;
+		
 	}
 	
 	public ArrayList<Double> getResidentialMobilityAvg(String country)
@@ -650,6 +1030,56 @@ public class CovidFile implements Serializable //will handle only reads
 		return resAvg;
 	}
 	
+	public ArrayList<Double> getAllRetailMobilityAvg()
+	{
+		String[] countries = {"United Arab Emirates", "Afghanistan", "Antigua and Barbuda", "Angola", "Argentina", "Austria", "Australia", "Aruba", "Bosnia and Herzegovina", "Barbados", "Bangladesh", "Belgium", "Burkina Faso", "Bulgaria", "Bahrain", "Benin", "Bolivia", "Brazil", "Botswana", "Belarus", "Belize", "Canada", "Switzerland", "Côte d'Ivoire", "Chile", "Cameroon", "Colombia", "Costa Rica", "Czechia", "Germany", "Denmark", "Dominican Republic", "Ecuador", "Estonia", "Egypt", "Spain", "Finland", "Fiji", "France", "Gabon", "United Kingdom", "Ghana", "Greece", "Guatemala"};
+		int i = 0;
+		ArrayList<Double> retailAvg = new ArrayList<Double>();
+		ArrayList<Double> retailAvgAll = new ArrayList<Double>();
+		double feb = 0;
+		double march = 0;
+		double april = 0;
+		double may = 0;
+		double june = 0;
+		double july = 0;
+		double aug = 0;
+		double sep = 0;
+		
+		for (i = 0; i < countries.length; i++)
+		{	
+			retailAvg = getGroceryMobilityAvg(countries[i]);
+			feb = feb + retailAvg.get(0);
+			march = march + retailAvg.get(1);
+			april = april + retailAvg.get(2);
+			may = may + retailAvg.get(3);
+			june = june + retailAvg.get(4);
+			july = july + retailAvg.get(5);
+			aug = aug + retailAvg.get(6);
+			sep = sep + retailAvg.get(7);
+		}
+		
+		feb = feb/countries.length;
+		march = march/countries.length;
+		april = april/countries.length;
+		may = may/countries.length;
+		june = june/countries.length;
+		july = july/countries.length;
+		aug = aug/countries.length;
+		sep = sep/countries.length;
+		
+		retailAvgAll.add(Math.round(feb * 100.0) / 100.0);
+		retailAvgAll.add(Math.round(march * 100.0) / 100.0);
+		retailAvgAll.add(Math.round(april * 100.0) / 100.0);
+		retailAvgAll.add(Math.round(may * 100.0) / 100.0);
+		retailAvgAll.add(Math.round(june * 100.0) / 100.0);
+		retailAvgAll.add(Math.round(july * 100.0) / 100.0);
+		retailAvgAll.add(Math.round(aug * 100.0) / 100.0);
+		retailAvgAll.add(Math.round(sep * 100.0) / 100.0);
+		
+		
+		return retailAvg;
+	}
+	
 	public ArrayList<Double> getRetailMobilityAvg(String country)
 	{
 		ArrayList<Double> retailAvg = new ArrayList<Double>();
@@ -783,6 +1213,56 @@ public class CovidFile implements Serializable //will handle only reads
 		return retailAvg;
 	}
 	
+	public ArrayList<Double> getAllTransitMobilityAvg()
+	{
+		String[] countries = {"United Arab Emirates", "Afghanistan", "Antigua and Barbuda", "Angola", "Argentina", "Austria", "Australia", "Aruba", "Bosnia and Herzegovina", "Barbados", "Bangladesh", "Belgium", "Burkina Faso", "Bulgaria", "Bahrain", "Benin", "Bolivia", "Brazil", "Botswana", "Belarus", "Belize", "Canada", "Switzerland", "Côte d'Ivoire", "Chile", "Cameroon", "Colombia", "Costa Rica", "Czechia", "Germany", "Denmark", "Dominican Republic", "Ecuador", "Estonia", "Egypt", "Spain", "Finland", "Fiji", "France", "Gabon", "United Kingdom", "Ghana", "Greece", "Guatemala"};
+		int i = 0;
+		ArrayList<Double> transitAvg = new ArrayList<Double>();
+		ArrayList<Double> transitAvgAll = new ArrayList<Double>();
+		double feb = 0;
+		double march = 0;
+		double april = 0;
+		double may = 0;
+		double june = 0;
+		double july = 0;
+		double aug = 0;
+		double sep = 0;
+		
+		for (i = 0; i < countries.length; i++)
+		{	
+			transitAvg = getGroceryMobilityAvg(countries[i]);
+			feb = feb + transitAvg.get(0);
+			march = march + transitAvg.get(1);
+			april = april + transitAvg.get(2);
+			may = may + transitAvg.get(3);
+			june = june + transitAvg.get(4);
+			july = july + transitAvg.get(5);
+			aug = aug + transitAvg.get(6);
+			sep = sep + transitAvg.get(7);
+		}
+		
+		feb = feb/countries.length;
+		march = march/countries.length;
+		april = april/countries.length;
+		may = may/countries.length;
+		june = june/countries.length;
+		july = july/countries.length;
+		aug = aug/countries.length;
+		sep = sep/countries.length;
+		
+		transitAvgAll.add(Math.round(feb * 100.0) / 100.0);
+		transitAvgAll.add(Math.round(march * 100.0) / 100.0);
+		transitAvgAll.add(Math.round(april * 100.0) / 100.0);
+		transitAvgAll.add(Math.round(may * 100.0) / 100.0);
+		transitAvgAll.add(Math.round(june * 100.0) / 100.0);
+		transitAvgAll.add(Math.round(july * 100.0) / 100.0);
+		transitAvgAll.add(Math.round(aug * 100.0) / 100.0);
+		transitAvgAll.add(Math.round(sep * 100.0) / 100.0);
+		
+		
+		return transitAvg;
+	}
+	
 	public ArrayList<Double> getTransitMobilityAvg(String country)
 	{
 		ArrayList<Double> transitAvg = new ArrayList<Double>();
@@ -914,6 +1394,56 @@ public class CovidFile implements Serializable //will handle only reads
 
 		
 		return transitAvg;
+	}
+	
+	public ArrayList<Double> getAllWorkplaceMobilityAvg()
+	{
+		String[] countries = {"United Arab Emirates", "Afghanistan", "Antigua and Barbuda", "Angola", "Argentina", "Austria", "Australia", "Aruba", "Bosnia and Herzegovina", "Barbados", "Bangladesh", "Belgium", "Burkina Faso", "Bulgaria", "Bahrain", "Benin", "Bolivia", "Brazil", "Botswana", "Belarus", "Belize", "Canada", "Switzerland", "Côte d'Ivoire", "Chile", "Cameroon", "Colombia", "Costa Rica", "Czechia", "Germany", "Denmark", "Dominican Republic", "Ecuador", "Estonia", "Egypt", "Spain", "Finland", "Fiji", "France", "Gabon", "United Kingdom", "Ghana", "Greece", "Guatemala"};
+		int i = 0;
+		ArrayList<Double> workplaceAvg = new ArrayList<Double>();
+		ArrayList<Double> workplaceAvgAll = new ArrayList<Double>();
+		double feb = 0;
+		double march = 0;
+		double april = 0;
+		double may = 0;
+		double june = 0;
+		double july = 0;
+		double aug = 0;
+		double sep = 0;
+		
+		for (i = 0; i < countries.length; i++)
+		{	
+			workplaceAvg = getGroceryMobilityAvg(countries[i]);
+			feb = feb + workplaceAvg.get(0);
+			march = march + workplaceAvg.get(1);
+			april = april + workplaceAvg.get(2);
+			may = may + workplaceAvg.get(3);
+			june = june + workplaceAvg.get(4);
+			july = july + workplaceAvg.get(5);
+			aug = aug + workplaceAvg.get(6);
+			sep = sep + workplaceAvg.get(7);
+		}
+		
+		feb = feb/countries.length;
+		march = march/countries.length;
+		april = april/countries.length;
+		may = may/countries.length;
+		june = june/countries.length;
+		july = july/countries.length;
+		aug = aug/countries.length;
+		sep = sep/countries.length;
+		
+		workplaceAvgAll.add(Math.round(feb * 100.0) / 100.0);
+		workplaceAvgAll.add(Math.round(march * 100.0) / 100.0);
+		workplaceAvgAll.add(Math.round(april * 100.0) / 100.0);
+		workplaceAvgAll.add(Math.round(may * 100.0) / 100.0);
+		workplaceAvgAll.add(Math.round(june * 100.0) / 100.0);
+		workplaceAvgAll.add(Math.round(july * 100.0) / 100.0);
+		workplaceAvgAll.add(Math.round(aug * 100.0) / 100.0);
+		workplaceAvgAll.add(Math.round(sep * 100.0) / 100.0);
+		
+		
+		return workplaceAvg;
 	}
 	
 	public ArrayList<Double> getWorkplaceMobilityAvg(String country)
@@ -1073,6 +1603,8 @@ public class CovidFile implements Serializable //will handle only reads
 		int i = 0, j = 0;
 		boolean flag = true;
 		int monthCount = 1;
+		ArrayList<String> data = new ArrayList<String>();
+		
 		
 		while(monthCount < 9)
 		{
@@ -1160,50 +1692,58 @@ public class CovidFile implements Serializable //will handle only reads
 				e.printStackTrace(); 
 			}
 		}
-		
 	
 		return cases;
 	}
 
 	public double getCases()
 	{
-		final int casesIndex = 9;
+		final int countryIndex = 1, dateIndex = 2, caseIndex = 9;
 		String[] tokens = null;
 		Scanner inputFile = null;
 		int i = 0, j = 0;
 		boolean flag = true;
-		double cases = 0;
+		String feb = "2020-02-29";
+		String march = "2020-03-31";
+		String april = "2020-04-30";
+		String may = "2020-05-31";
+		String june = "2020-06-30";
+		String july = "2020-07-31";
+		String aug = "2020-08-31";
+		String sep = "2020-09-30";
+		double cases = 0.0;
 		
-		try 
-		{
-			inputFile = new Scanner(covidFile);
-			columnNames = inputFile.nextLine().split(",");
-			while (inputFile.hasNext())
+			try 
 			{
-				tokens = inputFile.nextLine().split(",");
-				
-				flag = false;
-				
-				for (j = 0; j < tokens.length; j++)
+				inputFile = new Scanner(covidFile);
+				columnNames = inputFile.nextLine().split(",");
+				while (inputFile.hasNext())
 				{
-					if (j == casesIndex)
+					tokens = inputFile.nextLine().split(",");
+					
+					flag = false;
+					for (j = 0; j < tokens.length; j++)
 					{
-						cases = cases + Double.parseDouble(tokens[j]);
+						if (j == caseIndex && (tokens[dateIndex].equals(feb) | tokens[dateIndex].equals(march))
+								| tokens[dateIndex].equals(april) | tokens[dateIndex].equals(may)
+								| tokens[dateIndex].equals(june) | tokens[dateIndex].equals(july)
+								| tokens[dateIndex].equals(aug) | tokens[dateIndex].equals(sep))
+						{
+							cases = cases + (Double.parseDouble(tokens[j]));
+						}
 					}
+					
+					i++;
+					
 				}
-				
-				i++;
-				
-			}
 			
-			inputFile.close();
-			System.out.println(i);
-		} 
-		catch (FileNotFoundException e) 
-		{ 
-			e.printStackTrace(); 
-		}
-		
+				inputFile.close();
+			} 
+				catch (FileNotFoundException e) 
+				{ 
+					e.printStackTrace(); 
+				}
+			
 		return cases;
 	}
 	
@@ -1258,49 +1798,55 @@ public class CovidFile implements Serializable //will handle only reads
 	
 	
 	public double getDeaths()
-	{
-		final int deathsIndex = 10;
-		String[] tokens = null;
-		Scanner inputFile = null;
-		int i = 0, j = 0;
-		boolean flag = true;
-		double cases = 0;
-		double deaths = 0;
-		
+	{final int countryIndex = 1, dateIndex = 2, deathIndex = 10;
+	String[] tokens = null;
+	Scanner inputFile = null;
+	int i = 0, j = 0;
+	boolean flag = true;
+	String feb = "2020-02-29";
+	String march = "2020-03-31";
+	String april = "2020-04-30";
+	String may = "2020-05-31";
+	String june = "2020-06-30";
+	String july = "2020-07-31";
+	String aug = "2020-08-31";
+	String sep = "2020-09-30";
+	double deaths = 0.0;
+	
+	
 		try 
 		{
 			inputFile = new Scanner(covidFile);
-			
 			columnNames = inputFile.nextLine().split(",");
-			
 			while (inputFile.hasNext())
 			{
 				tokens = inputFile.nextLine().split(",");
 				
 				flag = false;
-				
 				for (j = 0; j < tokens.length; j++)
 				{
-					if (j == deathsIndex)
+					if (j == deathIndex && (tokens[dateIndex].equals(feb) | tokens[dateIndex].equals(march))
+							| tokens[dateIndex].equals(april) | tokens[dateIndex].equals(may)
+							| tokens[dateIndex].equals(june) | tokens[dateIndex].equals(july)
+							| tokens[dateIndex].equals(aug) | tokens[dateIndex].equals(sep))
 					{
-						deaths = deaths + Double.parseDouble(tokens[j]);
+						deaths = deaths + (Double.parseDouble(tokens[j]));
 					}
 				}
 				
 				i++;
 				
 			}
-			
-			inputFile.close();
-			
-			System.out.println(i);
-		} 
-		catch (FileNotFoundException e) 
-		{ 
-			e.printStackTrace(); 
-		}
 		
+			inputFile.close();
+		} 
+			catch (FileNotFoundException e) 
+			{ 
+				e.printStackTrace(); 
+			}
+	
 		return deaths;
+
 	}
 	
 	public double getCountryDeaths(String country)
@@ -2183,5 +2729,29 @@ public class CovidFile implements Serializable //will handle only reads
 		}
 		
 		return isos;
+	}
+	
+	
+	
+	public static void bubbleSort(DataStruct_IncrDesign[] array)
+	{
+		int lastPos, index;
+		DataStruct_IncrDesign temp;
+		
+		for (lastPos = array.length - 1; lastPos >= 0; lastPos--)
+		{
+			for (index = 0; index <= lastPos - 1; index++)
+			{
+				if (array[index].GDP > array[index + 1].GDP)
+				{
+					temp = array[index];
+					array[index] = array[index + 1];
+					array[index + 1] = temp;
+					
+					array[index].gdpRank = index+1;
+					array[index + 1].gdpRank = index+2;
+				}
+			}
+		}
 	}
 }
