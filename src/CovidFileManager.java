@@ -268,7 +268,7 @@ public class CovidFileManager implements Serializable
 			return false;
 	}
 	
-	public boolean update(String csv, int[] tests) //check for non update values
+	public boolean update(String csv, int[] tests) //can delete int[] tests
 	{
 		final int countryIndex = 1, dateIndex = 2, testIndex = 12;
 		
@@ -314,9 +314,11 @@ public class CovidFileManager implements Serializable
 				
 				if (!updated && tokens[countryIndex].equals(row[countryIndex]))
 				{
+					//////////////////////////////////////////////////////////////////////////////////// can delete/change
 					currTests = (int)Double.parseDouble(tokens[testIndex]);
 					if (currTests == -404)
 						currTests = 0;
+					////////////////////////////////////////////////////////////////////////////////////can delete/change
 					
 					if (tokens[dateIndex].equals(row[dateIndex]))
 					{
@@ -337,10 +339,12 @@ public class CovidFileManager implements Serializable
 							outputFile.println(row[i]);
 						outputFile.flush();
 						
+						////////////////////////////////////////////////////////////////////////////////////can delete/change
 						if (currTests == 0)
 							tests[0] = (int)Double.parseDouble(row[testIndex]) - prevTests;
 						else
 							tests[0] = (int)Double.parseDouble(row[testIndex]) - currTests;
+						////////////////////////////////////////////////////////////////////////////////////can delete/change
 					}
 					else //not the row we want to update
 					{
@@ -352,9 +356,11 @@ public class CovidFileManager implements Serializable
 						outputFile.println(tokens[i]);
 						outputFile.flush();
 					}
-					
+
+					////////////////////////////////////////////////////////////////////////////////////can delete/change
 					if (currTests != 0)
 						prevTests = currTests;
+					//////////////////////////////////////////////////////////////////////////////////// can delete/change
 				}
 				else //not the row we want to update
 				{
@@ -463,7 +469,7 @@ public class CovidFileManager implements Serializable
 			return false;
 	}
 	
-	public boolean delete(String country, String date, int[] tests)
+	public boolean delete(String country, String date, int[] tests) //can delete int[] tests
 	{
 		final int countryIndex = 1, dateIndex = 2, testIndex = 12;
 		
@@ -507,24 +513,30 @@ public class CovidFileManager implements Serializable
 				
 				if (!deleted && tokens[countryIndex].equals(country))
 				{
+					//////////////////////////////////////////////////////////////////////////////////// can delete/change
 					currTests = (int)Double.parseDouble(tokens[testIndex]);
 					if (currTests == -404)
 						currTests = 0;
+					//////////////////////////////////////////////////////////////////////////////////// can delete/change
 					
 					if (tokens[dateIndex].equals(date))
 					{
 						deleted = true;
 						
+						//////////////////////////////////////////////////////////////////////////////////// can delete/change
 						if (currTests == 0)
 							tests[0] = currTests;
 						else
 							tests[0] = currTests - prevTests;
+						//////////////////////////////////////////////////////////////////////////////////// can delete/change
 						
 						continue;
 					}
 					
+					//////////////////////////////////////////////////////////////////////////////////// can delete/change
 					if (currTests != 0)
 						prevTests = currTests;
+					//////////////////////////////////////////////////////////////////////////////////// can delete/change
 				}
 				
 				for (i = 0; i < tokens.length-1; i++)
