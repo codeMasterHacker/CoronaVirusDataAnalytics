@@ -25,11 +25,16 @@ public class EditFiles extends HttpServlet
 		if (fileManager == null)
 		{
 			//fileManager = new CovidFileManager("/Users/Enrique/Desktop/codeFolders/Java/cs180project-022-it-s-corona-time/WebContent/covidFiles");
+<<<<<<< HEAD
 			fileManager = new CovidFileManager("C:\\Users\\Enrique Munoz\\eclipse-workspace\\cs180project-022-it-s-corona-time\\WebContent\\covidFiles");
 			session.setAttribute("fileManager", fileManager);
 			session.setAttribute("dataStruct_IncrDesign", fileManager.getCurrent_covidFile().get_dataStruct_incrDesign());
 			session.setAttribute("globalDeaths", fileManager.getCurrent_covidFile().get_globalDeaths());
 			session.setAttribute("globalCases", fileManager.getCurrent_covidFile().get_globalCases());
+=======
+			//fileManager = new CovidFileManager("C:\\Users\\Enrique Munoz\\eclipse-workspace\\cs180project-022-it-s-corona-time\\WebContent\\covidFiles");
+			fileManager = new CovidFileManager("/Users/jesword/git/cs180project-022-it-s-corona-time/WebContent/covidFiles");
+>>>>>>> branch 'main' of https://github.com/ucr-cs180-fall20/cs180project-022-it-s-corona-time.git
 		}
 		
 		DataStruct_IncrDesign[] dataStruct_IncrDesign = (DataStruct_IncrDesign[])session.getAttribute("dataStruct_IncrDesign");
