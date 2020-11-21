@@ -143,7 +143,7 @@
 								<input type="text" name="govRes_stringIndex" size="10" maxlength="10"/>
 								</br>
 								<label for="totalTests">Number of Total Tests:</label> 
-								<input type="text" name="confirmedCases" size="10" maxlength="10"/>
+								<input type="text" name="totalTests" size="10" maxlength="10"/>
 								</br>
 								<label for="gdpCapita">GPD per Capita:</label> 
 								<input type="text" name="gdpCapita" size="14" maxlength="14"/>

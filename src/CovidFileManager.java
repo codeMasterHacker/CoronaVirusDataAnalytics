@@ -268,9 +268,11 @@ public class CovidFileManager implements Serializable
 			return false;
 	}
 	
-	public boolean update(String csv, int[] tests) //can delete int[] tests
+	public boolean update(String csv, int[] tests, double[] cases, double[] deaths) //can delete int[] tests
 	{
-		final int countryIndex = 1, dateIndex = 2, testIndex = 12;
+		final int countryIndex = 1, dateIndex = 2, testIndex = 12, casesIndex = 9, deathsIndex = 10;
+		
+		double currCases = 0.0, prevCases = 0.0, currDeaths = 0.0, prevDeaths = 0.0;
 		
 		String[] row = csv.split(",");
 		
@@ -318,6 +320,14 @@ public class CovidFileManager implements Serializable
 					currTests = (int)Double.parseDouble(tokens[testIndex]);
 					if (currTests == -404)
 						currTests = 0;
+					
+					currCases = Double.parseDouble(tokens[casesIndex]);
+					if (currCases == -404.0)
+						currCases = 0.0;
+					
+					currDeaths = Double.parseDouble(tokens[deathsIndex]);
+					if (currDeaths == -404.0)
+						currDeaths = 0.0;
 					////////////////////////////////////////////////////////////////////////////////////can delete/change
 					
 					if (tokens[dateIndex].equals(row[dateIndex]))
@@ -344,6 +354,16 @@ public class CovidFileManager implements Serializable
 							tests[0] = (int)Double.parseDouble(row[testIndex]) - prevTests;
 						else
 							tests[0] = (int)Double.parseDouble(row[testIndex]) - currTests;
+						
+						if (currCases == 0.0)
+							cases[0] = Double.parseDouble(row[casesIndex]) - prevCases;
+						else
+							cases[0] = Double.parseDouble(row[casesIndex]) - currCases;
+						
+						if (currDeaths == 0.0)
+							deaths[0] = Double.parseDouble(row[deathsIndex]) - prevDeaths;
+						else
+							deaths[0] = Double.parseDouble(row[deathsIndex]) - currDeaths;
 						////////////////////////////////////////////////////////////////////////////////////can delete/change
 					}
 					else //not the row we want to update
@@ -360,6 +380,12 @@ public class CovidFileManager implements Serializable
 					////////////////////////////////////////////////////////////////////////////////////can delete/change
 					if (currTests != 0)
 						prevTests = currTests;
+					
+					if (currCases != 0.0)
+						prevCases = currCases;
+					
+					if (currDeaths != 0.0)
+						prevDeaths = currDeaths;
 					//////////////////////////////////////////////////////////////////////////////////// can delete/change
 				}
 				else //not the row we want to update
@@ -469,9 +495,11 @@ public class CovidFileManager implements Serializable
 			return false;
 	}
 	
-	public boolean delete(String country, String date, int[] tests) //can delete int[] tests
+	public boolean delete(String country, String date, int[] tests, double[] cases, double[] deaths) //can delete int[] tests
 	{
-		final int countryIndex = 1, dateIndex = 2, testIndex = 12;
+		final int countryIndex = 1, dateIndex = 2, testIndex = 12, casesIndex = 9, deathsIndex = 10;
+		
+		double currCases = 0.0, prevCases = 0.0, currDeaths = 0.0, prevDeaths = 0.0;
 		
 		String currentPath = covidFiles[currentIndex].getFile().getAbsolutePath();
 		
@@ -517,6 +545,14 @@ public class CovidFileManager implements Serializable
 					currTests = (int)Double.parseDouble(tokens[testIndex]);
 					if (currTests == -404)
 						currTests = 0;
+					
+					currCases = Double.parseDouble(tokens[casesIndex]);
+					if (currCases == -404.0)
+						currCases = 0.0;
+					
+					currDeaths = Double.parseDouble(tokens[deathsIndex]);
+					if (currDeaths == -404.0)
+						currDeaths = 0.0;
 					//////////////////////////////////////////////////////////////////////////////////// can delete/change
 					
 					if (tokens[dateIndex].equals(date))
@@ -528,6 +564,16 @@ public class CovidFileManager implements Serializable
 							tests[0] = currTests;
 						else
 							tests[0] = currTests - prevTests;
+						
+						if (currCases == 0.0)
+							cases[0] = currCases;
+						else
+							cases[0] = currCases - prevCases;
+						
+						if (currDeaths == 0.0)
+							deaths[0] = currDeaths;
+						else
+							deaths[0] = currDeaths - prevDeaths;
 						//////////////////////////////////////////////////////////////////////////////////// can delete/change
 						
 						continue;
@@ -536,6 +582,12 @@ public class CovidFileManager implements Serializable
 					//////////////////////////////////////////////////////////////////////////////////// can delete/change
 					if (currTests != 0)
 						prevTests = currTests;
+					
+					if (currCases != 0.0)
+						prevCases = currCases;
+					
+					if (currDeaths != 0.0)
+						prevDeaths = currDeaths;
 					//////////////////////////////////////////////////////////////////////////////////// can delete/change
 				}
 				

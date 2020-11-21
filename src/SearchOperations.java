@@ -22,31 +22,37 @@ public class SearchOperations extends HttpServlet
     
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
 	{
+		long startTime = System.currentTimeMillis(); //start time starts here; call endtime in your respective else if statement, where you implement your analytic
+		
 		HttpSession session = request.getSession(true);
 		
 		CovidFileManager fileManager = (CovidFileManager)session.getAttribute("fileManager");
 		
-		if (fileManager == null)
+		if (fileManager == null) //first time using
 		{
 			//fileManager = new CovidFileManager("/Users/cristinalawson/eclipse-workspace/cs180_project/WebContent/covidFiles");
 
 			//fileManager = new CovidFileManager("E:\\Luccas\\Documents\\docs_2\\UCR Docs\\Fall_2020\\cs180\\cs180_project\\cs180project-022-it-s-corona-time\\WebContent\\covidFiles");
 
-			fileManager = new CovidFileManager("/Users/jesword/git/cs180project-022-it-s-corona-time/WebContent/covidFiles");
+			//fileManager = new CovidFileManager("/Users/jesword/git/cs180project-022-it-s-corona-time/WebContent/covidFiles");
 
 			//fileManager = new CovidFileManager("/Users/Enrique/Desktop/codeFolders/Java/cs180project-022-it-s-corona-time/WebContent/covidFiles");
 			
-			//fileManager = new CovidFileManager("C:\\Users\\Enrique Munoz\\eclipse-workspace\\cs180project-022-it-s-corona-time\\WebContent\\covidFiles");
-
+			//fileManager = new CovidFileManager("/Users/celyna/cs180project-022-it-s-corona-time/WebContent/covidFiles/");
 			
-			fileManager = new CovidFileManager("/Users/celyna/cs180project-022-it-s-corona-time/WebContent/covidFiles/");
-
+			fileManager = new CovidFileManager("C:\\Users\\Enrique Munoz\\eclipse-workspace\\cs180project-022-it-s-corona-time\\WebContent\\covidFiles");
+			session.setAttribute("fileManager", fileManager);
+			session.setAttribute("dataStruct_IncrDesign", fileManager.getCurrent_covidFile().get_dataStruct_incrDesign());
+			session.setAttribute("globalDeaths", fileManager.getCurrent_covidFile().get_globalDeaths());
+			session.setAttribute("globalCases", fileManager.getCurrent_covidFile().get_globalCases());
 		}
 
-
+		DataStruct_IncrDesign[] dataStruct_IncrDesign = (DataStruct_IncrDesign[])session.getAttribute("dataStruct_IncrDesign");
+		double globalDeaths = (double)session.getAttribute("globalDeaths");
+		double globalCases = (double)session.getAttribute("globalCases");
 		
 		// SAVE FILE
-		String mobilityFile = "/Users/jesword/git/cs180project-022-it-s-corona-time/WebContent/savedData/mobility.txt";
+		//String mobilityFile = "/Users/jesword/git/cs180project-022-it-s-corona-time/WebContent/savedData/mobility.txt";
 		
 		String searchOp1 = request.getParameter("submit1");
 		String searchOp2 = request.getParameter("submit2");
@@ -93,14 +99,10 @@ public class SearchOperations extends HttpServlet
 		
 		
 		String richPoor_testing = request.getParameter("richPoor_testing");
-		CovidFile currentFile = fileManager.getCurrent_covidFile();
 		DefaultPieDataset pieChart_dataSet = null;
 		JFreeChart testing_pieChart = null;
 		String label = null;
 		String[] labels = null;
-		String[] isos = null;
-		double[] gdps = null;
-		int[] tests = null;
 		BufferedImage bufferedImage = null;
 		
 		
@@ -156,26 +158,40 @@ public class SearchOperations extends HttpServlet
 		}
 		else if(casesVsDeaths != null)
 		{
+//			isCasesVsDeaths = true;
+//			double cases = 0;
+//			double deaths = 0;
+//			double casesVsDeathPercent = 0.0;
+//			
+//			//long startTime = System.nanoTime();
+//			
+//			cases = fileManager.getCurrent_covidFile().getCases();
+//			deaths = fileManager.getCurrent_covidFile().getDeaths();
+//			casesVsDeathPercent = (deaths / cases) * 100;	
+//			
+//			DecimalFormat roundedAnswer = new DecimalFormat("#.###");
+//	        roundedAnswer.setRoundingMode(RoundingMode.CEILING);
+//			session.setAttribute("Cases", cases);
+//			session.setAttribute("Deaths", deaths);
+//			session.setAttribute("CasesVsDeathPercent", roundedAnswer.format(casesVsDeathPercent));
+//			
+//			long endTime = System.nanoTime();
+//			long executionTime = (endTime - startTime) / 1000000;
+//			System.out.println("Execution Time: " + executionTime + " milliseconds");
+			
 			isCasesVsDeaths = true;
-			double cases = 0;
-			double deaths = 0;
-			double casesVsDeathPercent = 0.0;
 			
-			long startTime = System.nanoTime();
+			//long startTime = System.nanoTime();
+			double casesVsDeathPercent = (globalDeaths / globalCases) * 100;	
 			
-			cases = fileManager.getCurrent_covidFile().getCases();
-			deaths = fileManager.getCurrent_covidFile().getDeaths();
-			casesVsDeathPercent = (deaths / cases) * 100;	
-			
-			DecimalFormat roundedAnswer = new DecimalFormat("#.###");
+			DecimalFormat roundedAnswer = new DecimalFormat("#.##");
 	        roundedAnswer.setRoundingMode(RoundingMode.CEILING);
-			session.setAttribute("Cases", cases);
-			session.setAttribute("Deaths", deaths);
+			session.setAttribute("Cases", globalCases);
+			session.setAttribute("Deaths", globalDeaths);
 			session.setAttribute("CasesVsDeathPercent", roundedAnswer.format(casesVsDeathPercent));
 			
-			long endTime = System.nanoTime();
-			long executionTime = (endTime - startTime) / 1000000;
-			System.out.println("Execution Time: " + executionTime + " milliseconds");
+			long endTime = System.currentTimeMillis();
+			System.out.println("Elapsed Time in milliseconds: " + (endTime - startTime));
 			
 		} else if (worldwideMobilityTrends != null) {
 			System.out.print("wwnull selected\n");
@@ -413,7 +429,7 @@ public class SearchOperations extends HttpServlet
 			country = request.getParameter("countries");
 			String mobility = request.getParameter("mobility");
 			
-			long startTime = System.nanoTime();
+			//long startTime = System.nanoTime();
 			ArrayList<Double> cases = fileManager.getCurrent_covidFile().getCasesPerMonth(country);
 			ArrayList<Double> mobilityAvg = new ArrayList<Double>();
 			
@@ -460,7 +476,8 @@ public class SearchOperations extends HttpServlet
 	
 			
 		}
-		else if (countryCasesVSDeaths != null) {
+		else if (countryCasesVSDeaths != null) 
+		{
 			isCountryCasesVSDeaths = true;
 			double cases = 0;
 			double deaths = 0;
@@ -472,7 +489,6 @@ public class SearchOperations extends HttpServlet
 			session.setAttribute("Cases", cases);
 			session.setAttribute("Deaths", deaths);
 			session.setAttribute("CountryCasesVsDeathPercent", countryCasesVSDeathPercent);
-			
 		} else if (multiGraph != null) {
 			//double workPlaces = 0;
 			//double transportation = 0;
@@ -570,72 +586,137 @@ public class SearchOperations extends HttpServlet
 				}
 			}
 		}
+//		else if (richPoor_testing != null)
+//		{
+//			gdps = currentFile.getGDP_perCountry();
+//			isos = currentFile.getIsos();
+//			tests = currentFile.getTests_perCountry();
+//			
+//			bubbleSort(gdps, isos, tests);
+//			
+//			pieChart_dataSet = new DefaultPieDataset();
+//			
+//			labels = new String[10];
+//			
+//			int i  = 0, j = tests.length-1;
+//			while (i < 5 && j > -1) //top 5 richest countries with tests greater than 0
+//			{
+//				if (tests[j] > 0)
+//				{
+//					//label = "Rich Country: " + isos[j] + "\n" + "Tests: " + tests[j] + "\n" + "GDP: " + gdps[j];
+//					label = "First World Country: " + isos[j];
+//					labels[i] = label;
+//					
+//					pieChart_dataSet.setValue(label, tests[j]);
+//					i++;
+//					
+//					System.out.println("Country: " + isos[j]);
+//					System.out.println("Tests: " + tests[j]);
+//					System.out.println("GDP: " + gdps[j]);
+//				}
+//				
+//				j--;
+//			}
+//			
+//			//i  = 0;
+//			j = 0;
+//			while (i < 10 && j < tests.length) //top 5 poorest countries with tests greater than 0
+//			{
+//				if (tests[j] > 0)
+//				{
+//					//label = "Poor Country: " + isos[j] + "\n" + "Tests: " + tests[j] + "\n" + "GDP: " + gdps[j];
+//					label = "Developing Country: " + isos[j];
+//					labels[i] = label;
+//					
+//					pieChart_dataSet.setValue(label, tests[j]);
+//					i++;
+//					
+//					System.out.println("Country: " + isos[j]);
+//					System.out.println("Number of Tests: " + tests[j]);
+//					System.out.println("GDP: " + gdps[j]);
+//				}
+//				
+//				j++;
+//			}
+//			
+//			testing_pieChart = ChartFactory.createPieChart("Top 5 First World and Developing Countries With Their Respective Test Count Proportions", pieChart_dataSet, true, true, false);
+//			
+//			PiePlot plot = (PiePlot) testing_pieChart.getPlot();
+//			for (i = 0; i < 10; i++)
+//			{
+//				if (i < 5)
+//					plot.setSectionPaint(labels[i], new Color(1.0f, 0.0f, 0.0f, 0.2f*(i+1))); 
+//				else
+//					plot.setSectionPaint(labels[i], new Color(0.0f, 0.0f, 1.0f, 0.2f*((i%5)+1)));
+//			}
+//			
+//			bufferedImage = testing_pieChart.createBufferedImage(500, 500);
+//			ChartUtilities.writeBufferedImageAsPNG(response.getOutputStream(), bufferedImage);
+//					
+//			response.getOutputStream().close();
+//		}
 		else if (richPoor_testing != null)
 		{
-			gdps = currentFile.getGDP_perCountry();
-			isos = currentFile.getIsos();
-			tests = currentFile.getTests_perCountry();
-			
-			bubbleSort(gdps, isos, tests);
-			
 			pieChart_dataSet = new DefaultPieDataset();
 			
 			labels = new String[10];
 			
-			int i  = 0, j = tests.length-1;
+			int i  = 0, j = dataStruct_IncrDesign.length-1;
 			while (i < 5 && j > -1) //top 5 richest countries with tests greater than 0
 			{
-				if (tests[j] > 0)
+				if (dataStruct_IncrDesign[j].totalTests > 0)
 				{
 					//label = "Rich Country: " + isos[j] + "\n" + "Tests: " + tests[j] + "\n" + "GDP: " + gdps[j];
-					label = "First World Country: " + isos[j];
+					label = "Rich Country: " + dataStruct_IncrDesign[j].countryName +  "\n" + "Tests: " + dataStruct_IncrDesign[j].totalTests;
 					labels[i] = label;
 					
-					pieChart_dataSet.setValue(label, tests[j]);
+					pieChart_dataSet.setValue(label, dataStruct_IncrDesign[j].totalTests);
 					i++;
 					
-					System.out.println("Country: " + isos[j]);
-					System.out.println("Tests: " + tests[j]);
-					System.out.println("GDP: " + gdps[j]);
+					System.out.println("Country: " + dataStruct_IncrDesign[j].countryName);
+					System.out.println("Tests: " + dataStruct_IncrDesign[j].totalTests);
+					System.out.println("GDP: " + dataStruct_IncrDesign[j].GDP);
 				}
 				
 				j--;
 			}
 			
-			//i  = 0;
 			j = 0;
-			while (i < 10 && j < tests.length) //top 5 poorest countries with tests greater than 0
+			while (i < 10 && j < dataStruct_IncrDesign.length) //top 5 poorest countries with tests greater than 0
 			{
-				if (tests[j] > 0)
+				if (dataStruct_IncrDesign[j].totalTests > 0)
 				{
 					//label = "Poor Country: " + isos[j] + "\n" + "Tests: " + tests[j] + "\n" + "GDP: " + gdps[j];
-					label = "Developing Country: " + isos[j];
+					label = "Poor Country: " + dataStruct_IncrDesign[j].countryName +  "\n" + "Tests: " + dataStruct_IncrDesign[j].totalTests;
 					labels[i] = label;
 					
-					pieChart_dataSet.setValue(label, tests[j]);
+					pieChart_dataSet.setValue(label, dataStruct_IncrDesign[j].totalTests);
 					i++;
 					
-					System.out.println("Country: " + isos[j]);
-					System.out.println("Number of Tests: " + tests[j]);
-					System.out.println("GDP: " + gdps[j]);
+					System.out.println("Country: " + dataStruct_IncrDesign[j].countryName);
+					System.out.println("Tests: " + dataStruct_IncrDesign[j].totalTests);
+					System.out.println("GDP: " + dataStruct_IncrDesign[j].GDP);
 				}
 				
 				j++;
 			}
 			
-			testing_pieChart = ChartFactory.createPieChart("Top 5 First World and Developing Countries With Their Respective Test Count Proportions", pieChart_dataSet, true, true, false);
+			testing_pieChart = ChartFactory.createPieChart("Top 5 Richest and Poorest Countries With Their Respective Test Count Proportions", pieChart_dataSet, true, true, false);
 			
 			PiePlot plot = (PiePlot) testing_pieChart.getPlot();
 			for (i = 0; i < 10; i++)
 			{
 				if (i < 5)
-					plot.setSectionPaint(labels[i], new Color(1.0f, 0.0f, 0.0f, 0.2f*(i+1))); 
+					plot.setSectionPaint(labels[i], new Color(1.0f, 0.0f, 0.0f, 0.2f*(i+1))); //red = rich
 				else
-					plot.setSectionPaint(labels[i], new Color(0.0f, 0.0f, 1.0f, 0.2f*((i%5)+1)));
+					plot.setSectionPaint(labels[i], new Color(0.0f, 0.0f, 1.0f, 0.2f*((i%5)+1))); //blue = poor
 			}
 			
-			bufferedImage = testing_pieChart.createBufferedImage(500, 500);
+			bufferedImage = testing_pieChart.createBufferedImage(1000, 1000);
 			ChartUtilities.writeBufferedImageAsPNG(response.getOutputStream(), bufferedImage);
+			
+			long endTime = System.currentTimeMillis();
+			System.out.println("Elapsed Time in milliseconds: " + (endTime - startTime));
 					
 			response.getOutputStream().close();
 		}
@@ -679,31 +760,31 @@ public class SearchOperations extends HttpServlet
 		}
 	}
 	
-	private static void bubbleSort(double[] gdps, String[] isos, int[] tests) 
-	{
-		int lastPos, index, tempTest;
-		double tempGDP;
-		String tempISO;
-		
-		for (lastPos = gdps.length - 1; lastPos >= 0; lastPos--)
-		{
-			for (index = 0; index <= lastPos - 1; index++)
-			{
-				if (gdps[index] > gdps[index + 1]) 
-				{
-					tempGDP = gdps[index]; 
-					gdps[index] = gdps[index + 1]; 
-					gdps[index + 1] = tempGDP;
-					
-					tempISO = isos[index];
-					isos[index] = isos[index + 1];
-					isos[index + 1] = tempISO;
-					
-					tempTest = tests[index];
-					tests[index] = tests[index + 1];
-					tests[index + 1] = tempTest;
-				}
-			}
-		}
-	}
+//	private static void bubbleSort(double[] gdps, String[] isos, int[] tests) 
+//	{
+//		int lastPos, index, tempTest;
+//		double tempGDP;
+//		String tempISO;
+//		
+//		for (lastPos = gdps.length - 1; lastPos >= 0; lastPos--)
+//		{
+//			for (index = 0; index <= lastPos - 1; index++)
+//			{
+//				if (gdps[index] > gdps[index + 1]) 
+//				{
+//					tempGDP = gdps[index]; 
+//					gdps[index] = gdps[index + 1]; 
+//					gdps[index + 1] = tempGDP;
+//					
+//					tempISO = isos[index];
+//					isos[index] = isos[index + 1];
+//					isos[index + 1] = tempISO;
+//					
+//					tempTest = tests[index];
+//					tests[index] = tests[index + 1];
+//					tests[index + 1] = tempTest;
+//				}
+//			}
+//		}
+//	}
 }

@@ -1797,6 +1797,96 @@ public class CovidFile implements Serializable //will handle only reads
 	}
 	
 	
+	public double get_globalCases()
+	{
+		final int isoIndex = 0, casesIndex = 9;
+		String[] tokens = null;
+		String[] prevTokens = null;
+		Scanner inputFile = null;
+		double temp = 0, cases = 0;
+		
+		try
+		{
+			inputFile = new Scanner(covidFile);
+			
+			columnNames = inputFile.nextLine().split(",");
+			
+			prevTokens = inputFile.nextLine().split(",");
+			
+			while (inputFile.hasNext())
+			{
+				tokens = inputFile.nextLine().split(",");
+				
+				if (tokens[isoIndex].equals(prevTokens[isoIndex]))
+				{
+					prevTokens = tokens;
+					continue;
+				}
+				
+				temp = Double.parseDouble(prevTokens[casesIndex]);
+				if (temp != -404)
+					cases = cases + temp;
+				
+				prevTokens = tokens;
+			}
+			
+			temp = Double.parseDouble(prevTokens[casesIndex]); // for the last country
+			if (temp != -404)
+				cases = cases + temp;
+			
+			inputFile.close();
+		}
+		catch (FileNotFoundException e) { e.printStackTrace(); }
+		
+		return cases;
+	}
+	
+	
+	public double get_globalDeaths()
+	{
+		final int isoIndex = 0, deathIndex = 10;
+		String[] tokens = null;
+		String[] prevTokens = null;
+		Scanner inputFile = null;
+		double temp = 0, deaths = 0;
+		
+		try
+		{
+			inputFile = new Scanner(covidFile);
+			
+			columnNames = inputFile.nextLine().split(",");
+			
+			prevTokens = inputFile.nextLine().split(",");
+			
+			while (inputFile.hasNext())
+			{
+				tokens = inputFile.nextLine().split(",");
+				
+				if (tokens[isoIndex].equals(prevTokens[isoIndex]))
+				{
+					prevTokens = tokens;
+					continue;
+				}
+				
+				temp = Double.parseDouble(prevTokens[deathIndex]);
+				if (temp != -404)
+					deaths = deaths + temp;
+				
+				prevTokens = tokens;
+			}
+			
+			temp = Double.parseDouble(prevTokens[deathIndex]);
+			if (temp != -404)
+				deaths = deaths + temp; // for the last country
+			
+			inputFile.close();
+		}
+		catch (FileNotFoundException e) { e.printStackTrace(); }
+		
+		return deaths;
+	}
+	
+	
 	public double getDeaths()
 	{final int countryIndex = 1, dateIndex = 2, deathIndex = 10;
 	String[] tokens = null;
