@@ -153,6 +153,8 @@ public class EditFiles extends HttpServlet
 					if (country.equals(dataStruct_IncrDesign[i].countryName))
 					{
 						dataStruct_IncrDesign[i].totalTests = Integer.parseInt(totalTests);
+						dataStruct_IncrDesign[i].totalCases = Integer.parseInt(confirmedCases);
+						dataStruct_IncrDesign[i].totalDeaths = Integer.parseInt(confirmedDeaths);
 						break;
 					}
 				}
@@ -178,6 +180,8 @@ public class EditFiles extends HttpServlet
 					if (country.equals(dataStruct_IncrDesign[i].countryName))
 					{
 						dataStruct_IncrDesign[i].totalTests = dataStruct_IncrDesign[i].totalTests + tests[0];
+						dataStruct_IncrDesign[i].totalCases = dataStruct_IncrDesign[i].totalCases + cases[0];
+						dataStruct_IncrDesign[i].totalDeaths = dataStruct_IncrDesign[i].totalDeaths + deaths[0];
 						break;
 					}
 				}
@@ -204,6 +208,8 @@ public class EditFiles extends HttpServlet
 				if (country.equals(dataStruct_IncrDesign[i].countryName))
 				{
 					dataStruct_IncrDesign[i].totalTests = dataStruct_IncrDesign[i].totalTests - tests[0];
+					dataStruct_IncrDesign[i].totalCases = dataStruct_IncrDesign[i].totalCases - cases[0];
+					dataStruct_IncrDesign[i].totalDeaths = dataStruct_IncrDesign[i].totalDeaths - deaths[0];
 					break;
 				}
 			}

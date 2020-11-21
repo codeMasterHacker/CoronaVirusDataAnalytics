@@ -18,7 +18,7 @@ var chart = new CanvasJS.Chart("chartContainer", {
 	theme:"light2",
 	
 	title:{
-		text:"Cases Vs Deaths World Wide"
+		text: "Cases Vs Deaths in the ${Country}"
 	},
 	axisX:{
 		interval: 1
@@ -48,7 +48,7 @@ chart.render();
 <div id="chartContainer" style="height: 300px; width: 100%;"></div>
 
 <h4>The data shows that out of the people that have caught COVID-19,<br>
- <strong>${CasesVsDeathPercent}%</strong> of people have died from it.</h4>
+ <strong>${CountryCasesVsDeathPercent}%</strong> of people have died from it.</h4>
 <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 </body>
 

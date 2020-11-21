@@ -94,7 +94,7 @@ public class CovidFile implements Serializable //will handle only reads
 		Scanner inputFile = null;
 		int i = 0, count = -1; //-1 because I'm not counting the column names at the beginning
 		
-		final int isoIndex = 1, testIndex = 12, gdpIndex = 13, numCountries = 133;
+		final int isoIndex = 1, casesIndex = 9, deathsIndex = 10, testIndex = 12, gdpIndex = 13, numCountries = 133;
 		String[] tokens = null;
 		String[] previousTokens = null;
 		
@@ -129,6 +129,8 @@ public class CovidFile implements Serializable //will handle only reads
 					dataStruct_incrDesign[i].totalTests = (int) Double.parseDouble(previousTokens[testIndex]);
 					dataStruct_incrDesign[i].GDP = Double.parseDouble(previousTokens[gdpIndex]);
 					dataStruct_incrDesign[i].gdpRank = i;
+					dataStruct_incrDesign[i].totalCases = (int) Double.parseDouble(previousTokens[casesIndex]);
+					dataStruct_incrDesign[i].totalDeaths = (int) Double.parseDouble(previousTokens[deathsIndex]);
 					i++;
 				
 					previousTokens = tokens;
@@ -142,6 +144,8 @@ public class CovidFile implements Serializable //will handle only reads
 				dataStruct_incrDesign[i].totalTests =(int) Double.parseDouble(previousTokens[testIndex]);
 				dataStruct_incrDesign[i].GDP = Double.parseDouble(previousTokens[gdpIndex]);
 				dataStruct_incrDesign[i].gdpRank = i;
+				dataStruct_incrDesign[i].totalCases = (int) Double.parseDouble(previousTokens[casesIndex]);
+				dataStruct_incrDesign[i].totalDeaths = (int) Double.parseDouble(previousTokens[deathsIndex]);
 				i++;
 			
 				previousTokens = tokens;
@@ -242,7 +246,7 @@ public class CovidFile implements Serializable //will handle only reads
 	
 	private int cleanData() //copy
 	{
-		final int isoIndex = 1, testIndex = 12, gdpIndex = 13, numCountries = 133;
+		final int isoIndex = 1, casesIndex = 9, deathsIndex = 10, testIndex = 12, gdpIndex = 13, numCountries = 133;
 		String[] tokens = null;
 		String[] previousTokens = null;
 		String[] temp = null;
@@ -349,6 +353,8 @@ public class CovidFile implements Serializable //will handle only reads
 					dataStruct_incrDesign[j].totalTests =(int) Double.parseDouble(previousTokens[testIndex]);
 					dataStruct_incrDesign[j].GDP = Double.parseDouble(previousTokens[gdpIndex]);
 					dataStruct_incrDesign[j].gdpRank = j;
+					dataStruct_incrDesign[i].totalCases = (int) Double.parseDouble(previousTokens[casesIndex]);
+					dataStruct_incrDesign[i].totalDeaths = (int) Double.parseDouble(previousTokens[deathsIndex]);
 					j++;
 				
 					previousTokens = tokens;
@@ -362,6 +368,8 @@ public class CovidFile implements Serializable //will handle only reads
 				dataStruct_incrDesign[j].totalTests =(int) Double.parseDouble(previousTokens[testIndex]);
 				dataStruct_incrDesign[j].GDP = Double.parseDouble(previousTokens[gdpIndex]);
 				dataStruct_incrDesign[j].gdpRank = j;
+				dataStruct_incrDesign[i].totalCases = (int) Double.parseDouble(previousTokens[casesIndex]);
+				dataStruct_incrDesign[i].totalDeaths = (int) Double.parseDouble(previousTokens[deathsIndex]);
 				j++;
 			
 				previousTokens = tokens;
@@ -1746,45 +1754,52 @@ public class CovidFile implements Serializable //will handle only reads
 		final int countryIndex = 1, casesIndex = 9;
 		String[] tokens = null;
 		Scanner inputFile = null;
-		int i = 0, j = 0;
+		//int i = 0, j = 0;
 		boolean flag = true;
 		double cases = 0;
 		
-		try 
-		{
-			inputFile = new Scanner(covidFile);
-			
-			columnNames = inputFile.nextLine().split(",");
-			
-			while (inputFile.hasNext())
-			{
-				tokens = inputFile.nextLine().split(",");
-				
-				flag = false;
-				
-				if (!tokens[countryIndex].equals(country))
-					continue;
-				
-				for (j = 0; j < tokens.length; j++)
-				{
-					if (j == casesIndex)
-					{
-						cases = cases + Double.parseDouble(tokens[j]);
-					}
-				}
-				
-				i++;
-				
+		for (int i = 0; i < dataStruct_incrDesign.length; ++i) {
+			if (dataStruct_incrDesign[i].countryName.equals(country)) {
+				cases = dataStruct_incrDesign[i].totalCases;
+				System.out.print(cases);
 			}
-			
-			inputFile.close();
-			
-			System.out.println(i);
-		} 
-		catch (FileNotFoundException e) 
-		{ 
-			e.printStackTrace(); 
 		}
+		
+//		try 
+//		{
+//			inputFile = new Scanner(covidFile);
+//			
+//			columnNames = inputFile.nextLine().split(",");
+//			
+//			while (inputFile.hasNext())
+//			{
+//				tokens = inputFile.nextLine().split(",");
+//				
+//				flag = false;
+//				
+//				if (!tokens[countryIndex].equals(country))
+//					continue;
+//				
+//				for (j = 0; j < tokens.length; j++)
+//				{
+//					if (j == casesIndex)
+//					{
+//						cases = cases + Double.parseDouble(tokens[j]);
+//					}
+//				}
+//				
+//				i++;
+//				
+//			}
+//			
+//			inputFile.close();
+//			
+//			System.out.println(i);
+//		} 
+//		catch (FileNotFoundException e) 
+//		{ 
+//			e.printStackTrace(); 
+//		}
 		
 		return cases;
 	}
@@ -1938,46 +1953,53 @@ public class CovidFile implements Serializable //will handle only reads
 		final int countryIndex = 1, deathsIndex = 10;
 		String[] tokens = null;
 		Scanner inputFile = null;
-		int i = 0, j = 0;
+		//int i = 0, j = 0;
 		boolean flag = true;
 		double cases = 0;
 		double deaths = 0;
 		
-		try 
-		{
-			inputFile = new Scanner(covidFile);
-			
-			columnNames = inputFile.nextLine().split(",");
-			
-			while (inputFile.hasNext())
-			{
-				tokens = inputFile.nextLine().split(",");
-				
-				flag = false;
-				
-				if (!tokens[countryIndex].equals(country))
-					continue;
-				
-				for (j = 0; j < tokens.length; j++)
-				{
-					if (j == deathsIndex)
-					{
-						deaths = deaths + Double.parseDouble(tokens[j]);
-					}
-				}
-				
-				i++;
-				
+		for (int i = 0; i < dataStruct_incrDesign.length; ++i) {
+			if (dataStruct_incrDesign[i].countryName.equals(country)) {
+				deaths = dataStruct_incrDesign[i].totalDeaths;
+				System.out.print(deaths);
 			}
-			
-			inputFile.close();
-			
-			System.out.println(i);
-		} 
-		catch (FileNotFoundException e) 
-		{ 
-			e.printStackTrace(); 
 		}
+		
+//		try 
+//		{
+//			inputFile = new Scanner(covidFile);
+//			
+//			columnNames = inputFile.nextLine().split(",");
+//			
+//			while (inputFile.hasNext())
+//			{
+//				tokens = inputFile.nextLine().split(",");
+//				
+//				flag = false;
+//				
+//				if (!tokens[countryIndex].equals(country))
+//					continue;
+//				
+//				for (j = 0; j < tokens.length; j++)
+//				{
+//					if (j == deathsIndex)
+//					{
+//						deaths = deaths + Double.parseDouble(tokens[j]);
+//					}
+//				}
+//				
+//				i++;
+//				
+//			}
+//			
+//			inputFile.close();
+//			
+//			System.out.println(i);
+//		} 
+//		catch (FileNotFoundException e) 
+//		{ 
+//			e.printStackTrace(); 
+//		}
 		
 		return deaths;
 	}

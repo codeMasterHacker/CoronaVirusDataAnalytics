@@ -8,4 +8,6 @@ public class DataStruct_IncrDesign implements Serializable
 	public int totalTests;
 	public double GDP;
 	public int gdpRank;
+	public double totalCases;
+	public double totalDeaths;
 }
