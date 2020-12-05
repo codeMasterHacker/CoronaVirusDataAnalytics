@@ -19,8 +19,8 @@ public class EditServlet extends HttpServlet
 		
 		if (fileManager == null) //first time using
 		{
-			//fileManager = new CovidFileManager("C:\\Users\\Enrique Munoz\\eclipse-workspace\\cs180project-022-it-s-corona-time\\WebContent\\covidFiles");
-			fileManager = new CovidFileManager("/Users/jesword/git/cs180project-022-it-s-corona-time/WebContent/covidFiles");
+			fileManager = new CovidFileManager("C:\\Users\\Enrique Munoz\\eclipse-workspace\\cs180project-022-it-s-corona-time\\WebContent\\covidFiles");
+			//fileManager = new CovidFileManager("/Users/jesword/git/cs180project-022-it-s-corona-time/WebContent/covidFiles");
 			session.setAttribute("fileManager", fileManager);
 			session.setAttribute("dataStruct_IncrDesign", fileManager.getCurrent_covidFile().get_dataStruct_incrDesign());
 		}
@@ -149,7 +149,7 @@ public class EditServlet extends HttpServlet
 		}
 		else if (update != null)
 		{
-			worked = fileManager.update(row, tests);
+			//worked = fileManager.update(row, tests);
 			
 			if (!totalTests.equals(nonupdateValue))
 			{
@@ -168,7 +168,7 @@ public class EditServlet extends HttpServlet
 		}
 		else if (delete != null)
 		{
-			worked = fileManager.delete(country, date, tests);
+			//worked = fileManager.delete(country, date, tests);
 			
 			for(int i = 0; i < dataStruct_IncrDesign.length; i++)
 			{
