@@ -351,19 +351,50 @@ public class CovidFileManager implements Serializable
 						
 						////////////////////////////////////////////////////////////////////////////////////can delete/change
 						if (currTests == 0)
-							tests[0] = (int)Double.parseDouble(row[testIndex]) - prevTests;
+						{
+							if (row[testIndex].equals(nonupdateValue))
+								tests[0] = (int)Double.parseDouble(tokens[testIndex]) - prevTests;
+							else
+								tests[0] = (int)Double.parseDouble(row[testIndex]) - prevTests;
+						}
 						else
-							tests[0] = (int)Double.parseDouble(row[testIndex]) - currTests;
+						{
+							if (row[testIndex].equals(nonupdateValue))
+								tests[0] = (int)Double.parseDouble(tokens[testIndex]) - currTests;
+							else
+								tests[0] = (int)Double.parseDouble(row[testIndex]) - currTests;
+						}
 						
 						if (currCases == 0.0)
-							cases[0] = Double.parseDouble(row[casesIndex]) - prevCases;
+						{
+							if (row[casesIndex].equals(nonupdateValue))
+								cases[0] = Double.parseDouble(tokens[casesIndex]) - prevCases;
+							else
+								cases[0] = Double.parseDouble(row[casesIndex]) - prevCases;
+						}	
 						else
-							cases[0] = Double.parseDouble(row[casesIndex]) - currCases;
+						{
+							if (row[casesIndex].equals(nonupdateValue))
+								cases[0] = Double.parseDouble(tokens[casesIndex]) - currCases;
+							else
+								cases[0] = Double.parseDouble(row[casesIndex]) - currCases;
+						}
+							
 						
 						if (currDeaths == 0.0)
-							deaths[0] = Double.parseDouble(row[deathsIndex]) - prevDeaths;
+						{
+							if (row[deathsIndex].equals(nonupdateValue))
+								deaths[0] = Double.parseDouble(tokens[deathsIndex]) - prevDeaths;
+							else
+								deaths[0] = Double.parseDouble(row[deathsIndex]) - prevDeaths;
+						}
 						else
-							deaths[0] = Double.parseDouble(row[deathsIndex]) - currDeaths;
+						{
+							if (row[deathsIndex].equals(nonupdateValue))
+								deaths[0] = Double.parseDouble(tokens[deathsIndex]) - currDeaths;
+							else
+								deaths[0] = Double.parseDouble(row[deathsIndex]) - currDeaths;
+						}
 						////////////////////////////////////////////////////////////////////////////////////can delete/change
 					}
 					else //not the row we want to update

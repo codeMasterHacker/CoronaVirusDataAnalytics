@@ -30,7 +30,7 @@ public class SearchOperations extends HttpServlet
 		
 		if (fileManager == null) //first time using
 		{
-			fileManager = new CovidFileManager("/Users/cristinalawson/eclipse-workspace/cs180_project/WebContent/covidFiles");
+			//fileManager = new CovidFileManager("/Users/cristinalawson/eclipse-workspace/cs180_project/WebContent/covidFiles");
 
 			//fileManager = new CovidFileManager("E:\\Luccas\\Documents\\docs_2\\UCR Docs\\Fall_2020\\cs180\\cs180_project\\cs180project-022-it-s-corona-time\\WebContent\\covidFiles");
 
@@ -40,7 +40,7 @@ public class SearchOperations extends HttpServlet
 			
 			//fileManager = new CovidFileManager("/Users/celyna/cs180project-022-it-s-corona-time/WebContent/covidFiles/");
 			
-			//fileManager = new CovidFileManager("C:\\Users\\Enrique Munoz\\eclipse-workspace\\cs180project-022-it-s-corona-time\\WebContent\\covidFiles");
+			fileManager = new CovidFileManager("C:\\Users\\Enrique Munoz\\eclipse-workspace\\cs180project-022-it-s-corona-time\\WebContent\\covidFiles");
 			session.setAttribute("fileManager", fileManager);
 			session.setAttribute("dataStruct_IncrDesign", fileManager.getCurrent_covidFile().get_dataStruct_incrDesign());
 			session.setAttribute("globalDeaths", fileManager.getCurrent_covidFile().get_globalDeaths());
